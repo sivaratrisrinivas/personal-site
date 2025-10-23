@@ -5,295 +5,377 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
             name="description"
-            content="Srinivas Sivaratri - Problem Solver, Software Engineer, Open Source Contributor"
+            content="Srinivas Sivaratri - Software Engineer building open source blockchain infrastructure"
         />
         <meta name="author" content="Srinivas Sivaratri" />
-        <meta
-            name="keywords"
-            content="Srinivas Sivaratri, Software Engineer, Problem Solver, Blockchain, Go-Ethereum, Full-Stack Developer"
-        />
 
-        <!-- Open Graph -->
-        <meta property="og:type" content="website" />
-        <meta
-            property="og:url"
-            content="https://sivaratrisrinivas.github.io/personal-site/"
-        />
-        <meta
-            property="og:title"
-            content="Srinivas Sivaratri - Problem Solver"
-        />
-        <meta
-            property="og:description"
-            content="Open Source Software Engineer contributing to blockchain infrastructure."
-        />
+        <title>Srinivas Sivaratri</title>
 
-        <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@SrinivasSi78619" />
-
-        <!-- Favicon -->
         <link
             rel="icon"
             type="image/svg+xml"
             href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>"
         />
 
-        <title>Srinivas Sivaratri</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        <link rel="stylesheet" href="css/style.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
+            :root {
+                --color-bg: #f5e6d3;
+                --color-text: #2d1810;
+                --color-muted: #6b5744;
+                --color-accent: #a0522d;
+                --color-border: #d4c4b0;
+            }
+
+            html {
+                font-size: 16px;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
+                font-size: 1.125rem;
+                line-height: 1.7;
+                color: var(--color-text);
+                background-color: var(--color-bg);
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            .container {
+                max-width: 720px;
+                margin: 0 auto;
+                padding: 100px 32px 80px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+                font-weight: 600;
+                letter-spacing: -0.02em;
+                margin-bottom: 24px;
+                line-height: 1.1;
+            }
+
+            .intro {
+                font-size: 1.375rem;
+                color: var(--color-text);
+                margin-bottom: 80px;
+                line-height: 1.6;
+            }
+
+            .section {
+                margin-bottom: 80px;
+            }
+
+            .section:last-child {
+                margin-bottom: 0;
+            }
+
+            h2 {
+                font-size: 0.875rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--color-muted);
+                margin-bottom: 32px;
+            }
+
+            .work-item {
+                margin-bottom: 48px;
+            }
+
+            .work-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .work-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: var(--color-text);
+                margin-bottom: 8px;
+            }
+
+            .work-meta {
+                font-size: 1rem;
+                color: var(--color-muted);
+                margin-bottom: 16px;
+            }
+
+            .work-desc {
+                font-size: 1.0625rem;
+                color: var(--color-text);
+                line-height: 1.7;
+            }
+
+            .project-item {
+                margin-bottom: 48px;
+                padding-bottom: 48px;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .project-item:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .project-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: var(--color-text);
+                margin-bottom: 12px;
+            }
+
+            .project-link {
+                font-size: 0.95rem;
+                color: var(--color-accent);
+                text-decoration: none;
+                margin-bottom: 16px;
+                display: inline-block;
+            }
+
+            .project-link:hover {
+                text-decoration: underline;
+            }
+
+            .project-desc {
+                font-size: 1.0625rem;
+                color: var(--color-text);
+                line-height: 1.7;
+            }
+
+            .skills-list {
+                font-size: 1.0625rem;
+                color: var(--color-text);
+                line-height: 1.8;
+            }
+
+            .contact-links {
+                display: flex;
+                gap: 32px;
+                flex-wrap: wrap;
+            }
+
+            .contact-link {
+                font-size: 1.0625rem;
+                color: var(--color-accent);
+                text-decoration: none;
+            }
+
+            .contact-link:hover {
+                text-decoration: underline;
+            }
+
+            a {
+                color: var(--color-accent);
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 64px 24px;
+                }
+
+                h1 {
+                    font-size: 2.5rem;
+                }
+
+                .intro {
+                    font-size: 1.25rem;
+                    margin-bottom: 64px;
+                }
+
+                .section {
+                    margin-bottom: 64px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                h1 {
+                    font-size: 2rem;
+                }
+
+                .intro {
+                    font-size: 1.125rem;
+                }
+
+                .contact-links {
+                    flex-direction: column;
+                    gap: 20px;
+                }
+            }
+        </style>
     </head>
     <body>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1 class="name">Srinivas Sivaratri</h1>
-                <p class="title">Autodidact</p>
-            </div>
-        </section>
+        <div class="container">
+            <header>
+                <h1>Srinivas Sivaratri</h1>
+                <div class="intro">
+                    Software engineer from Bangalore building open source
+                    blockchain infrastructure. I contribute to Go-Ethereum and
+                    create tools that make developers' lives easier.
+                </div>
+            </header>
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <div class="container">
-                <a href="#about" class="nav-item">About</a>
-                <a href="#work" class="nav-item">Work</a>
-                <a href="#contact" class="nav-item">Contact</a>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main>
-            <!-- About Section -->
-            <section id="about" class="section">
-                <div class="container">
-                    <div class="content">
-                        <p class="lead">
-                            I'm a software engineer based in Bangalore, India,
-                            contributing to open source blockchain
-                            infrastructure at Go-Ethereum.
-                        </p>
-
-                        <h2 class="section-heading">Currently</h2>
-                        <p>
-                            Working as an
-                            <strong>Open Source Software Engineer</strong> at
-                            Go-Ethereum, developing critical features for
-                            blockchain infrastructure used by thousands of
-                            Ethereum nodes globally. I've implemented freezer
-                            truncation subcommands and binary search algorithms
-                            for efficient merge block detection across millions
-                            of blockchain headers.
-                        </p>
-
-                        <h2 class="section-heading">Previously</h2>
-                        <p>
-                            At <strong>Accenture</strong>, I managed 100+ client
-                            health records, optimized SQL query performance by
-                            25%, and implemented CI/CD pipelines that
-                            accelerated project delivery by 20%.
-                        </p>
-
-                        <h2 class="section-heading">Education</h2>
-                        <p>
-                            <strong
-                                >Master of Science in Computer Science</strong
-                            >
-                            <br />University of Alabama, 2023–2024
-                        </p>
-                        <p>
-                            <strong
-                                >Bachelor of Science in Computer Science</strong
-                            >
-                            <br />BV Raju Institute of Technology, 2017–2021
-                        </p>
-
-                        <h2 class="section-heading">Continuous Learning</h2>
-                        <p>
-                            Committed to mastery through consistent practice on
-                            <strong>
-                                <a
-                                    href="https://www.boot.dev/u/shallowad54"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style="
-                                        color: inherit;
-                                        text-decoration: none;
-                                    "
-                                >
-                                    Boot.dev
-                                </a>
-                            </strong>
-                            —a platform for building real projects and mastering
-                            backend engineering.
-                        </p>
+            <section class="section">
+                <h2>Work</h2>
+                <div class="work-item">
+                    <div class="work-title">Go-Ethereum</div>
+                    <div class="work-meta">Open Source Contributor · 2025</div>
+                    <div class="work-desc">
+                        Contributing to Ethereum's core client implementation.
+                        Built freezer truncation features and optimized
+                        blockchain data storage for 3,500+ nodes globally.
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-title">Accenture</div>
+                    <div class="work-meta">Software Engineer · 2021-2022</div>
+                    <div class="work-desc">
+                        Developed ETL pipelines and optimized database
+                        performance for enterprise clients. Built automation
+                        tools that saved 50+ hours monthly.
                     </div>
                 </div>
             </section>
 
-            <!-- Work Section -->
-            <section id="work" class="section section-alt">
-                <div class="container">
-                    <div class="content">
-                        <h2 class="section-title">Technical Expertise</h2>
-
-                        <div class="expertise-grid">
-                            <div class="expertise-item">
-                                <h3>Languages</h3>
-                                <p>
-                                    Python · TypeScript · Go · JavaScript · SQL
-                                </p>
-                            </div>
-
-                            <div class="expertise-item">
-                                <h3>Frameworks</h3>
-                                <p>
-                                    Next.js · React · Node.js · Bun · Elysia.js
-                                </p>
-                            </div>
-
-                            <div class="expertise-item">
-                                <h3>Data</h3>
-                                <p>
-                                    PostgreSQL · SQLite · Supabase · Database
-                                    Design · ETL
-                                </p>
-                            </div>
-
-                            <div class="expertise-item">
-                                <h3>Systems</h3>
-                                <p>
-                                    RESTful APIs · HTTP · Linux · Algorithms ·
-                                    System Design
-                                </p>
-                            </div>
-
-                            <div class="expertise-item">
-                                <h3>DevOps</h3>
-                                <p>
-                                    Git · GitHub Actions · Docker · Kubernetes ·
-                                    CI/CD · GCP
-                                </p>
-                            </div>
-
-                            <div class="expertise-item">
-                                <h3>Practices</h3>
-                                <p>Agile · Performance Optimization · TDD</p>
-                            </div>
-                        </div>
-
-                        <h2 class="section-title">Personal Projects</h2>
-
-                        <div class="project">
-                            <div class="project-header">
-                                <h3 class="project-title">Rashomon</h3>
-                                <span class="project-meta">2025</span>
-                            </div>
-                            <p class="project-desc">
-                                A social reading platform enabling real-time
-                                discussion and content sharing. Built with
-                                Next.js, React, Bun runtime, and Supabase for
-                                backend services. Features real-time chat and
-                                article extraction.
-                            </p>
-                            <a
-                                href="https://github.com/sivaratrisrinivas/Rashomon"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="project-link"
-                            >
-                                View Project
-                            </a>
-                        </div>
-
-                        <div class="project">
-                            <div class="project-header">
-                                <h3 class="project-title">ContextClips</h3>
-                                <span class="project-meta">2025</span>
-                            </div>
-                            <p class="project-desc">
-                                A minimalist Chrome extension for intelligent
-                                clipboard management with context-aware
-                                capturing. Features fast search, domain
-                                filtering, and local-only storage for maximum
-                                privacy.
-                            </p>
-                            <a
-                                href="https://github.com/sivaratrisrinivas/contextclips"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="project-link"
-                            >
-                                View Project
-                            </a>
-                        </div>
+            <section class="section">
+                <h2>Projects</h2>
+                <div class="project-item">
+                    <div class="project-title">Rashomon</div>
+                    <a
+                        href="https://github.com/sivaratrisrinivas/Rashomon"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                        >github.com/sivaratrisrinivas/Rashomon</a
+                    >
+                    <div class="project-desc">
+                        Social reading platform for real-time discussion and
+                        content sharing. Built with Next.js, React, Bun, and
+                        Supabase.
+                    </div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">ContextClips</div>
+                    <a
+                        href="https://github.com/sivaratrisrinivas/contextclips"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                        >github.com/sivaratrisrinivas/contextclips</a
+                    >
+                    <div class="project-desc">
+                        Chrome extension for intelligent clipboard management.
+                        Privacy-first with local-only storage and fast search.
+                    </div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">Fixer</div>
+                    <a
+                        href="https://github.com/sivaratrisrinivas/Fixer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                        >github.com/sivaratrisrinivas/Fixer</a
+                    >
+                    <div class="project-desc">
+                        AI coding assistant using Google's Gemini API with
+                        function-calling capabilities. Terminal-based agent that
+                        can read, write, execute code, and debug applications
+                        through conversational prompts. Built in Python with
+                        sandboxed file system operations.
+                    </div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">Gator</div>
+                    <a
+                        href="https://github.com/sivaratrisrinivas/Gator"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                        >github.com/sivaratrisrinivas/Gator</a
+                    >
+                    <div class="project-desc">
+                        Command-line RSS feed aggregator built in Go. Features
+                        multi-user support, automatic feed updates with
+                        customizable intervals, pagination, and PostgreSQL
+                        database integration. Lightweight terminal-based
+                        alternative to web-based feed readers.
                     </div>
                 </div>
             </section>
 
-            <!-- Contact Section -->
-            <section id="contact" class="section">
-                <div class="container">
-                    <div class="content">
-                        <h2 class="section-title">Get in Touch</h2>
-
-                        <div class="contact-grid">
-                            <a
-                                href="mailto:srinivassivaratri1122@gmail.com"
-                                class="contact-item"
-                            >
-                                <span class="contact-label">Email</span>
-                                <span class="contact-value"
-                                    >srinivassivaratri1122@gmail.com</span
-                                >
-                            </a>
-
-                            <a
-                                href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="contact-item"
-                            >
-                                <span class="contact-label">LinkedIn</span>
-                                <span class="contact-value"
-                                    >srinivas-sivaratri</span
-                                >
-                            </a>
-
-                            <a
-                                href="https://github.com/sivaratrisrinivas"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="contact-item"
-                            >
-                                <span class="contact-label">GitHub</span>
-                                <span class="contact-value"
-                                    >sivaratrisrinivas</span
-                                >
-                            </a>
-
-                            <a
-                                href="https://x.com/SrinivasSi78619"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="contact-item"
-                            >
-                                <span class="contact-label">X</span>
-                                <span class="contact-value"
-                                    >@SrinivasSi78619</span
-                                >
-                            </a>
-                        </div>
-                    </div>
+            <section class="section">
+                <h2>Skills</h2>
+                <div class="skills-list">
+                    Python · TypeScript · Go · JavaScript · SQL · C<br />
+                    Next.js · React · Node.js · Bun · Pygame<br />
+                    PostgreSQL · SQLite · HTTP/REST APIs · RSS<br />
+                    Git · GitHub Actions · Docker · Linux · CI/CD<br />
+                    Data Structures & Algorithms · Object-Oriented Programming ·
+                    Functional Programming · Memory Management<br />
+                    Web Scraping · SEO Analytics · LLM Integration
                 </div>
             </section>
-        </main>
 
-        <script src="js/script.js"></script>
+            <section class="section">
+                <h2>Education</h2>
+                <div class="skills-list">
+                    MS Computer Science · University of Alabama · 2023-2025<br />
+                    BS Computer Science · BV Raju Institute of Technology ·
+                    2017-2021
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Contact</h2>
+                <div class="contact-links">
+                    <a
+                        href="mailto:srinivassivaratri1122@gmail.com"
+                        class="contact-link"
+                        >Email</a
+                    >
+                    <a
+                        href="https://github.com/sivaratrisrinivas"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                        >GitHub</a
+                    >
+                    <a
+                        href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                        >LinkedIn</a
+                    >
+                    <a
+                        href="https://x.com/SrinivasSi78619"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                        >X</a
+                    >
+                    <a
+                        href="https://www.boot.dev/u/shallowad54"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contact-link"
+                        >Boot.dev</a
+                    >
+                </div>
+            </section>
+        </div>
     </body>
 </html>
