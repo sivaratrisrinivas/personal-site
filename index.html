@@ -86,24 +86,21 @@
         }
 
         :root {
-            --color-primary: #6366f1;
-            --color-primary-light: #818cf8;
-            --color-primary-dark: #4f46e5;
-            --color-secondary: #ec4899;
-            --color-accent: #14b8a6;
-            --color-text-primary: #0f172a;
-            --color-text-secondary: #475569;
-            --color-text-tertiary: #64748b;
-            --color-bg-primary: #fefefe;
-            --color-bg-secondary: #f8fafc;
-            --color-bg-elevated: rgba(255, 255, 255, 0.72);
-            --color-border-subtle: rgba(99, 102, 241, 0.08);
-            --color-border-medium: rgba(99, 102, 241, 0.16);
-            --color-border-strong: rgba(99, 102, 241, 0.24);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-            --shadow-xl: 0 20px 25px -5px rgba(99, 102, 241, 0.08), 0 10px 10px -5px rgba(99, 102, 241, 0.04);
+            --color-primary: #818cf8;
+            --color-primary-light: #a5b4fc;
+            --color-primary-dark: #6366f1;
+            --color-secondary: #f472b6;
+            --color-accent: #34d399;
+            --color-text-primary: #f9fafb;
+            --color-text-secondary: #d1d5db;
+            --color-text-tertiary: #9ca3af;
+            --color-bg-primary: #0a0a0f;
+            --color-bg-secondary: #111118;
+            --color-glass: rgba(255, 255, 255, 0.05);
+            --color-glass-border: rgba(255, 255, 255, 0.1);
+            --color-glass-hover: rgba(255, 255, 255, 0.08);
+            --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --shadow-glass-hover: 0 12px 40px 0 rgba(99, 102, 241, 0.2);
         }
 
         body {
@@ -116,6 +113,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             position: relative;
+            min-height: 100vh;
         }
 
         body::before {
@@ -126,10 +124,11 @@
             right: 0;
             bottom: 0;
             background:
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.02) 0%, transparent 50%);
-            z-index: -1;
+                radial-gradient(circle at 20% 30%, rgba(129, 140, 248, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(244, 114, 182, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(52, 211, 153, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0f 0%, #111118 100%);
+            z-index: -2;
             pointer-events: none;
         }
 
@@ -141,9 +140,9 @@
             width: 200%;
             height: 200%;
             background:
-                linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, transparent 25%),
-                linear-gradient(225deg, rgba(236, 72, 153, 0.015) 0%, transparent 25%),
-                linear-gradient(45deg, rgba(20, 184, 166, 0.01) 0%, transparent 25%);
+                linear-gradient(135deg, rgba(129, 140, 248, 0.08) 0%, transparent 25%),
+                linear-gradient(225deg, rgba(244, 114, 182, 0.06) 0%, transparent 25%),
+                linear-gradient(45deg, rgba(52, 211, 153, 0.04) 0%, transparent 25%);
             animation: gradient-shift 30s ease infinite;
             z-index: -1;
             pointer-events: none;
@@ -152,7 +151,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 120px 40px 100px;
+            padding: 120px 40px 120px;
             position: relative;
             z-index: 1;
         }
@@ -199,9 +198,8 @@
         }
 
         .section {
-            margin-bottom: 100px;
+            margin-bottom: 120px;
             position: relative;
-            padding: 40px 0;
             transition: transform 0.3s ease;
         }
 
@@ -211,6 +209,7 @@
 
         .section:last-child {
             margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         h2 {
@@ -219,7 +218,7 @@
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--color-primary);
-            margin-bottom: 48px;
+            margin-bottom: 40px;
             position: relative;
             display: inline-block;
             transition: color 0.3s ease;
@@ -251,7 +250,7 @@
         }
 
         .section:hover h2 {
-            color: var(--color-primary-dark);
+            color: var(--color-primary-light);
         }
 
         .section:hover h2::before {
@@ -264,12 +263,14 @@
 
         .work-item,
         .project-item {
-            margin-bottom: 56px;
-            padding: 36px;
-            background: var(--color-bg-elevated);
-            backdrop-filter: blur(24px) saturate(180%);
-            border-radius: 20px;
-            border: 1px solid var(--color-border-subtle);
+            margin-bottom: 32px;
+            padding: 32px;
+            background: var(--color-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid var(--color-glass-border);
+            box-shadow: var(--shadow-glass);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -281,7 +282,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 2px;
+            width: 3px;
             height: 100%;
             background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
             opacity: 0;
@@ -295,10 +296,10 @@
 
         .work-item:hover,
         .project-item:hover {
-            transform: translateY(-2px) translateX(2px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--color-border-medium);
-            background: rgba(255, 255, 255, 0.85);
+            transform: translateY(-4px);
+            background: var(--color-glass-hover);
+            border-color: rgba(129, 140, 248, 0.3);
+            box-shadow: var(--shadow-glass-hover);
         }
 
         .work-item:last-child,
@@ -311,25 +312,24 @@
             font-size: 1.75rem;
             font-weight: 500;
             color: var(--color-text-primary);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             letter-spacing: -0.02em;
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .work-item:hover .work-title,
         .project-item:hover .project-title {
-            color: var(--color-primary-dark);
+            color: var(--color-primary-light);
             transform: translateX(2px);
         }
 
         .work-meta {
-            font-size: 0.95rem;
+            font-size: 0.875rem;
             color: var(--color-text-tertiary);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             font-weight: 400;
             letter-spacing: 0.03em;
             text-transform: uppercase;
-            font-size: 0.875rem;
         }
 
         .work-desc,
@@ -345,7 +345,7 @@
             font-size: 0.9rem;
             color: var(--color-primary);
             text-decoration: none;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: inline-block;
             position: relative;
             font-weight: 500;
@@ -365,7 +365,7 @@
         }
 
         .project-link:hover {
-            color: var(--color-primary-dark);
+            color: var(--color-primary-light);
             transform: translateX(3px);
         }
 
@@ -379,14 +379,22 @@
             line-height: 1.8;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px 20px;
+            gap: 10px 18px;
+        }
+
+        .education-content {
+            font-size: 1.0625rem;
+            color: var(--color-text-secondary);
+            line-height: 1.8;
         }
 
         .skill-item {
             white-space: nowrap;
             padding: 10px 20px;
-            background: rgba(99, 102, 241, 0.06);
-            border: 1px solid var(--color-border-subtle);
+            background: var(--color-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--color-glass-border);
             border-radius: 12px;
             font-weight: 400;
             color: var(--color-text-secondary);
@@ -403,16 +411,16 @@
             left: 0;
             width: 0;
             height: 100%;
-            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), transparent);
+            background: linear-gradient(90deg, rgba(129, 140, 248, 0.2), transparent);
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .skill-item:hover {
-            transform: translateY(-1px);
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--color-border-medium);
-            color: var(--color-primary-dark);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            background: var(--color-glass-hover);
+            border-color: rgba(129, 140, 248, 0.4);
+            color: var(--color-primary-light);
+            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
         }
 
         .skill-item:hover::before {
@@ -448,7 +456,7 @@
         }
 
         .contact-link:hover {
-            color: var(--color-primary-dark);
+            color: var(--color-primary-light);
             transform: translateY(-1px);
         }
 
@@ -463,19 +471,19 @@
         }
 
         a:hover {
-            color: var(--color-primary-dark);
+            color: var(--color-primary-light);
         }
 
         .floating-shape {
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, transparent 70%);
             border-radius: 50%;
             animation: float 30s ease-in-out infinite;
             z-index: -1;
             pointer-events: none;
-            filter: blur(80px);
+            filter: blur(100px);
         }
 
         .floating-shape:nth-child(1) {
@@ -488,9 +496,9 @@
             bottom: 20%;
             right: 10%;
             animation-delay: 8s;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.025) 0%, transparent 70%);
-            width: 350px;
-            height: 350px;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.12) 0%, transparent 70%);
+            width: 450px;
+            height: 450px;
         }
 
         @media (max-width: 768px) {
@@ -513,6 +521,7 @@
 
             .work-item,
             .project-item {
+                margin-bottom: 24px;
                 padding: 24px;
             }
         }
@@ -649,6 +658,7 @@
                 <span class="skill-item">Bun</span>
                 <span class="skill-item">PostgreSQL</span>
                 <span class="skill-item">SQLite</span>
+                <span class="skill-item">Supabase</span>
                 <span class="skill-item">HTTP Servers</span>
                 <span class="skill-item">HTTP Clients</span>
                 <span class="skill-item">REST APIs</span>
@@ -673,10 +683,9 @@
 
         <section class="section">
             <h2>Education</h2>
-            <div class="skills-list">
+            <div class="education-content">
                 MS Computer Science · University of Alabama · 2023-2025<br />
-                BS Computer Science · BV Raju Institute of Technology ·
-                2017-2021
+                BS Computer Science · BV Raju Institute of Technology · 2017-2021
             </div>
         </section>
 
