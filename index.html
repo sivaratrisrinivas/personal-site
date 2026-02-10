@@ -9,21 +9,31 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
             --bg: #080808;
             --fg: #e6e6e6;
             --dim: #666;
-            --accent: #ff2a00; /* International Orange */
+            --accent: #ff2a00;
+            /* International Orange */
             --line: #222;
-            
+
             --font-display: 'Manrope', sans-serif;
             --font-mono: 'Space Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Custom cursor */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        /* Custom cursor */
 
         body {
             background: var(--bg);
@@ -34,14 +44,23 @@
             line-height: 1.1;
         }
 
-        a { text-decoration: none; color: inherit; cursor: none; }
-        ul { list-style: none; }
+        a {
+            text-decoration: none;
+            color: inherit;
+            cursor: none;
+        }
+
+        ul {
+            list-style: none;
+        }
 
         /* CURSOR */
         #cursor {
             position: fixed;
-            top: 0; left: 0;
-            width: 20px; height: 20px;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
             border: 1px solid var(--fg);
             border-radius: 50%;
             pointer-events: none;
@@ -50,9 +69,10 @@
             transition: width 0.2s, height 0.2s, background 0.2s;
             mix-blend-mode: difference;
         }
-        
+
         body:hover #cursor.active {
-            width: 80px; height: 80px;
+            width: 80px;
+            height: 80px;
             background: var(--fg);
             border-color: transparent;
         }
@@ -159,7 +179,10 @@
 
         .item-link {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 10;
         }
 
@@ -186,8 +209,13 @@
         }
 
         @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
         }
 
         /* FOOTER */
@@ -227,12 +255,32 @@
 
         /* MOBILE */
         @media (max-width: 768px) {
-            .hero-title { font-size: 18vw; }
-            .item { grid-template-columns: 1fr; gap: 16px; }
-            .item-title { font-size: 8vw; }
-            .item-desc { font-size: 13px; max-width: 100%; }
-            .item-year { display: none; }
-            .contact-link { font-size: 6vw; margin-bottom: 24px; }
+            .hero-title {
+                font-size: 18vw;
+            }
+
+            .item {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .item-title {
+                font-size: 8vw;
+            }
+
+            .item-desc {
+                font-size: 13px;
+                max-width: 100%;
+            }
+
+            .item-year {
+                display: none;
+            }
+
+            .contact-link {
+                font-size: 6vw;
+                margin-bottom: 24px;
+            }
         }
     </style>
 </head>
@@ -248,7 +296,7 @@
                 <span>SIVARATRI</span>
             </h1>
             <div class="hero-meta">
-                <span>Eng / Builder / Auto-didact</span>
+                <span>Autodidact</span>
                 <span>[SCROLL FOR DATA]</span>
             </div>
         </div>
@@ -257,22 +305,21 @@
         <div class="marquee">
             <div class="marquee-content">
                 <span class="marquee-tag">BLOCKCHAIN INFRA</span>
-                <span class="marquee-tag">CORE PROTOCOLS</span>
                 <span class="marquee-tag">DEV TOOLS</span>
                 <span class="marquee-tag">OPEN SOURCE</span>
                 <span class="marquee-tag">BLOCKCHAIN INFRA</span>
-                <span class="marquee-tag">CORE PROTOCOLS</span>
                 <span class="marquee-tag">DEV TOOLS</span>
                 <span class="marquee-tag">OPEN SOURCE</span>
             </div>
         </div>
 
         <!-- WORK -->
-        <div class="section-header">01 // OPERATIONS LOG</div>
-        
+        <div class="section-header">OPEN SOURCE</div>
+
         <div class="item">
             <div class="item-title">Better-Auth</div>
-            <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+ users secured.</div>
+            <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+
+                users secured.</div>
             <div class="item-year">2025</div>
         </div>
 
@@ -289,19 +336,22 @@
         </div>
 
         <!-- PROJECTS -->
-        <div class="section-header" style="margin-top: 4vw;">02 // SHIPMENTS</div>
+        <div class="section-header" style="margin-top: 4vw;">PROJECTS</div>
 
         <div class="item">
             <a href="https://github.com/sivaratrisrinivas/tally" target="_blank" class="item-link"></a>
             <div class="item-title">Tally</div>
-            <div class="item-desc">AI Invoice reader. Gemini-powered. Self-correcting math logic. Streamlit/FastAPI stack.</div>
+            <div class="item-desc">AI agent that reads a PDF invoice and extracts the total amount. Gemini-powered.
+                Self-correcting math logic. Streamlit/FastAPI
+                stack.</div>
             <div class="item-year">AI/FIN</div>
         </div>
 
         <div class="item">
             <a href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" class="item-link"></a>
             <div class="item-title">SokoFlow</div>
-            <div class="item-desc">Sokoban solver. Diffusion models. Denoises random actions into solutions. CNN+Transformer.</div>
+            <div class="item-desc">Sokoban solver. Diffusion models. Denoises random actions into solutions.
+                CNN+Transformer.</div>
             <div class="item-year">ML</div>
         </div>
 
@@ -351,7 +401,8 @@
                 <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">EMAIL</a>
                 <a href="https://github.com/sivaratrisrinivas" target="_blank" class="contact-link">GITHUB</a>
                 <a href="https://x.com/SrinivasSi78619" target="_blank" class="contact-link">TWITTER</a>
-                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" class="contact-link">LINKEDIN</a>
+                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank"
+                    class="contact-link">LINKEDIN</a>
             </div>
         </div>
     </main>
