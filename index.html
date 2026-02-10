@@ -4,594 +4,371 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-        content="Srinivas Sivaratri - Software Engineer building open source blockchain infrastructure" />
-    <meta name="author" content="Srinivas Sivaratri" />
-
-    <title>Srinivas Sivaratri</title>
+    <meta name="description" content="Srinivas Sivaratri - Engineering" />
+    <title>SRINIVAS SIVARATRI</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --color-bg: #030305;
-            --color-surface: #0e0e12;
-            --color-surface-hover: #16161e;
-
-            --color-primary: #d4d4d8;
-            --color-secondary: #a1a1aa;
-            --color-tertiary: #52525b;
-
-            --accent-1: #818cf8;
-            /* Indigo */
-            --accent-2: #c084fc;
-            /* Purple */
-            --accent-3: #2dd4bf;
-            /* Teal */
-
-            --font-sans: 'Inter', sans-serif;
-            --font-display: 'Space Grotesk', sans-serif;
-
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(20, 20, 25, 0.6);
-            --blur: blur(16px);
+            --bg: #080808;
+            --fg: #e6e6e6;
+            --dim: #666;
+            --accent: #ff2a00; /* International Orange */
+            --line: #222;
+            
+            --font-display: 'Manrope', sans-serif;
+            --font-mono: 'Space Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Custom cursor */
 
         body {
-            background-color: var(--color-bg);
-            color: var(--color-primary);
-            font-family: var(--font-sans);
-            line-height: 1.6;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font-display);
+            font-size: 16px;
             overflow-x: hidden;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.1;
         }
 
-        /* Grain Overlay */
-        body::before {
-            content: "";
+        a { text-decoration: none; color: inherit; cursor: none; }
+        ul { list-style: none; }
+
+        /* CURSOR */
+        #cursor {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 1px solid var(--fg);
+            border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.4;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        
+        body:hover #cursor.active {
+            width: 80px; height: 80px;
+            background: var(--fg);
+            border-color: transparent;
         }
 
-        /* Ambient Background Mesh */
-        .ambient-light {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            z-index: -1;
-            background: radial-gradient(circle at 15% 15%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(192, 132, 252, 0.08) 0%, transparent 40%);
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
         }
 
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
+        .row {
+            border-bottom: 1px solid var(--line);
+            padding: 2vw;
+            display: flex;
+            flex-direction: column;
         }
 
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-1);
-            top: -10%;
-            right: 20%;
-            animation-delay: 0s;
+        /* HEADER */
+        .hero {
+            min-height: 80vh;
+            justify-content: space-between;
+            padding-top: 4vw;
         }
 
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-2);
-            bottom: 10%;
-            left: 10%;
-            animation-delay: -5s;
+        .hero-title {
+            font-size: 14vw;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 0.85;
+            text-transform: uppercase;
         }
 
-        .orb-3 {
-            width: 200px;
-            height: 200px;
-            background: var(--accent-3);
-            top: 40%;
-            right: -5%;
-            animation-delay: -10s;
+        .hero-title span {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--fg);
+            transition: color 0.4s;
         }
 
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
-            }
-
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
-            }
+        .hero-title:hover span {
+            color: var(--fg);
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 120px 24px;
-            position: relative;
-            z-index: 1;
+        .hero-meta {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--dim);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        /* Typography */
-        h1,
-        h2,
-        h3,
-        .work-title,
-        .project-title {
-            font-family: var(--font-display);
-            letter-spacing: -0.02em;
-        }
-
-        header {
-            margin-bottom: 140px;
-            opacity: 0;
-            animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        h1 {
-            font-size: clamp(3.5rem, 8vw, 5.5rem);
-            font-weight: 600;
-            line-height: 1;
-            margin-bottom: 32px;
-            background: linear-gradient(to right, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .intro {
-            font-size: 1.25rem;
-            color: var(--color-secondary);
-            max-width: 600px;
-            font-weight: 300;
-        }
-
-        /* Section Styles */
-        .section {
-            margin-bottom: 140px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        h2 {
-            font-size: 0.875rem;
+        /* SECTIONS */
+        .section-header {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 14px;
+            padding: 4vw 2vw 1vw;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--color-tertiary);
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
         }
 
-        h2::after {
-            content: '';
-            height: 1px;
-            flex: 1;
-            background: linear-gradient(to right, var(--color-surface-hover), transparent);
-        }
-
-        /* Cards (Work & Projects) */
-        .work-item,
-        .project-item {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 32px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        /* LIST ITEMS */
+        .item {
+            display: grid;
+            grid-template-columns: 1.5fr 3fr 1fr;
+            align-items: baseline;
+            padding: 40px 2vw;
+            border-bottom: 1px solid var(--line);
+            transition: background 0.2s;
             position: relative;
-            overflow: hidden;
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
         }
 
-        .work-item:hover,
-        .project-item:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: rgba(129, 140, 248, 0.3);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+        .item:hover {
+            background: #0f0f0f;
         }
 
-        /* Inner Glow Effect */
-        .work-item::after,
-        .project-item::after {
-            content: '';
+        .item:hover .item-title {
+            padding-left: 20px;
+            color: var(--accent);
+        }
+
+        .item-title {
+            font-size: 2.5vw;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .item-desc {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--dim);
+            max-width: 400px;
+            line-height: 1.4;
+        }
+
+        .item-year {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--dim);
+        }
+
+        .item-link {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.04), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
         }
 
-        .work-item:hover::after,
-        .project-item:hover::after {
-            opacity: 1;
+        /* MARQUEE */
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 2vw 0;
+            border-bottom: 1px solid var(--line);
+            background: var(--fg);
+            color: var(--bg);
         }
 
-        .work-title,
-        .project-title {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .work-meta {
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
-            color: var(--accent-1);
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
-
-        .work-desc,
-        .project-desc {
-            color: var(--color-secondary);
-            font-size: 1rem;
-            font-weight: 300;
-        }
-
-        .project-link {
+        .marquee-content {
             display: inline-block;
-            font-size: 0.85rem;
-            color: var(--color-tertiary);
-            margin-bottom: 16px;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: color 0.2s;
+            animation: scroll 20s linear infinite;
         }
 
-        .project-link:hover {
-            color: var(--accent-1);
-            border-color: var(--accent-1);
+        .marquee-tag {
+            font-size: 4vw;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-right: 4vw;
         }
 
-        /* Skills */
-        .skills-list {
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 10vw 2vw;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill-item {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px;
-            font-size: 0.9rem;
-            color: var(--color-secondary);
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-
-        .skill-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent-1);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* Contact */
-        .contact-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
         .contact-link {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--color-secondary);
-            text-decoration: none;
+            font-size: 2vw;
+            display: block;
+            margin-bottom: 0.5em;
+            text-transform: uppercase;
+            font-weight: 600;
             position: relative;
-            transition: color 0.3s;
         }
 
-        .contact-link::after {
-            content: '↗';
-            font-size: 0.7em;
-            vertical-align: top;
-            margin-left: 4px;
+        .contact-link::before {
+            content: '->';
+            position: absolute;
+            left: -40px;
             opacity: 0;
-            transform: translateX(-5px);
-            transition: all 0.3s;
-            display: inline-block;
+            transition: all 0.2s;
+            color: var(--accent);
+        }
+
+        .contact-link:hover::before {
+            opacity: 1;
+            left: -30px;
         }
 
         .contact-link:hover {
-            color: #fff;
+            color: var(--accent);
         }
 
-        .contact-link:hover::after {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* Footer / Education */
-        .education-content {
-            color: var(--color-secondary);
-            border-left: 2px solid var(--glass-border);
-            padding-left: 24px;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Mobile Adjustments */
+        /* MOBILE */
         @media (max-width: 768px) {
-            .container {
-                padding: 80px 20px;
-            }
-
-            h1 {
-                font-size: 3rem;
-            }
-
-            header {
-                margin-bottom: 80px;
-            }
-
-            .section {
-                margin-bottom: 100px;
-            }
-
-            .work-item,
-            .project-item {
-                padding: 24px;
-            }
+            .hero-title { font-size: 18vw; }
+            .item { grid-template-columns: 1fr; gap: 16px; }
+            .item-title { font-size: 8vw; }
+            .item-desc { font-size: 13px; max-width: 100%; }
+            .item-year { display: none; }
+            .contact-link { font-size: 6vw; margin-bottom: 24px; }
         }
     </style>
 </head>
 
 <body>
-    <div class="ambient-light">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <div id="cursor"></div>
 
-    <div class="container">
-        <header>
-            <h1>Srinivas Sivaratri</h1>
-            <div class="intro">
-                Software Engineer from Bangalore building open source
-                blockchain infrastructure. I contribute to core protocols and
-                create tools that make developers' lives easier.
+    <main class="grid">
+        <!-- HERO -->
+        <div class="row hero">
+            <h1 class="hero-title">
+                <span>SRINIVAS</span>
+                <span>SIVARATRI</span>
+            </h1>
+            <div class="hero-meta">
+                <span>Eng / Builder / Auto-didact</span>
+                <span>[SCROLL FOR DATA]</span>
             </div>
-        </header>
+        </div>
 
-        <section class="section">
-            <h2>Experience</h2>
-            <div class="work-item">
-                <div class="work-title">Better-Auth</div>
-                <div class="work-meta">Open Source Contributor · 2025</div>
-                <div class="work-desc">
-                    Authored PR #5973 fixing email enumeration vulnerability in
-                    haveIBeenPwned plugin by introducing skipCompromiseCheck flag,
-                    ensuring consistent error responses for unknown users. Added
-                    regression tests and backward-compatible changes. Contributing to
-                    TypeScript authentication framework with 300k+ weekly npm downloads,
-                    powering secure user validation for startups and enterprises.
-                </div>
+        <!-- MARQUEE -->
+        <div class="marquee">
+            <div class="marquee-content">
+                <span class="marquee-tag">BLOCKCHAIN INFRA</span>
+                <span class="marquee-tag">CORE PROTOCOLS</span>
+                <span class="marquee-tag">DEV TOOLS</span>
+                <span class="marquee-tag">OPEN SOURCE</span>
+                <span class="marquee-tag">BLOCKCHAIN INFRA</span>
+                <span class="marquee-tag">CORE PROTOCOLS</span>
+                <span class="marquee-tag">DEV TOOLS</span>
+                <span class="marquee-tag">OPEN SOURCE</span>
             </div>
-            <div class="work-item">
-                <div class="work-title">Go-Ethereum</div>
-                <div class="work-meta">Open Source Contributor · 2025</div>
-                <div class="work-desc">
-                    Contributing to Ethereum's core client implementation.
-                    Built freezer truncation features and optimized
-                    blockchain data storage for 3,500+ nodes globally.
-                </div>
-            </div>
-            <div class="work-item">
-                <div class="work-title">Accenture</div>
-                <div class="work-meta">Software Engineer · 2021-2022</div>
-                <div class="work-desc">
-                    Developed ETL pipelines and optimized database
-                    performance for enterprise clients. Built automation
-                    tools that saved 50+ hours monthly.
-                </div>
-            </div>
-        </section>
+        </div>
 
-        <section class="section">
-            <h2>Projects</h2>
-            <div class="project-item">
-                <div class="project-title">Hoopla</div>
-                <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" rel="noopener noreferrer"
-                    class="project-link">github.com/sivaratrisrinivas/hoopla</a>
-                <div class="project-desc">
-                    Movie search engine combining BM25 ranking and semantic
-                    search to find relevant films from large datasets.
-                    Features hybrid search with Reciprocal Rank Fusion,
-                    RAG-powered query enhancement using Gemini API, and
-                    multimodal image-to-movie search with CLIP embeddings.
-                </div>
-            </div>
-            <div class="project-item">
-                <div class="project-title">Fixer</div>
-                <a href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" rel="noopener noreferrer"
-                    class="project-link">github.com/sivaratrisrinivas/Fixer</a>
-                <div class="project-desc">
-                    AI coding assistant using Google's Gemini API with
-                    function-calling capabilities. Terminal-based agent that
-                    can read, write, execute code, and debug applications
-                    through conversational prompts. Built in Python with
-                    sandboxed file system operations.
-                </div>
-            </div>
-            <div class="project-item">
-                <div class="project-title">Rashomon</div>
-                <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" rel="noopener noreferrer"
-                    class="project-link">github.com/sivaratrisrinivas/Rashomon</a>
-                <div class="project-desc">
-                    Social reading platform for real-time discussion and
-                    content sharing. Built with Next.js, React, Bun, and
-                    Supabase.
-                </div>
-            </div>
-            <div class="project-item">
-                <div class="project-title">ContextClips</div>
-                <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" rel="noopener noreferrer"
-                    class="project-link">github.com/sivaratrisrinivas/contextclips</a>
-                <div class="project-desc">
-                    Chrome extension for intelligent clipboard management.
-                    Privacy-first with local-only storage and fast search.
-                </div>
-            </div>
-            <div class="project-item">
-                <div class="project-title">Gator</div>
-                <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" rel="noopener noreferrer"
-                    class="project-link">github.com/sivaratrisrinivas/Gator</a>
-                <div class="project-desc">
-                    Command-line RSS feed aggregator built in Go. Features
-                    multi-user support, automatic feed updates with
-                    customizable intervals, pagination, and PostgreSQL
-                    database integration.
-                </div>
-            </div>
-        </section>
+        <!-- WORK -->
+        <div class="section-header">01 // OPERATIONS LOG</div>
+        
+        <div class="item">
+            <div class="item-title">Better-Auth</div>
+            <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+ users secured.</div>
+            <div class="item-year">2025</div>
+        </div>
 
-        <section class="section">
-            <h2>Skills</h2>
-            <div class="skills-list">
-                <span class="skill-item">Python</span>
-                <span class="skill-item">Go</span>
-                <span class="skill-item">TypeScript</span>
-                <span class="skill-item">JavaScript</span>
-                <span class="skill-item">SQL</span>
-                <span class="skill-item">C</span>
-                <span class="skill-item">Next.js</span>
-                <span class="skill-item">React</span>
-                <span class="skill-item">Node.js</span>
-                <span class="skill-item">Bun</span>
-                <span class="skill-item">PostgreSQL</span>
-                <span class="skill-item">SQLite</span>
-                <span class="skill-item">Supabase</span>
-                <span class="skill-item">HTTP Servers</span>
-                <span class="skill-item">HTTP Clients</span>
-                <span class="skill-item">REST APIs</span>
-                <span class="skill-item">Git</span>
-                <span class="skill-item">GitHub Actions</span>
-                <span class="skill-item">Docker</span>
-                <span class="skill-item">Linux</span>
-                <span class="skill-item">CI/CD</span>
-                <span class="skill-item">Data Structures & Algorithms</span>
-                <span class="skill-item">Object-Oriented Programming</span>
-                <span class="skill-item">Functional Programming</span>
-                <span class="skill-item">Memory Management</span>
-                <span class="skill-item">RAG</span>
-                <span class="skill-item">Semantic Search</span>
-                <span class="skill-item">Web Scraping</span>
-            </div>
-        </section>
+        <div class="item">
+            <div class="item-title">Go-Ethereum</div>
+            <div class="item-desc">Core dev. Fixed freezer truncation. Optimized storage for 3.5k global nodes.</div>
+            <div class="item-year">2025</div>
+        </div>
 
-        <section class="section">
-            <h2>Education</h2>
-            <div class="education-content">
-                <div style="margin-bottom: 16px;">
-                    <div style="color: #fff; font-weight: 500;">MS Computer Science</div>
-                    <div style="font-size: 0.9rem;">University of Alabama · 2023-2025</div>
-                </div>
-                <div>
-                    <div style="color: #fff; font-weight: 500;">BS Computer Science</div>
-                    <div style="font-size: 0.9rem;">BV Raju Institute of Technology · 2017-2021</div>
-                </div>
-            </div>
-        </section>
+        <div class="item">
+            <div class="item-title">Accenture</div>
+            <div class="item-desc">Built ETL pipelines. Sped up DBs. Automated ops: -50hrs/mo.</div>
+            <div class="item-year">2021</div>
+        </div>
 
-        <section class="section">
-            <h2>Connect</h2>
-            <div class="contact-links">
-                <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">Email</a>
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">GitHub</a>
-                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank"
-                    rel="noopener noreferrer" class="contact-link">LinkedIn</a>
-                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">X.com</a>
-                <a href="https://www.boot.dev/u/shallowad54" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">Boot.dev</a>
+        <!-- PROJECTS -->
+        <div class="section-header" style="margin-top: 4vw;">02 // SHIPMENTS</div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/tally" target="_blank" class="item-link"></a>
+            <div class="item-title">Tally</div>
+            <div class="item-desc">AI Invoice reader. Gemini-powered. Self-correcting math logic. Streamlit/FastAPI stack.</div>
+            <div class="item-year">AI/FIN</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" class="item-link"></a>
+            <div class="item-title">SokoFlow</div>
+            <div class="item-desc">Sokoban solver. Diffusion models. Denoises random actions into solutions. CNN+Transformer.</div>
+            <div class="item-year">ML</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" class="item-link"></a>
+            <div class="item-title">Hoopla</div>
+            <div class="item-desc">Movie search engine. BM25 + Semantic + CLIP. RAG enhanced query expansion.</div>
+            <div class="item-year">SEARCH</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" class="item-link"></a>
+            <div class="item-title">Fixer</div>
+            <div class="item-desc">Terminal AI agent. Sandboxed fs ops. Executes code. Debugs loops.</div>
+            <div class="item-year">AGENT</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" class="item-link"></a>
+            <div class="item-title">Rashomon</div>
+            <div class="item-desc">Social reading platform. Real-time discussion. Next.js / Bun / Supabase.</div>
+            <div class="item-year">WEB</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" class="item-link"></a>
+            <div class="item-title">ContextClips</div>
+            <div class="item-desc">Clipboard manager. Local privacy. Instant search. Zero latency.</div>
+            <div class="item-year">EXT</div>
+        </div>
+
+        <div class="item">
+            <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" class="item-link"></a>
+            <div class="item-title">Gator</div>
+            <div class="item-desc">CLI RSS Aggregator. Go. Multi-user. Postgres backend.</div>
+            <div class="item-year">CLI</div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div style="font-family: var(--font-mono); color: var(--dim); max-width: 200px;">
+                MS CS @ U of Alabama<br>
+                BS CS @ BVRIT<br><br>
+                BANGALORE -> WORLD
             </div>
-        </section>
-    </div>
+            <div class="links">
+                <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">EMAIL</a>
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" class="contact-link">GITHUB</a>
+                <a href="https://x.com/SrinivasSi78619" target="_blank" class="contact-link">TWITTER</a>
+                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" class="contact-link">LINKEDIN</a>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // Scroll Reveal Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const links = document.querySelectorAll('a, .item');
 
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        // Mouse Glow Effect
-        document.querySelectorAll('.work-item, .project-item').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('active'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('active'));
         });
     </script>
 </body>
