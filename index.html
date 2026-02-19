@@ -218,35 +218,44 @@
             }
         }
 
+        /* SKILL TAGS */
+        .skill-tag {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--fg);
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            transition: color 0.2s, border-color 0.2s;
+            cursor: none;
+        }
+
+        .skill-tag:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         /* FOOTER */
         .footer {
-            padding: 10vw 2vw;
+            padding: 6vw 2vw 8vw;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
         }
 
         .contact-link {
-            font-size: 2vw;
-            display: block;
-            margin-bottom: 0.5em;
+            font-size: 1.5vw;
+            font-family: var(--font-mono);
             text-transform: uppercase;
             font-weight: 600;
-            position: relative;
-        }
-
-        .contact-link::before {
-            content: '->';
-            position: absolute;
-            left: -40px;
-            opacity: 0;
-            transition: all 0.2s;
-            color: var(--accent);
-        }
-
-        .contact-link:hover::before {
-            opacity: 1;
-            left: -30px;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
         }
 
         .contact-link:hover {
@@ -278,8 +287,12 @@
             }
 
             .contact-link {
-                font-size: 6vw;
-                margin-bottom: 24px;
+                font-size: 4vw;
+            }
+
+            .links {
+                gap: 5vw;
+                justify-content: center;
             }
         }
     </style>
@@ -313,8 +326,31 @@
             </div>
         </div>
 
+        <!-- TECHNICAL SKILLS -->
+        <div class="section-header">TECHNICAL SKILLS</div>
+
+        <div class="item" style="grid-template-columns: 1fr;">
+            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Go</span>
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">C</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">Linux</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">CI/CD</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">HTTP Servers</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">RAG</span>
+                <span class="skill-tag">DSA</span>
+                <span class="skill-tag">Memory Management</span>
+            </div>
+        </div>
+
         <!-- WORK -->
-        <div class="section-header">OPEN SOURCE</div>
+        <div class="section-header" style="margin-top: 4vw;">OPEN SOURCE</div>
 
         <div class="item">
             <div class="item-title">Better-Auth</div>
@@ -418,17 +454,13 @@
 
         <!-- FOOTER -->
         <div class="footer">
-            <div style="font-family: var(--font-mono); color: var(--dim); max-width: 200px;">
-                MS CS @ U of Alabama<br>
-                BS CS @ BVRIT<br><br>
-                BANGALORE -> WORLD
-            </div>
             <div class="links">
                 <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">EMAIL</a>
                 <a href="https://github.com/sivaratrisrinivas" target="_blank" class="contact-link">GITHUB</a>
                 <a href="https://x.com/SrinivasSi78619" target="_blank" class="contact-link">TWITTER</a>
                 <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank"
                     class="contact-link">LINKEDIN</a>
+                <a href="https://www.boot.dev/u/shallowad54" target="_blank" class="contact-link">BOOT.DEV</a>
             </div>
         </div>
     </main>

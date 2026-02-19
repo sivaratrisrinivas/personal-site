@@ -6,10 +6,11 @@ Minimalist dark portfolio. Pure HTML/CSS/JS, no frameworks.
 
 1. **Hero** — Name + tagline
 2. **Marquee** — Scrolling keywords
-3. **Open Source** — Better-Auth, Go-Ethereum, Accenture
-4. **Projects** — SunkeLo, Tally, SokoFlow, Hoopla, Fixer, Rashomon, ContextClips, Gator
-5. **Vibes** — Vibe-coded apps: BadReads, Speechoke
-6. **Footer** — Education, location, contact links
+3. **Technical Skills** — Hoverable skill tags (Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, Memory Management)
+4. **Open Source** — Better-Auth, Go-Ethereum, Accenture
+5. **Projects** — SunkeLo, Tally, SokoFlow, Hoopla, Fixer, Rashomon, ContextClips, Gator
+6. **Vibes** — Vibe-coded apps: BadReads, Speechoke
+7. **Footer** — Contact links (Email, GitHub, Twitter, LinkedIn, Boot.dev)
 
 ## Quick Start
 
