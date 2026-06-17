@@ -42,6 +42,12 @@
             font-size: 16px;
             overflow-x: hidden;
             line-height: 1.1;
+            position: relative;
+            /* Subtle Grid Pattern */
+            background-image: 
+                linear-gradient(to right, rgba(34, 34, 34, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(34, 34, 34, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         a {
@@ -65,9 +71,9 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s;
             mix-blend-mode: difference;
+            transform: translate3d(0, 0, 0) translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
         }
 
         body:hover #cursor.active {
@@ -75,6 +81,173 @@
             height: 80px;
             background: var(--fg);
             border-color: transparent;
+        }
+
+        /* GLOW OVERLAY */
+        .glow-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+                rgba(255, 42, 0, 0.04),
+                transparent 80%
+            );
+        }
+
+        /* CLI MODAL STYLES */
+        .cli-modal {
+            border: 1px solid var(--line);
+            background: rgba(8, 8, 8, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--fg);
+            width: 90%;
+            max-width: 600px;
+            padding: 0;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 2px rgba(255, 42, 0, 0.2);
+            z-index: 10000;
+        }
+
+        .cli-modal::backdrop {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        .cli-window {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+
+        .cli-header {
+            background: #111;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+
+        .cli-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .cli-dot.red { background: #ff5f56; }
+        .cli-dot.yellow { background: #ffbd2e; }
+        .cli-dot.green { background: #27c93f; }
+
+        .cli-title {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--dim);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cli-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--dim);
+            font-size: 20px;
+            position: absolute;
+            right: 16px;
+            cursor: none;
+            line-height: 1;
+            outline: none;
+        }
+
+        .cli-close-btn:hover {
+            color: var(--accent);
+        }
+
+        .cli-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+
+        .cli-output {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .cli-line.banner {
+            color: var(--accent);
+        }
+
+        .cli-line.system {
+            color: var(--dim);
+        }
+
+        .cli-line.user {
+            color: var(--fg);
+        }
+
+        .cli-line.error {
+            color: #ff5f56;
+        }
+
+        .cli-line.success {
+            color: #27c93f;
+        }
+
+        .cli-input-line {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(255, 42, 0, 0.1);
+            padding-top: 10px;
+        }
+
+        .cli-prompt {
+            color: var(--accent);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        #cli-input {
+            background: transparent;
+            border: none;
+            color: var(--fg);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            outline: none;
+            flex: 1;
+        }
+
+        /* Disable custom cursor on touch/mobile */
+        @media (hover: none) and (pointer: coarse) {
+            #cursor {
+                display: none !important;
+            }
+            * {
+                cursor: auto !important;
+            }
+            a, .filter-btn, .cli-hint, .cli-close-btn {
+                cursor: pointer !important;
+            }
         }
 
         /* GRID */
@@ -229,11 +402,18 @@
             border-bottom: 1px solid var(--line);
             background: var(--fg);
             color: var(--bg);
+            display: flex;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 25s linear infinite;
         }
 
         .marquee-content {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
+            display: flex;
+            flex-shrink: 0;
         }
 
         .marquee-tag {
@@ -241,14 +421,15 @@
             font-weight: 800;
             text-transform: uppercase;
             margin-right: 4vw;
+            white-space: nowrap;
         }
 
         @keyframes scroll {
-            from {
+            0% {
                 transform: translateX(0);
             }
 
-            to {
+            100% {
                 transform: translateX(-50%);
             }
         }
@@ -335,6 +516,31 @@
 
 <body>
     <div id="cursor"></div>
+    <div class="glow-overlay"></div>
+
+    <!-- CLI TERMINAL MODAL -->
+    <dialog id="cli-dialog" class="cli-modal">
+        <div class="cli-window">
+            <div class="cli-header">
+                <span class="cli-dot red"></span>
+                <span class="cli-dot yellow"></span>
+                <span class="cli-dot green"></span>
+                <span class="cli-title">srinivas@personal-site:~</span>
+                <button id="cli-close" class="cli-close-btn">&times;</button>
+            </div>
+            <div class="cli-body">
+                <div class="cli-output" id="cli-output">
+                    <p class="cli-line banner">Welcome to Srinivas Sivaratri's Interactive CLI. Version 1.0.0.</p>
+                    <p class="cli-line banner">Type 'help' to see list of available commands.</p>
+                    <br>
+                </div>
+                <div class="cli-input-line">
+                    <span class="cli-prompt">srinivas:~ $</span>
+                    <input type="text" id="cli-input" autofocus autocomplete="off" spellcheck="false" placeholder="...">
+                </div>
+            </div>
+        </div>
+    </dialog>
 
     <main class="grid">
         <!-- HERO -->
@@ -345,19 +551,24 @@
             </h1>
             <div class="hero-meta">
                 <span>Autodidact</span>
+                <span class="cli-hint" style="font-family: var(--font-mono); font-size: 14px; color: var(--accent); cursor: none;">[PRESS CMD+K OR CLICK FOR CLI]</span>
                 <span>[SCROLL FOR DATA]</span>
             </div>
         </div>
 
         <!-- MARQUEE -->
         <div class="marquee">
-            <div class="marquee-content">
-                <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
-                <span class="marquee-tag">DEV TOOLS</span>
-                <span class="marquee-tag">OPEN SOURCE</span>
-                <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
-                <span class="marquee-tag">DEV TOOLS</span>
-                <span class="marquee-tag">OPEN SOURCE</span>
+            <div class="marquee-track">
+                <div class="marquee-content">
+                    <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
+                    <span class="marquee-tag">DEV TOOLS</span>
+                    <span class="marquee-tag">OPEN SOURCE</span>
+                </div>
+                <div class="marquee-content" aria-hidden="true">
+                    <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
+                    <span class="marquee-tag">DEV TOOLS</span>
+                    <span class="marquee-tag">OPEN SOURCE</span>
+                </div>
             </div>
         </div>
 
@@ -548,11 +759,15 @@
     </main>
 
     <script>
-        // Custom Cursor Logic
+        // Custom Cursor & Mouse-Glow Background Logic
         const cursor = document.getElementById('cursor');
-        
-        function updateCursorListeners() {
-            const links = document.querySelectorAll('a, .item, .filter-btn');
+        const root = document.documentElement;
+        let mouse = { x: 0, y: 0 }; // Actual mouse positions
+        let pos = { x: 0, y: 0 };   // Interpolated positions
+        const speed = 0.15;         // Smooth lag speed factor
+
+        function updateCursorActive() {
+            const links = document.querySelectorAll('a, .item, .filter-btn, .cli-hint, .cli-close-btn, .skill-tag');
             links.forEach(link => {
                 link.removeEventListener('mouseenter', addCursorActive);
                 link.removeEventListener('mouseleave', removeCursorActive);
@@ -565,11 +780,27 @@
         function removeCursorActive() { cursor.classList.remove('active'); }
 
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
+            // Update CSS variables for radial glow overlay background
+            root.style.setProperty('--mouse-x', e.clientX + 'px');
+            root.style.setProperty('--mouse-y', e.clientY + 'px');
         });
 
-        updateCursorListeners();
+        // Spring interpolation loop for smooth trailing cursor
+        function loop() {
+            pos.x += (mouse.x - pos.x) * speed;
+            pos.y += (mouse.y - pos.y) * speed;
+            
+            cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
+            requestAnimationFrame(loop);
+        }
+        
+        cursor.style.left = '0';
+        cursor.style.top = '0';
+        loop();
+        updateCursorActive();
 
         // Projects Filter Logic
         const filterButtons = document.querySelectorAll('.filter-btn');
@@ -614,6 +845,173 @@
                 });
             });
         });
+
+        // Clickable Skill Tags filtering & scrolling integration
+        const skillTags = document.querySelectorAll('.skill-tag');
+        const skillCategoryMap = {
+            'Python': 'ai-ml',
+            'Go': 'cli-system',
+            'TypeScript': 'ai-ml',
+            'JavaScript': 'web-search',
+            'RAG': 'web-search',
+            'Docker': 'cli-system',
+            'CI/CD': 'cli-system',
+            'Git': 'cli-system',
+            'Linux': 'cli-system',
+            'HTTP Servers': 'web-search',
+            'REST APIs': 'web-search',
+            'Memory Management': 'cli-system',
+            'DSA': 'ai-ml'
+        };
+
+        skillTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const skillText = tag.textContent.trim();
+                const targetCategory = skillCategoryMap[skillText];
+
+                if (targetCategory) {
+                    const filterBtn = document.querySelector(`.filter-btn[data-filter="${targetCategory}"]`);
+                    if (filterBtn) {
+                        filterBtn.click();
+                        document.getElementById('projects-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // CLI Dialog Controller & Command Executor
+        const cliDialog = document.getElementById('cli-dialog');
+        const cliInput = document.getElementById('cli-input');
+        const cliOutput = document.getElementById('cli-output');
+        const cliClose = document.getElementById('cli-close');
+        const cliHint = document.querySelector('.cli-hint');
+
+        function openCLI() {
+            cliDialog.showModal();
+            cliInput.value = '';
+            cliInput.focus();
+            updateCursorActive();
+        }
+
+        function closeCLI() {
+            cliDialog.close();
+        }
+
+        // Key combos (Cmd+K or Ctrl+K)
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                if (cliDialog.open) {
+                    closeCLI();
+                } else {
+                    openCLI();
+                }
+            }
+        });
+
+        cliHint.addEventListener('click', openCLI);
+        cliClose.addEventListener('click', closeCLI);
+
+        // Close on backdrop clicks
+        cliDialog.addEventListener('click', (e) => {
+            if (e.target === cliDialog) {
+                closeCLI();
+            }
+        });
+
+        // Command Runner Log
+        function outputLine(text, type = '') {
+            const line = document.createElement('p');
+            line.className = `cli-line ${type}`;
+            line.textContent = text;
+            cliOutput.appendChild(line);
+            cliOutput.scrollTop = cliOutput.scrollHeight;
+        }
+
+        cliInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const inputVal = cliInput.value.trim();
+                cliInput.value = '';
+                
+                if (!inputVal) return;
+
+                outputLine(`srinivas:~ $ ${inputVal}`, 'user');
+                processCommand(inputVal);
+            }
+        });
+
+        function processCommand(cmdLine) {
+            const parts = cmdLine.toLowerCase().split(' ');
+            const cmd = parts[0];
+            const args = parts.slice(1);
+
+            switch (cmd) {
+                case 'help':
+                    outputLine('Available Commands:', 'success');
+                    outputLine('  about       - Tell me about Srinivas Sivaratri');
+                    outputLine('  projects    - View list of portfolio projects');
+                    outputLine('  skills      - List core engineering capabilities');
+                    outputLine('  contact     - View contact coordinates');
+                    outputLine('  theme [arg] - Change site theme (e.g. "theme light", "theme dark")');
+                    outputLine('  clear       - Wipe the console history');
+                    outputLine('  close       - Close the console modal');
+                    break;
+                case 'about':
+                    outputLine('Srinivas Sivaratri - Engineering & AI Solutions.', 'success');
+                    outputLine('Autodidact developer focused on AI-assisted engineering, open source tools, and scalable web architectures.');
+                    break;
+                case 'projects':
+                    outputLine('Core Projects:', 'success');
+                    outputLine('  Fuzz         - Scrambled-wave text diffusion reconstruction game.');
+                    outputLine('  catBox       - Schrödinger\'s cat image-generation local SD-Turbo boundary.');
+                    outputLine('  Playcast     - Live AI sports commentator (Gemini Vision + ElevenLabs).');
+                    outputLine('  Auris        - AI medical consultation transcriber and patient notes generator.');
+                    outputLine('  SunkeLo      - Voice-first regional product reviews parser.');
+                    outputLine('Type "projects" category filters inside the website grids for complete source codes.');
+                    break;
+                case 'skills':
+                    outputLine('Technical Skills Stack:', 'success');
+                    outputLine('  Languages  : Python, Go, TypeScript, JavaScript, C, SQL');
+                    outputLine('  Platform   : Linux, Docker, Git, CI/CD, REST APIs, HTTP Servers');
+                    outputLine('  Specialties: RAG, DSA, Memory Management');
+                    break;
+                case 'contact':
+                    outputLine('Find Srinivas:', 'success');
+                    outputLine('  Email    : srinivassivaratri1122@gmail.com');
+                    outputLine('  GitHub   : github.com/sivaratrisrinivas');
+                    outputLine('  Twitter  : x.com/SrinivasSi78619');
+                    outputLine('  LinkedIn : linkedin.com/in/srinivas-sivaratri-3a0a32162');
+                    break;
+                case 'theme':
+                    const themeName = args[0];
+                    if (themeName === 'light') {
+                        document.documentElement.style.setProperty('--bg', '#f4f4f4');
+                        document.documentElement.style.setProperty('--fg', '#0f0f0f');
+                        document.documentElement.style.setProperty('--dim', '#666');
+                        document.documentElement.style.setProperty('--accent', '#ff2a00');
+                        document.documentElement.style.setProperty('--line', '#ddd');
+                        outputLine('Theme swapped to Light.', 'success');
+                    } else if (themeName === 'dark') {
+                        document.documentElement.style.setProperty('--bg', '#080808');
+                        document.documentElement.style.setProperty('--fg', '#e6e6e6');
+                        document.documentElement.style.setProperty('--dim', '#666');
+                        document.documentElement.style.setProperty('--accent', '#ff2a00');
+                        document.documentElement.style.setProperty('--line', '#222');
+                        outputLine('Theme swapped back to Dark.', 'success');
+                    } else {
+                        outputLine('Error: Invalid theme name. Try "theme light" or "theme dark".', 'error');
+                    }
+                    break;
+                case 'clear':
+                    cliOutput.innerHTML = '';
+                    break;
+                case 'close':
+                    closeCLI();
+                    break;
+                default:
+                    outputLine(`cli: command not found: ${cmd}. Type 'help' for options.`, 'error');
+            }
+        }
     </script>
 </body>
 
