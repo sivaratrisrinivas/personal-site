@@ -143,8 +143,43 @@
             align-items: baseline;
             padding: 40px 2vw;
             border-bottom: 1px solid var(--line);
-            transition: background 0.2s;
+            transition: background 0.2s, opacity 0.3s ease, transform 0.3s ease;
             position: relative;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* PROJECT FILTERS */
+        .project-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 20px 2vw;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .filter-btn {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--dim);
+            background: transparent;
+            border: 1px solid var(--line);
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: none;
+        }
+
+        .filter-btn:hover {
+            color: var(--fg);
+            border-color: var(--fg);
+        }
+
+        .filter-btn.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: #0f0f0f;
         }
 
         .item:hover {
@@ -374,94 +409,103 @@
         <!-- PROJECTS -->
         <div class="section-header" style="margin-top: 4vw;">PROJECTS</div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" class="item-link"></a>
-            <div class="item-title">Fuzz</div>
-            <div class="item-desc">Type a memory, fight its slow dissolution into noise while desperately rewriting, then watch a diffusion model reconstruction emerge. Qwen2.5 / Bun / FastAPI.</div>
-            <div class="item-year">AI/GAME</div>
+        <div class="project-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+            <button class="filter-btn" data-filter="web-search">Web & Search</button>
+            <button class="filter-btn" data-filter="cli-system">CLI & System</button>
         </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/catBox" target="_blank" class="item-link"></a>
-            <div class="item-title">catBox</div>
-            <div class="item-desc">Interactive image-generation demo. Open a sealed box, run a local image model, and observe a living or dead cat outcome. SD-Turbo / Python.</div>
-            <div class="item-year">AI/IMAGE</div>
-        </div>
+        <div id="projects-list">
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" class="item-link"></a>
+                <div class="item-title">Fuzz</div>
+                <div class="item-desc">Type a memory, fight its slow dissolution into noise while desperately rewriting, then watch a diffusion model reconstruction emerge. Qwen2.5 / Bun / FastAPI.</div>
+                <div class="item-year">AI/GAME</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/playcast" target="_blank" class="item-link"></a>
-            <div class="item-title">Playcast</div>
-            <div class="item-desc">Real-time AI sports broadcaster. Point your camera at any game — get live ESPN-style
-                commentary, highlight reels, and post-game recaps. Gemini Vision + ElevenLabs.</div>
-            <div class="item-year">AI/VISION</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/catBox" target="_blank" class="item-link"></a>
+                <div class="item-title">catBox</div>
+                <div class="item-desc">Interactive image-generation demo. Open a sealed box, run a local image model, and observe a living or dead cat outcome. SD-Turbo / Python.</div>
+                <div class="item-year">AI/IMAGE</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/Auris" target="_blank" class="item-link"></a>
-            <div class="item-title">Auris</div>
-            <div class="item-desc">AI medical assistant. Records consultations, extracts diagnoses & medications,
-                generates personalized patient audio summaries. Mistral Voxtral + ElevenLabs.</div>
-            <div class="item-year">AI/HEALTH</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/playcast" target="_blank" class="item-link"></a>
+                <div class="item-title">Playcast</div>
+                <div class="item-desc">Real-time AI sports broadcaster. Point your camera at any game — get live ESPN-style
+                    commentary, highlight reels, and post-game recaps. Gemini Vision + ElevenLabs.</div>
+                <div class="item-year">AI/VISION</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" class="item-link"></a>
-            <div class="item-title">SunkeLo</div>
-            <div class="item-desc">Voice-first product research for India's regional languages. Aggregates reviews,
-                synthesizes verdicts, speaks back in your language. Sarvam AI + Gemini.</div>
-            <div class="item-year">AI/VOICE</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/Auris" target="_blank" class="item-link"></a>
+                <div class="item-title">Auris</div>
+                <div class="item-desc">AI medical assistant. Records consultations, extracts diagnoses & medications,
+                    generates personalized patient audio summaries. Mistral Voxtral + ElevenLabs.</div>
+                <div class="item-year">AI/HEALTH</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/tally" target="_blank" class="item-link"></a>
-            <div class="item-title">Tally</div>
-            <div class="item-desc">AI agent that reads a PDF invoice and extracts the total amount. Gemini-powered.
-                Self-correcting math logic. Streamlit/FastAPI
-                stack.</div>
-            <div class="item-year">AI/FIN</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" class="item-link"></a>
+                <div class="item-title">SunkeLo</div>
+                <div class="item-desc">Voice-first product research for India's regional languages. Aggregates reviews,
+                    synthesizes verdicts, speaks back in your language. Sarvam AI + Gemini.</div>
+                <div class="item-year">AI/VOICE</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" class="item-link"></a>
-            <div class="item-title">SokoFlow</div>
-            <div class="item-desc">Sokoban solver. Diffusion models. Denoises random actions into solutions.
-                CNN+Transformer.</div>
-            <div class="item-year">ML</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/tally" target="_blank" class="item-link"></a>
+                <div class="item-title">Tally</div>
+                <div class="item-desc">AI agent that reads a PDF invoice and extracts the total amount. Gemini-powered.
+                    Self-correcting math logic. Streamlit/FastAPI
+                    stack.</div>
+                <div class="item-year">AI/FIN</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" class="item-link"></a>
-            <div class="item-title">Hoopla</div>
-            <div class="item-desc">Movie search engine. BM25 + Semantic + CLIP. RAG enhanced query expansion.</div>
-            <div class="item-year">SEARCH</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" class="item-link"></a>
+                <div class="item-title">SokoFlow</div>
+                <div class="item-desc">Sokoban solver. Diffusion models. Denoises random actions into solutions.
+                    CNN+Transformer.</div>
+                <div class="item-year">ML</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" class="item-link"></a>
-            <div class="item-title">Fixer</div>
-            <div class="item-desc">Terminal AI agent. Sandboxed fs ops. Executes code. Debugs loops.</div>
-            <div class="item-year">AGENT</div>
-        </div>
+            <div class="item" data-category="web-search">
+                <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" class="item-link"></a>
+                <div class="item-title">Hoopla</div>
+                <div class="item-desc">Movie search engine. BM25 + Semantic + CLIP. RAG enhanced query expansion.</div>
+                <div class="item-year">SEARCH</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" class="item-link"></a>
-            <div class="item-title">Rashomon</div>
-            <div class="item-desc">Social reading platform. Real-time discussion. Next.js / Bun / Supabase.</div>
-            <div class="item-year">WEB</div>
-        </div>
+            <div class="item" data-category="ai-ml">
+                <a href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" class="item-link"></a>
+                <div class="item-title">Fixer</div>
+                <div class="item-desc">Terminal AI agent. Sandboxed fs ops. Executes code. Debugs loops.</div>
+                <div class="item-year">AGENT</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" class="item-link"></a>
-            <div class="item-title">ContextClips</div>
-            <div class="item-desc">Clipboard manager. Local privacy. Instant search. Zero latency.</div>
-            <div class="item-year">EXT</div>
-        </div>
+            <div class="item" data-category="web-search">
+                <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" class="item-link"></a>
+                <div class="item-title">Rashomon</div>
+                <div class="item-desc">Social reading platform. Real-time discussion. Next.js / Bun / Supabase.</div>
+                <div class="item-year">WEB</div>
+            </div>
 
-        <div class="item">
-            <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" class="item-link"></a>
-            <div class="item-title">Gator</div>
-            <div class="item-desc">CLI RSS Aggregator. Go. Multi-user. Postgres backend.</div>
-            <div class="item-year">CLI</div>
+            <div class="item" data-category="cli-system">
+                <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" class="item-link"></a>
+                <div class="item-title">ContextClips</div>
+                <div class="item-desc">Clipboard manager. Local privacy. Instant search. Zero latency.</div>
+                <div class="item-year">EXT</div>
+            </div>
+
+            <div class="item" data-category="cli-system">
+                <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" class="item-link"></a>
+                <div class="item-title">Gator</div>
+                <div class="item-desc">CLI RSS Aggregator. Go. Multi-user. Postgres backend.</div>
+                <div class="item-year">CLI</div>
+            </div>
         </div>
 
         <!-- VIBES -->
@@ -506,16 +550,69 @@
     <script>
         // Custom Cursor Logic
         const cursor = document.getElementById('cursor');
-        const links = document.querySelectorAll('a, .item');
+        
+        function updateCursorListeners() {
+            const links = document.querySelectorAll('a, .item, .filter-btn');
+            links.forEach(link => {
+                link.removeEventListener('mouseenter', addCursorActive);
+                link.removeEventListener('mouseleave', removeCursorActive);
+                link.addEventListener('mouseenter', addCursorActive);
+                link.addEventListener('mouseleave', removeCursorActive);
+            });
+        }
+
+        function addCursorActive() { cursor.classList.add('active'); }
+        function removeCursorActive() { cursor.classList.remove('active'); }
 
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => cursor.classList.add('active'));
-            link.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+        updateCursorListeners();
+
+        // Projects Filter Logic
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectItems = document.querySelectorAll('#projects-list .item');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.getAttribute('data-filter');
+
+                // Update active state
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                projectItems.forEach(item => {
+                    const itemCat = item.getAttribute('data-category');
+                    const match = category === 'all' || itemCat === category;
+
+                    if (match) {
+                        if (item.style.display === 'none') {
+                            item.style.display = 'grid';
+                            // Force reflow
+                            void item.offsetHeight;
+                        }
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                        item.style.pointerEvents = 'auto';
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.98)';
+                        item.style.pointerEvents = 'none';
+
+                        const handleTransitionEnd = (e) => {
+                            if (e.propertyName === 'opacity') {
+                                if (item.style.opacity === '0') {
+                                    item.style.display = 'none';
+                                }
+                                item.removeEventListener('transitionend', handleTransitionEnd);
+                            }
+                        };
+                        item.addEventListener('transitionend', handleTransitionEnd);
+                    }
+                });
+            });
         });
     </script>
 </body>
