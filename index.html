@@ -556,22 +556,6 @@
             </div>
         </div>
 
-        <!-- MARQUEE -->
-        <div class="marquee">
-            <div class="marquee-track">
-                <div class="marquee-content">
-                    <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
-                    <span class="marquee-tag">DEV TOOLS</span>
-                    <span class="marquee-tag">OPEN SOURCE</span>
-                </div>
-                <div class="marquee-content" aria-hidden="true">
-                    <span class="marquee-tag">AI-ASSISTED ENGINEERING</span>
-                    <span class="marquee-tag">DEV TOOLS</span>
-                    <span class="marquee-tag">OPEN SOURCE</span>
-                </div>
-            </div>
-        </div>
-
         <!-- TECHNICAL SKILLS -->
         <div class="section-header">TECHNICAL SKILLS</div>
 
@@ -598,31 +582,37 @@
         <!-- WORK -->
         <div class="section-header" style="margin-top: 4vw;">OPEN SOURCE</div>
 
-        <div class="item">
-            <div class="item-title">Better-Auth</div>
-            <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+
-                users secured.</div>
-            <div class="item-year">2025</div>
+        <div class="opensource-filters" style="display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 2vw; border-bottom: 1px solid var(--line);">
+            <button class="filter-btn active" data-filter="contributions">Contributions</button>
+            <button class="filter-btn" data-filter="enterprise">Enterprise</button>
         </div>
 
-        <div class="item">
-            <div class="item-title">Go-Ethereum</div>
-            <div class="item-desc">Core dev. Fixed freezer truncation. Optimized storage for 3.5k global nodes.</div>
-            <div class="item-year">2025</div>
-        </div>
+        <div id="opensource-list">
+            <div class="item" data-category="contributions">
+                <div class="item-title">Better-Auth</div>
+                <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+
+                    users secured.</div>
+                <div class="item-year">2025</div>
+            </div>
 
-        <div class="item">
-            <div class="item-title">Accenture</div>
-            <div class="item-desc">Built ETL pipelines. Sped up DBs. Automated ops: -50hrs/mo.</div>
-            <div class="item-year">2021</div>
+            <div class="item" data-category="contributions">
+                <div class="item-title">Go-Ethereum</div>
+                <div class="item-desc">Core dev. Fixed freezer truncation. Optimized storage for 3.5k global nodes.</div>
+                <div class="item-year">2025</div>
+            </div>
+
+            <div class="item" data-category="enterprise" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
+                <div class="item-title">Accenture</div>
+                <div class="item-desc">Built ETL pipelines. Sped up DBs. Automated ops: -50hrs/mo.</div>
+                <div class="item-year">2021</div>
+            </div>
         </div>
 
         <!-- PROJECTS -->
         <div class="section-header" style="margin-top: 4vw;">PROJECTS</div>
 
         <div class="project-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+            <button class="filter-btn active" data-filter="ai-ml">AI & ML</button>
             <button class="filter-btn" data-filter="web-search">Web & Search</button>
             <button class="filter-btn" data-filter="cli-system">CLI & System</button>
         </div>
@@ -683,7 +673,7 @@
                 <div class="item-year">ML</div>
             </div>
 
-            <div class="item" data-category="web-search">
+            <div class="item" data-category="web-search" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
                 <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" class="item-link"></a>
                 <div class="item-title">Hoopla</div>
                 <div class="item-desc">Movie search engine. BM25 + Semantic + CLIP. RAG enhanced query expansion.</div>
@@ -697,21 +687,21 @@
                 <div class="item-year">AGENT</div>
             </div>
 
-            <div class="item" data-category="web-search">
+            <div class="item" data-category="web-search" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
                 <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" class="item-link"></a>
                 <div class="item-title">Rashomon</div>
                 <div class="item-desc">Social reading platform. Real-time discussion. Next.js / Bun / Supabase.</div>
                 <div class="item-year">WEB</div>
             </div>
 
-            <div class="item" data-category="cli-system">
+            <div class="item" data-category="cli-system" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
                 <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" class="item-link"></a>
                 <div class="item-title">ContextClips</div>
                 <div class="item-desc">Clipboard manager. Local privacy. Instant search. Zero latency.</div>
                 <div class="item-year">EXT</div>
             </div>
 
-            <div class="item" data-category="cli-system">
+            <div class="item" data-category="cli-system" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
                 <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" class="item-link"></a>
                 <div class="item-title">Gator</div>
                 <div class="item-desc">CLI RSS Aggregator. Go. Multi-user. Postgres backend.</div>
@@ -722,27 +712,34 @@
         <!-- VIBES -->
         <div class="section-header" style="margin-top: 4vw;">VIBES</div>
 
-        <div class="item">
-            <a href="https://office-puzzle-91987150.figma.site" target="_blank" class="item-link"></a>
-            <div class="item-title">Parasocial Funeral</div>
-            <div class="item-desc">A ritual for grief that has no funeral. Name someone who shaped you and vanished.
-                Give, receive, then burn it all. One sentence survives. Figma makeathon.</div>
-            <div class="item-year">VIBE</div>
+        <div class="vibes-filters" style="display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 2vw; border-bottom: 1px solid var(--line);">
+            <button class="filter-btn active" data-filter="ritual-play">Ritual & Play</button>
+            <button class="filter-btn" data-filter="engines">Engines</button>
         </div>
 
-        <div class="item">
-            <a href="https://badreads-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
-            <div class="item-title">BadReads</div>
-            <div class="item-desc">Anti-recommendation engine. Breaks intellectual echo chambers by suggesting
-                high-quality books that challenge your input.</div>
-            <div class="item-year">VIBE</div>
-        </div>
+        <div id="vibes-list">
+            <div class="item" data-category="ritual-play">
+                <a href="https://office-puzzle-91987150.figma.site" target="_blank" class="item-link"></a>
+                <div class="item-title">Parasocial Funeral</div>
+                <div class="item-desc">A ritual for grief that has no funeral. Name someone who shaped you and vanished.
+                    Give, receive, then burn it all. One sentence survives. Figma makeathon.</div>
+                <div class="item-year">VIBE</div>
+            </div>
 
-        <div class="item">
-            <a href="https://speechoke-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
-            <div class="item-title">Speechoke</div>
-            <div class="item-desc">Karaoke for speeches instead of songs. Practice delivery, nail the timing.</div>
-            <div class="item-year">VIBE</div>
+            <div class="item" data-category="engines" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
+                <a href="https://badreads-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
+                <div class="item-title">BadReads</div>
+                <div class="item-desc">Anti-recommendation engine. Breaks intellectual echo chambers by suggesting
+                    high-quality books that challenge your input.</div>
+                <div class="item-year">VIBE</div>
+            </div>
+
+            <div class="item" data-category="ritual-play">
+                <a href="https://speechoke-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
+                <div class="item-title">Speechoke</div>
+                <div class="item-desc">Karaoke for speeches instead of songs. Practice delivery, nail the timing.</div>
+                <div class="item-year">VIBE</div>
+            </div>
         </div>
 
         <!-- FOOTER -->
@@ -802,49 +799,56 @@
         loop();
         updateCursorActive();
 
-        // Projects Filter Logic
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectItems = document.querySelectorAll('#projects-list .item');
+        // Reusable Filter Setup Helper
+        function setupFiltering(filterContainerSelector, listContainerSelector) {
+            const filterButtons = document.querySelectorAll(`${filterContainerSelector} .filter-btn`);
+            const items = document.querySelectorAll(`${listContainerSelector} .item`);
 
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const category = btn.getAttribute('data-filter');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const category = btn.getAttribute('data-filter');
 
-                // Update active state
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+                    // Update active button state within this group
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
 
-                projectItems.forEach(item => {
-                    const itemCat = item.getAttribute('data-category');
-                    const match = category === 'all' || itemCat === category;
+                    items.forEach(item => {
+                        const itemCat = item.getAttribute('data-category');
+                        const match = itemCat === category;
 
-                    if (match) {
-                        if (item.style.display === 'none') {
-                            item.style.display = 'grid';
-                            // Force reflow
-                            void item.offsetHeight;
-                        }
-                        item.style.opacity = '1';
-                        item.style.transform = 'scale(1)';
-                        item.style.pointerEvents = 'auto';
-                    } else {
-                        item.style.opacity = '0';
-                        item.style.transform = 'scale(0.98)';
-                        item.style.pointerEvents = 'none';
-
-                        const handleTransitionEnd = (e) => {
-                            if (e.propertyName === 'opacity') {
-                                if (item.style.opacity === '0') {
-                                    item.style.display = 'none';
-                                }
-                                item.removeEventListener('transitionend', handleTransitionEnd);
+                        if (match) {
+                            if (item.style.display === 'none') {
+                                item.style.display = 'grid';
+                                // Force reflow
+                                void item.offsetHeight;
                             }
-                        };
-                        item.addEventListener('transitionend', handleTransitionEnd);
-                    }
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                            item.style.pointerEvents = 'auto';
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.98)';
+                            item.style.pointerEvents = 'none';
+
+                            const handleTransitionEnd = (e) => {
+                                if (e.propertyName === 'opacity') {
+                                    if (item.style.opacity === '0') {
+                                        item.style.display = 'none';
+                                    }
+                                    item.removeEventListener('transitionend', handleTransitionEnd);
+                                }
+                            };
+                            item.addEventListener('transitionend', handleTransitionEnd);
+                        }
+                    });
                 });
             });
-        });
+        }
+
+        // Initialize filtering for all lists
+        setupFiltering('.project-filters', '#projects-list');
+        setupFiltering('.opensource-filters', '#opensource-list');
+        setupFiltering('.vibes-filters', '#vibes-list');
 
         // Clickable Skill Tags filtering & scrolling integration
         const skillTags = document.querySelectorAll('.skill-tag');
