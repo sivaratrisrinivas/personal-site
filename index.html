@@ -589,15 +589,21 @@
 
         <div id="opensource-list">
             <div class="item" data-category="contributions">
+                <a href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" class="item-link"></a>
                 <div class="item-title">Better-Auth</div>
-                <div class="item-desc">Patched security holes. Stopped email enumeration. Added regression tests. 300k+
-                    users secured.</div>
+                <div class="item-desc">Stopped email enumeration at sign-in. An unknown email paired with a leaked
+                    password used to reveal which emails were registered (the haveIBeenPwned check fired before the
+                    generic error). Added a request-scoped skip-flag so dummy hashes never trip it, plus a regression
+                    test. Covers every app using the plugin.</div>
                 <div class="item-year">2025</div>
             </div>
 
             <div class="item" data-category="contributions">
+                <a href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" class="item-link"></a>
                 <div class="item-title">Go-Ethereum</div>
-                <div class="item-desc">Core dev. Fixed freezer truncation. Optimized storage for 3.5k global nodes.</div>
+                <div class="item-desc">Added a `geth db truncate-freezer` subcommand for archive nodes. Binary-searches
+                    the merge block, keeps headers, drops pre-merge bodies to reclaim disk. Reuses the existing
+                    truncation primitive and includes tests.</div>
                 <div class="item-year">2025</div>
             </div>
 
