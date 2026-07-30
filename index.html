@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Srinivas Sivaratri - Engineering" />
-    <title>SRINIVAS SIVARATRI</title>
+    <meta name="description"
+        content="Srinivas Sivaratri is a self-directed engineer building practical AI systems, developer tools, and open-source software." />
+    <meta name="theme-color" content="#080808" />
+    <title>Srinivas Sivaratri — Engineer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,24 +18,29 @@
     <style>
         :root {
             --bg: #080808;
-            --fg: #e6e6e6;
-            --dim: #666;
+            --surface: #101010;
+            --fg: #f0f0ed;
+            --dim: #a3a3a0;
             --accent: #ff2a00;
             /* International Orange */
-            --line: #222;
+            --line: #2b2b2b;
+            --focus: #ffb7a8;
 
             --font-display: 'Manrope', sans-serif;
             --font-mono: 'Space Mono', monospace;
+            --space-page: clamp(1rem, 2vw, 2rem);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --z-sticky: 20;
+            --z-modal-backdrop: 30;
+            --z-modal: 40;
+            --z-cursor: 50;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
         }
-
-        /* Custom cursor */
 
         body {
             background: var(--bg);
@@ -41,23 +48,52 @@
             font-family: var(--font-display);
             font-size: 16px;
             overflow-x: hidden;
-            line-height: 1.1;
+            line-height: 1.5;
             position: relative;
-            /* Subtle Grid Pattern */
-            background-image: 
-                linear-gradient(to right, rgba(34, 34, 34, 0.2) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(34, 34, 34, 0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
 
         a {
             text-decoration: none;
             color: inherit;
-            cursor: none;
         }
 
         ul {
             list-style: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 4px;
+        }
+
+        .skip-link {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: var(--z-modal);
+            padding: 0.75rem 1rem;
+            color: var(--bg);
+            background: var(--fg);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            transform: translateY(-200%);
+            transition: transform 180ms var(--ease-out);
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
         }
 
         /* CURSOR */
@@ -70,15 +106,21 @@
             border: 1px solid var(--fg);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: var(--z-cursor);
             mix-blend-mode: difference;
             transform: translate3d(0, 0, 0) translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
+            opacity: 0;
+            scale: 1;
+            transition: scale 0.2s var(--ease-out), background 0.2s var(--ease-out),
+                border-color 0.2s var(--ease-out), opacity 0.2s ease;
+        }
+
+        body.cursor-ready #cursor {
+            opacity: 1;
         }
 
         body:hover #cursor.active {
-            width: 80px;
-            height: 80px;
+            scale: 2.8;
             background: var(--fg);
             border-color: transparent;
         }
@@ -91,7 +133,7 @@
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
             background: radial-gradient(
                 600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
                 rgba(255, 42, 0, 0.04),
@@ -101,7 +143,7 @@
 
         /* CLI MODAL STYLES */
         .cli-modal {
-            border: 1px solid var(--line);
+            border: 0;
             background: rgba(8, 8, 8, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -115,7 +157,7 @@
             transform: translate(-50%, -50%);
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 2px rgba(255, 42, 0, 0.2);
-            z-index: 10000;
+            z-index: var(--z-modal);
         }
 
         .cli-modal::backdrop {
@@ -168,9 +210,11 @@
             font-size: 20px;
             position: absolute;
             right: 16px;
-            cursor: none;
             line-height: 1;
-            outline: none;
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
         }
 
         .cli-close-btn:hover {
@@ -235,18 +279,24 @@
             font-size: 13px;
             outline: none;
             flex: 1;
+            min-width: 0;
         }
 
-        /* Disable custom cursor on touch/mobile */
-        @media (hover: none) and (pointer: coarse) {
-            #cursor {
-                display: none !important;
-            }
+        #cli-input::placeholder {
+            color: var(--dim);
+            opacity: 1;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
             * {
-                cursor: auto !important;
+                cursor: none;
             }
-            a, .filter-btn, .cli-hint, .cli-close-btn {
-                cursor: pointer !important;
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            #cursor,
+            .glow-overlay {
+                display: none;
             }
         }
 
@@ -254,28 +304,31 @@
         .grid {
             display: grid;
             grid-template-columns: 1fr;
+            position: relative;
+            z-index: 1;
         }
 
         .row {
             border-bottom: 1px solid var(--line);
-            padding: 2vw;
+            padding: var(--space-page);
             display: flex;
             flex-direction: column;
         }
 
         /* HEADER */
         .hero {
-            min-height: 80vh;
+            min-height: 78svh;
             justify-content: space-between;
-            padding-top: 4vw;
+            padding-top: clamp(2rem, 4vw, 4rem);
         }
 
         .hero-title {
-            font-size: 14vw;
+            font-size: clamp(3.75rem, 10vw, 6rem);
             font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 0.85;
+            letter-spacing: -0.035em;
+            line-height: 0.9;
             text-transform: uppercase;
+            text-wrap: balance;
         }
 
         .hero-title span {
@@ -297,6 +350,24 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            gap: 1.5rem;
+        }
+
+        .cli-hint {
+            min-height: 44px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            background: transparent;
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            transition: color 180ms var(--ease-out), background 180ms var(--ease-out);
+        }
+
+        .cli-hint:hover,
+        .cli-hint:focus-visible {
+            color: var(--bg);
+            background: var(--accent);
         }
 
         /* SECTIONS */
@@ -304,9 +375,10 @@
             font-family: var(--font-mono);
             color: var(--accent);
             font-size: 14px;
-            padding: 4vw 2vw 1vw;
+            padding: clamp(3.5rem, 7vw, 7rem) var(--space-page) 1rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            line-height: 1.4;
         }
 
         /* LIST ITEMS */
@@ -314,20 +386,21 @@
             display: grid;
             grid-template-columns: 1.5fr 3fr 1fr;
             align-items: baseline;
-            padding: 40px 2vw;
+            padding: clamp(1.75rem, 3vw, 2.75rem) var(--space-page);
             border-bottom: 1px solid var(--line);
-            transition: background 0.2s, opacity 0.3s ease, transform 0.3s ease;
+            transition: background 0.2s ease, opacity 0.3s ease, transform 0.3s var(--ease-out);
             position: relative;
             opacity: 1;
             transform: scale(1);
         }
 
         /* PROJECT FILTERS */
-        .project-filters {
+        .project-filters,
+        .opensource-filters {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            padding: 20px 2vw;
+            padding: 1rem var(--space-page);
             border-bottom: 1px solid var(--line);
         }
 
@@ -337,11 +410,11 @@
             color: var(--dim);
             background: transparent;
             border: 1px solid var(--line);
-            padding: 8px 16px;
-            transition: all 0.2s ease;
+            min-height: 44px;
+            padding: 0.625rem 1rem;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            cursor: none;
         }
 
         .filter-btn:hover {
@@ -356,18 +429,22 @@
         }
 
         .item:hover {
-            background: #0f0f0f;
+            background: var(--surface);
         }
 
-        .item:hover .item-title {
-            padding-left: 20px;
+        .item:hover .item-title,
+        .item:focus-within .item-title {
+            transform: translateX(0.75rem);
             color: var(--accent);
         }
 
         .item-title {
-            font-size: 2.5vw;
+            font-size: clamp(1.75rem, 2.5vw, 2.75rem);
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: -0.025em;
+            line-height: 1.05;
+            transition: color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+            text-wrap: balance;
         }
 
         .item-desc {
@@ -375,7 +452,8 @@
             font-size: 14px;
             color: var(--dim);
             max-width: 400px;
-            line-height: 1.4;
+            line-height: 1.55;
+            text-wrap: pretty;
         }
 
         .item-year {
@@ -392,6 +470,10 @@
             width: 100%;
             height: 100%;
             z-index: 10;
+        }
+
+        .item-link:focus-visible {
+            outline-offset: -6px;
         }
 
         /* MARQUEE */
@@ -440,19 +522,21 @@
             font-size: 14px;
             color: var(--fg);
             border: 1px solid var(--line);
-            padding: 6px 14px;
-            transition: color 0.2s, border-color 0.2s;
-            cursor: none;
+            min-height: 44px;
+            padding: 0.625rem 0.875rem;
+            background: transparent;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
         }
 
         .skill-tag:hover {
             color: var(--accent);
             border-color: var(--accent);
+            background: var(--surface);
         }
 
         /* FOOTER */
         .footer {
-            padding: 6vw 2vw 8vw;
+            padding: clamp(4rem, 8vw, 8rem) var(--space-page);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -466,7 +550,10 @@
         }
 
         .contact-link {
-            font-size: 1.5vw;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            font-size: clamp(0.875rem, 1.3vw, 1.125rem);
             font-family: var(--font-mono);
             text-transform: uppercase;
             font-weight: 600;
@@ -481,7 +568,17 @@
         /* MOBILE */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 18vw;
+                font-size: clamp(3rem, 16vw, 5rem);
+            }
+
+            .hero {
+                min-height: 70svh;
+            }
+
+            .hero-meta {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.75rem;
             }
 
             .item {
@@ -490,11 +587,11 @@
             }
 
             .item-title {
-                font-size: 8vw;
+                font-size: clamp(1.75rem, 8vw, 2.5rem);
             }
 
             .item-desc {
-                font-size: 13px;
+                font-size: 14px;
                 max-width: 100%;
             }
 
@@ -503,40 +600,71 @@
             }
 
             .contact-link {
-                font-size: 4vw;
+                font-size: 0.875rem;
             }
 
             .links {
                 gap: 5vw;
                 justify-content: center;
             }
+
+            .cli-modal {
+                width: calc(100% - 1.5rem);
+            }
+
+            .cli-title {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            #cursor,
+            .glow-overlay {
+                display: none;
+            }
         }
     </style>
 </head>
 
 <body>
+    <a class="skip-link" href="#projects">Skip to projects</a>
     <div id="cursor"></div>
     <div class="glow-overlay"></div>
 
     <!-- CLI TERMINAL MODAL -->
-    <dialog id="cli-dialog" class="cli-modal">
+    <dialog id="cli-dialog" class="cli-modal" aria-labelledby="cli-title">
         <div class="cli-window">
             <div class="cli-header">
                 <span class="cli-dot red"></span>
                 <span class="cli-dot yellow"></span>
                 <span class="cli-dot green"></span>
-                <span class="cli-title">srinivas@personal-site:~</span>
-                <button id="cli-close" class="cli-close-btn">&times;</button>
+                <span class="cli-title" id="cli-title">srinivas@personal-site:~</span>
+                <button id="cli-close" class="cli-close-btn" type="button"
+                    aria-label="Close command palette">&times;</button>
             </div>
             <div class="cli-body">
-                <div class="cli-output" id="cli-output">
+                <div class="cli-output" id="cli-output" aria-live="polite">
                     <p class="cli-line banner">Welcome to Srinivas Sivaratri's Interactive CLI. Version 1.0.0.</p>
                     <p class="cli-line banner">Type 'help' to see list of available commands.</p>
                     <br>
                 </div>
                 <div class="cli-input-line">
                     <span class="cli-prompt">srinivas:~ $</span>
-                    <input type="text" id="cli-input" autofocus autocomplete="off" spellcheck="false" placeholder="...">
+                    <input type="text" id="cli-input" autofocus autocomplete="off" spellcheck="false"
+                        aria-label="Command" placeholder="Type a command">
                 </div>
             </div>
         </div>
@@ -544,47 +672,52 @@
 
     <main class="grid">
         <!-- HERO -->
-        <div class="row hero">
+        <header class="row hero">
             <h1 class="hero-title">
                 <span>SRINIVAS</span>
                 <span>SIVARATRI</span>
             </h1>
             <div class="hero-meta">
                 <span>Autodidact</span>
-                <span class="cli-hint" style="font-family: var(--font-mono); font-size: 14px; color: var(--accent); cursor: none;">[PRESS CMD+K OR CLICK FOR CLI]</span>
+                <button class="cli-hint" type="button" aria-haspopup="dialog" aria-controls="cli-dialog"
+                    aria-expanded="false">
+                    Open CLI <span aria-hidden="true">⌘K</span>
+                </button>
                 <span>[SCROLL FOR DATA]</span>
             </div>
-        </div>
+        </header>
 
         <!-- TECHNICAL SKILLS -->
-        <div class="section-header">TECHNICAL SKILLS</div>
+        <h2 class="section-header">Technical skills</h2>
 
         <div class="item" style="grid-template-columns: 1fr;">
             <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Go</span>
-                <span class="skill-tag">TypeScript</span>
-                <span class="skill-tag">JavaScript</span>
-                <span class="skill-tag">C</span>
-                <span class="skill-tag">SQL</span>
-                <span class="skill-tag">Linux</span>
-                <span class="skill-tag">Docker</span>
-                <span class="skill-tag">CI/CD</span>
-                <span class="skill-tag">Git</span>
-                <span class="skill-tag">HTTP Servers</span>
-                <span class="skill-tag">REST APIs</span>
-                <span class="skill-tag">RAG</span>
-                <span class="skill-tag">DSA</span>
-                <span class="skill-tag">Memory Management</span>
+                <button class="skill-tag" type="button">Python</button>
+                <button class="skill-tag" type="button">Go</button>
+                <button class="skill-tag" type="button">TypeScript</button>
+                <button class="skill-tag" type="button">JavaScript</button>
+                <button class="skill-tag" type="button">C</button>
+                <button class="skill-tag" type="button">SQL</button>
+                <button class="skill-tag" type="button">Linux</button>
+                <button class="skill-tag" type="button">Docker</button>
+                <button class="skill-tag" type="button">CI/CD</button>
+                <button class="skill-tag" type="button">Git</button>
+                <button class="skill-tag" type="button">HTTP Servers</button>
+                <button class="skill-tag" type="button">REST APIs</button>
+                <button class="skill-tag" type="button">RAG</button>
+                <button class="skill-tag" type="button">DSA</button>
+                <button class="skill-tag" type="button">Memory Management</button>
             </div>
         </div>
 
         <!-- WORK -->
-        <div class="section-header" style="margin-top: 4vw;">OPEN SOURCE</div>
+        <h2 class="section-header">Open source</h2>
 
-        <div class="opensource-filters" style="display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 2vw; border-bottom: 1px solid var(--line);">
-            <button class="filter-btn active" data-filter="contributions">Contributions</button>
-            <button class="filter-btn" data-filter="enterprise">Enterprise</button>
+        <div class="opensource-filters" role="group" aria-label="Open source categories">
+            <button class="filter-btn active" type="button" data-filter="contributions"
+                aria-pressed="true">Contributions</button>
+            <button class="filter-btn" type="button" data-filter="enterprise"
+                aria-pressed="false">Enterprise</button>
         </div>
 
         <div id="opensource-list">
@@ -615,12 +748,14 @@
         </div>
 
         <!-- PROJECTS -->
-        <div class="section-header" style="margin-top: 4vw;">PROJECTS</div>
+        <h2 class="section-header" id="projects">Projects</h2>
 
-        <div class="project-filters">
-            <button class="filter-btn active" data-filter="ai-ml">AI & ML</button>
-            <button class="filter-btn" data-filter="web-search">Web & Search</button>
-            <button class="filter-btn" data-filter="cli-system">CLI & System</button>
+        <div class="project-filters" role="group" aria-label="Project categories">
+            <button class="filter-btn active" type="button" data-filter="ai-ml" aria-pressed="true">AI & ML</button>
+            <button class="filter-btn" type="button" data-filter="web-search"
+                aria-pressed="false">Web & Search</button>
+            <button class="filter-btn" type="button" data-filter="cli-system"
+                aria-pressed="false">CLI & System</button>
         </div>
 
         <div id="projects-list">
@@ -716,57 +851,32 @@
             </div>
         </div>
 
-        <!-- VIBES -->
-        <div class="section-header" style="margin-top: 4vw;">VIBES</div>
-
-        <div class="vibes-filters" style="display: flex; flex-wrap: wrap; gap: 12px; padding: 20px 2vw; border-bottom: 1px solid var(--line);">
-            <button class="filter-btn active" data-filter="ritual-play">Ritual & Play</button>
-            <button class="filter-btn" data-filter="engines">Engines</button>
-        </div>
-
-        <div id="vibes-list">
-            <div class="item" data-category="ritual-play">
-                <a href="https://office-puzzle-91987150.figma.site" target="_blank" class="item-link"></a>
-                <div class="item-title">Parasocial Funeral</div>
-                <div class="item-desc">Like writing a digital letter of gratitude to an online creator or mentor who changed your life and vanished, burning the rest while leaving only one sentence behind.</div>
-                <div class="item-year">VIBE</div>
-            </div>
-
-            <div class="item" data-category="engines" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <a href="https://badreads-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
-                <div class="item-title">BadReads</div>
-                <div class="item-desc">Like a provocative librarian who deliberately recommends highly-rated books that challenge your viewpoints instead of feeding you more of the same opinions.</div>
-                <div class="item-year">VIBE</div>
-            </div>
-
-            <div class="item" data-category="ritual-play">
-                <a href="https://speechoke-549305467378.us-west1.run.app" target="_blank" class="item-link"></a>
-                <div class="item-title">Speechoke</div>
-                <div class="item-desc">Like karaoke night but for historical speeches instead of pop songs, helping you practice the timing and delivery of legendary orations.</div>
-                <div class="item-year">VIBE</div>
-            </div>
-        </div>
-
         <!-- FOOTER -->
-        <div class="footer">
+        <footer class="footer">
             <div class="links">
                 <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">EMAIL</a>
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" class="contact-link">GITHUB</a>
-                <a href="https://x.com/SrinivasSi78619" target="_blank" class="contact-link">TWITTER</a>
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer"
+                    class="contact-link">GITHUB</a>
+                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer"
+                    class="contact-link">TWITTER</a>
                 <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank"
-                    class="contact-link">LINKEDIN</a>
-                <a href="https://www.boot.dev/u/shallowad54" target="_blank" class="contact-link">BOOT.DEV</a>
+                    rel="noopener noreferrer" class="contact-link">LINKEDIN</a>
+                <a href="https://www.boot.dev/u/shallowad54" target="_blank" rel="noopener noreferrer"
+                    class="contact-link">BOOT.DEV</a>
             </div>
-        </div>
+        </footer>
     </main>
 
     <script>
-        // Custom Cursor & Mouse-Glow Background Logic
+        // Custom cursor and mouse glow
         const cursor = document.getElementById('cursor');
         const root = document.documentElement;
-        let mouse = { x: 0, y: 0 }; // Actual mouse positions
-        let pos = { x: 0, y: 0 };   // Interpolated positions
-        const speed = 0.15;         // Smooth lag speed factor
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const canUseCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+            && !prefersReducedMotion;
+        let mouse = { x: 0, y: 0 };
+        let pos = { x: 0, y: 0 };
+        const speed = 0.15;
 
         function updateCursorActive() {
             const links = document.querySelectorAll('a, .item, .filter-btn, .cli-hint, .cli-close-btn, .skill-tag');
@@ -781,41 +891,51 @@
         function addCursorActive() { cursor.classList.add('active'); }
         function removeCursorActive() { cursor.classList.remove('active'); }
 
-        document.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            
-            // Update CSS variables for radial glow overlay background
-            root.style.setProperty('--mouse-x', e.clientX + 'px');
-            root.style.setProperty('--mouse-y', e.clientY + 'px');
-        });
+        if (canUseCustomCursor) {
+            document.addEventListener('mousemove', (event) => {
+                mouse.x = event.clientX;
+                mouse.y = event.clientY;
+                root.style.setProperty('--mouse-x', `${event.clientX}px`);
+                root.style.setProperty('--mouse-y', `${event.clientY}px`);
+                document.body.classList.add('cursor-ready');
+            });
 
-        // Spring interpolation loop for smooth trailing cursor
-        function loop() {
-            pos.x += (mouse.x - pos.x) * speed;
-            pos.y += (mouse.y - pos.y) * speed;
-            
-            cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
-            requestAnimationFrame(loop);
+            function loop() {
+                pos.x += (mouse.x - pos.x) * speed;
+                pos.y += (mouse.y - pos.y) * speed;
+                cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
+                requestAnimationFrame(loop);
+            }
+
+            loop();
+            updateCursorActive();
         }
-        
-        cursor.style.left = '0';
-        cursor.style.top = '0';
-        loop();
-        updateCursorActive();
+
+        document.querySelectorAll('.item-link').forEach((link) => {
+            const title = link.parentElement.querySelector('.item-title')?.textContent.trim();
+            link.setAttribute('aria-label', `Open ${title} in a new tab`);
+            link.setAttribute('rel', 'noopener noreferrer');
+        });
 
         // Reusable Filter Setup Helper
         function setupFiltering(filterContainerSelector, listContainerSelector) {
             const filterButtons = document.querySelectorAll(`${filterContainerSelector} .filter-btn`);
             const items = document.querySelectorAll(`${listContainerSelector} .item`);
 
+            items.forEach(item => {
+                item.setAttribute('aria-hidden', item.style.display === 'none' ? 'true' : 'false');
+            });
+
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const category = btn.getAttribute('data-filter');
 
-                    // Update active button state within this group
-                    filterButtons.forEach(b => b.classList.remove('active'));
+                    filterButtons.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
                     btn.classList.add('active');
+                    btn.setAttribute('aria-pressed', 'true');
 
                     items.forEach(item => {
                         const itemCat = item.getAttribute('data-category');
@@ -830,10 +950,12 @@
                             item.style.opacity = '1';
                             item.style.transform = 'scale(1)';
                             item.style.pointerEvents = 'auto';
+                            item.setAttribute('aria-hidden', 'false');
                         } else {
                             item.style.opacity = '0';
                             item.style.transform = 'scale(0.98)';
                             item.style.pointerEvents = 'none';
+                            item.setAttribute('aria-hidden', 'true');
 
                             const handleTransitionEnd = (e) => {
                                 if (e.propertyName === 'opacity') {
@@ -853,7 +975,6 @@
         // Initialize filtering for all lists
         setupFiltering('.project-filters', '#projects-list');
         setupFiltering('.opensource-filters', '#opensource-list');
-        setupFiltering('.vibes-filters', '#vibes-list');
 
         // Clickable Skill Tags filtering & scrolling integration
         const skillTags = document.querySelectorAll('.skill-tag');
@@ -862,6 +983,8 @@
             'Go': 'cli-system',
             'TypeScript': 'ai-ml',
             'JavaScript': 'web-search',
+            'C': 'cli-system',
+            'SQL': 'cli-system',
             'RAG': 'web-search',
             'Docker': 'cli-system',
             'CI/CD': 'cli-system',
@@ -882,7 +1005,10 @@
                     const filterBtn = document.querySelector(`.filter-btn[data-filter="${targetCategory}"]`);
                     if (filterBtn) {
                         filterBtn.click();
-                        document.getElementById('projects-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        document.getElementById('projects-list').scrollIntoView({
+                            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                            block: 'start'
+                        });
                     }
                 }
             });
@@ -899,7 +1025,8 @@
             cliDialog.showModal();
             cliInput.value = '';
             cliInput.focus();
-            updateCursorActive();
+            cliHint.setAttribute('aria-expanded', 'true');
+            if (canUseCustomCursor) updateCursorActive();
         }
 
         function closeCLI() {
@@ -920,6 +1047,10 @@
 
         cliHint.addEventListener('click', openCLI);
         cliClose.addEventListener('click', closeCLI);
+        cliDialog.addEventListener('close', () => {
+            cliHint.setAttribute('aria-expanded', 'false');
+            cliHint.focus();
+        });
 
         // Close on backdrop clicks
         cliDialog.addEventListener('click', (e) => {
@@ -995,17 +1126,21 @@
                     const themeName = args[0];
                     if (themeName === 'light') {
                         document.documentElement.style.setProperty('--bg', '#f4f4f4');
+                        document.documentElement.style.setProperty('--surface', '#e7e7e7');
                         document.documentElement.style.setProperty('--fg', '#0f0f0f');
                         document.documentElement.style.setProperty('--dim', '#666');
-                        document.documentElement.style.setProperty('--accent', '#ff2a00');
+                        document.documentElement.style.setProperty('--accent', '#b52300');
                         document.documentElement.style.setProperty('--line', '#ddd');
+                        document.documentElement.style.setProperty('--focus', '#7a1400');
                         outputLine('Theme swapped to Light.', 'success');
                     } else if (themeName === 'dark') {
                         document.documentElement.style.setProperty('--bg', '#080808');
-                        document.documentElement.style.setProperty('--fg', '#e6e6e6');
-                        document.documentElement.style.setProperty('--dim', '#666');
+                        document.documentElement.style.setProperty('--surface', '#101010');
+                        document.documentElement.style.setProperty('--fg', '#f0f0ed');
+                        document.documentElement.style.setProperty('--dim', '#a3a3a0');
                         document.documentElement.style.setProperty('--accent', '#ff2a00');
-                        document.documentElement.style.setProperty('--line', '#222');
+                        document.documentElement.style.setProperty('--line', '#2b2b2b');
+                        document.documentElement.style.setProperty('--focus', '#ffb7a8');
                         outputLine('Theme swapped back to Dark.', 'success');
                     } else {
                         outputLine('Error: Invalid theme name. Try "theme light" or "theme dark".', 'error');

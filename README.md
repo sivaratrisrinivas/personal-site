@@ -9,8 +9,7 @@ Minimalist dark portfolio. Pure HTML/CSS/JS, no frameworks.
 3. **Technical Skills** — Hoverable skill tags (Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, Memory Management)
 4. **Open Source** — Better-Auth, Go-Ethereum, Accenture
 5. **Projects** — Fuzz, catBox, Playcast, Auris, SunkeLo, Tally, SokoFlow, Hoopla, Fixer, Rashomon, ContextClips, Gator
-6. **Vibes** — Vibe-coded apps: Parasocial Funeral, BadReads, Speechoke
-7. **Footer** — Contact links (Email, GitHub, Twitter, LinkedIn, Boot.dev)
+6. **Footer** — Contact links (Email, GitHub, Twitter, LinkedIn, Boot.dev)
 
 ## Quick Start
 
@@ -23,7 +22,7 @@ python -m http.server 8000
 
 ```
 personal-site/
-├── index.html      # Everything: markup + inline styles + script
+├── index.html      # Live site: markup + inline styles + script
 ├── css/style.css   # Alternate earth-tone theme (unused)
 ├── js/script.js    # Alternate interactions (unused)
 └── README.md
