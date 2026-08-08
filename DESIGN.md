@@ -4,6 +4,10 @@
 
 The portfolio is a cinematic screening room: a dark stage where shipped work is the evidence and the interface behaves like a precise production surface. The page uses pauses, frames, and editorial pacing to make a long archive feel intentional without turning the work into a card wall.
 
+## Brand mark
+
+`assets/screening-mark.png` is the project emblem: an amber geometric aperture framed by four crop marks, with interlocking negative space that quietly suggests the SS initials. It is used in the header, favicon, and Apple touch icon, and is designed to remain legible at small sizes.
+
 ## Palette
 
 - `--bg` / soot: `#0c0a09`

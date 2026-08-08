@@ -26,6 +26,7 @@ personal-site/
 ├── index.html      # Live site markup
 ├── css/style.css   # Cinematic visual system and responsive layout
 ├── js/script.js    # Filters, smooth navigation, cursor, and CLI
+├── assets/         # Generated brand mark used in the header and browser tab
 └── README.md
 ```
 

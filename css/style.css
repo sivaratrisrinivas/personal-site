@@ -199,12 +199,16 @@ body.cursor-ready .cursor-orb.is-active {
 
 .brand-initials {
     display: grid;
-    width: 31px;
-    height: 31px;
+    width: 34px;
+    height: 34px;
     place-items: center;
-    border: 1px solid var(--amber);
-    color: var(--amber);
-    font-size: 0.68rem;
+}
+
+.brand-initials img {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
 }
 
 .brand-name {
@@ -701,7 +705,7 @@ h2 {
     align-items: start;
     padding: 1.6rem 0;
     border-bottom: 1px solid var(--line);
-    transition: padding 240ms var(--ease-out), background 240ms ease;
+    transition: background 240ms ease;
 }
 
 .evidence-row:hover,
