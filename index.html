@@ -6,1157 +6,260 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
         content="Srinivas Sivaratri is a self-directed engineer building practical AI systems, developer tools, and open-source software." />
-    <meta name="theme-color" content="#080808" />
+    <meta name="theme-color" content="#0c0a09" />
     <title>Srinivas Sivaratri — Engineer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-
-    <style>
-        :root {
-            --bg: #080808;
-            --surface: #101010;
-            --fg: #f0f0ed;
-            --dim: #a3a3a0;
-            --accent: #ff2a00;
-            /* International Orange */
-            --line: #2b2b2b;
-            --focus: #ffb7a8;
-
-            --font-display: 'Manrope', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-            --space-page: clamp(1rem, 2vw, 2rem);
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --z-sticky: 20;
-            --z-modal-backdrop: 30;
-            --z-modal: 40;
-            --z-cursor: 50;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--fg);
-            font-family: var(--font-display);
-            font-size: 16px;
-            overflow-x: hidden;
-            line-height: 1.5;
-            position: relative;
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        button,
-        input {
-            font: inherit;
-        }
-
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--focus);
-            outline-offset: 4px;
-        }
-
-        .skip-link {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: var(--z-modal);
-            padding: 0.75rem 1rem;
-            color: var(--bg);
-            background: var(--fg);
-            font-family: var(--font-mono);
-            font-size: 0.875rem;
-            transform: translateY(-200%);
-            transition: transform 180ms var(--ease-out);
-        }
-
-        .skip-link:focus {
-            transform: translateY(0);
-        }
-
-        /* CURSOR */
-        #cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--fg);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: var(--z-cursor);
-            mix-blend-mode: difference;
-            transform: translate3d(0, 0, 0) translate(-50%, -50%);
-            opacity: 0;
-            scale: 1;
-            transition: scale 0.2s var(--ease-out), background 0.2s var(--ease-out),
-                border-color 0.2s var(--ease-out), opacity 0.2s ease;
-        }
-
-        body.cursor-ready #cursor {
-            opacity: 1;
-        }
-
-        body:hover #cursor.active {
-            scale: 2.8;
-            background: var(--fg);
-            border-color: transparent;
-        }
-
-        /* GLOW OVERLAY */
-        .glow-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(
-                600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-                rgba(255, 42, 0, 0.04),
-                transparent 80%
-            );
-        }
-
-        /* CLI MODAL STYLES */
-        .cli-modal {
-            border: 0;
-            background: rgba(8, 8, 8, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: var(--fg);
-            width: 90%;
-            max-width: 600px;
-            padding: 0;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 2px rgba(255, 42, 0, 0.2);
-            z-index: var(--z-modal);
-        }
-
-        .cli-modal::backdrop {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-        }
-
-        .cli-window {
-            display: flex;
-            flex-direction: column;
-            height: 400px;
-        }
-
-        .cli-header {
-            background: #111;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--line);
-            border-radius: 8px 8px 0 0;
-            position: relative;
-        }
-
-        .cli-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-            display: inline-block;
-        }
-
-        .cli-dot.red { background: #ff5f56; }
-        .cli-dot.yellow { background: #ffbd2e; }
-        .cli-dot.green { background: #27c93f; }
-
-        .cli-title {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--dim);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .cli-close-btn {
-            background: transparent;
-            border: none;
-            color: var(--dim);
-            font-size: 20px;
-            position: absolute;
-            right: 16px;
-            line-height: 1;
-            width: 44px;
-            height: 44px;
-            display: grid;
-            place-items: center;
-        }
-
-        .cli-close-btn:hover {
-            color: var(--accent);
-        }
-
-        .cli-body {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            font-family: var(--font-mono);
-            font-size: 13px;
-        }
-
-        .cli-output {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .cli-line.banner {
-            color: var(--accent);
-        }
-
-        .cli-line.system {
-            color: var(--dim);
-        }
-
-        .cli-line.user {
-            color: var(--fg);
-        }
-
-        .cli-line.error {
-            color: #ff5f56;
-        }
-
-        .cli-line.success {
-            color: #27c93f;
-        }
-
-        .cli-input-line {
-            display: flex;
-            align-items: center;
-            border-top: 1px solid rgba(255, 42, 0, 0.1);
-            padding-top: 10px;
-        }
-
-        .cli-prompt {
-            color: var(--accent);
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-
-        #cli-input {
-            background: transparent;
-            border: none;
-            color: var(--fg);
-            font-family: var(--font-mono);
-            font-size: 13px;
-            outline: none;
-            flex: 1;
-            min-width: 0;
-        }
-
-        #cli-input::placeholder {
-            color: var(--dim);
-            opacity: 1;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            * {
-                cursor: none;
-            }
-        }
-
-        @media (hover: none), (pointer: coarse) {
-            #cursor,
-            .glow-overlay {
-                display: none;
-            }
-        }
-
-        /* GRID */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            position: relative;
-            z-index: 1;
-        }
-
-        .row {
-            border-bottom: 1px solid var(--line);
-            padding: var(--space-page);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* HEADER */
-        .hero {
-            min-height: 78svh;
-            justify-content: space-between;
-            padding-top: clamp(2rem, 4vw, 4rem);
-        }
-
-        .hero-title {
-            font-size: clamp(3.75rem, 10vw, 6rem);
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            line-height: 0.9;
-            text-transform: uppercase;
-            text-wrap: balance;
-        }
-
-        .hero-title span {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--fg);
-            transition: color 0.4s;
-        }
-
-        .hero-title:hover span {
-            color: var(--fg);
-        }
-
-        .hero-meta {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--dim);
-            text-transform: uppercase;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1.5rem;
-        }
-
-        .cli-hint {
-            min-height: 44px;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            background: transparent;
-            font-family: var(--font-mono);
-            font-size: 0.8125rem;
-            transition: color 180ms var(--ease-out), background 180ms var(--ease-out);
-        }
-
-        .cli-hint:hover,
-        .cli-hint:focus-visible {
-            color: var(--bg);
-            background: var(--accent);
-        }
-
-        /* SECTIONS */
-        .section-header {
-            font-family: var(--font-mono);
-            color: var(--accent);
-            font-size: 14px;
-            padding: clamp(3.5rem, 7vw, 7rem) var(--space-page) 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            line-height: 1.4;
-        }
-
-        /* LIST ITEMS */
-        .item {
-            display: grid;
-            grid-template-columns: 1.5fr 3fr 1fr;
-            align-items: baseline;
-            padding: clamp(1.75rem, 3vw, 2.75rem) var(--space-page);
-            border-bottom: 1px solid var(--line);
-            transition: background 0.2s ease, opacity 0.3s ease, transform 0.3s var(--ease-out);
-            position: relative;
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* PROJECT FILTERS */
-        .project-filters,
-        .opensource-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding: 1rem var(--space-page);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .filter-btn {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--dim);
-            background: transparent;
-            border: 1px solid var(--line);
-            min-height: 44px;
-            padding: 0.625rem 1rem;
-            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .filter-btn:hover {
-            color: var(--fg);
-            border-color: var(--fg);
-        }
-
-        .filter-btn.active {
-            color: var(--accent);
-            border-color: var(--accent);
-            background: #0f0f0f;
-        }
-
-        .item:hover {
-            background: var(--surface);
-        }
-
-        .item:hover .item-title,
-        .item:focus-within .item-title {
-            transform: translateX(0.75rem);
-            color: var(--accent);
-        }
-
-        .item-title {
-            font-size: clamp(1.75rem, 2.5vw, 2.75rem);
-            font-weight: 600;
-            letter-spacing: -0.025em;
-            line-height: 1.05;
-            transition: color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
-            text-wrap: balance;
-        }
-
-        .item-desc {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--dim);
-            max-width: 400px;
-            line-height: 1.55;
-            text-wrap: pretty;
-        }
-
-        .item-year {
-            text-align: right;
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--dim);
-        }
-
-        .item-link {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-        }
-
-        .item-link:focus-visible {
-            outline-offset: -6px;
-        }
-
-        /* MARQUEE */
-        .marquee {
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 2vw 0;
-            border-bottom: 1px solid var(--line);
-            background: var(--fg);
-            color: var(--bg);
-            display: flex;
-        }
-
-        .marquee-track {
-            display: flex;
-            width: max-content;
-            animation: scroll 25s linear infinite;
-        }
-
-        .marquee-content {
-            display: flex;
-            flex-shrink: 0;
-        }
-
-        .marquee-tag {
-            font-size: 4vw;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-right: 4vw;
-            white-space: nowrap;
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* SKILL TAGS */
-        .skill-tag {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--fg);
-            border: 1px solid var(--line);
-            min-height: 44px;
-            padding: 0.625rem 0.875rem;
-            background: transparent;
-            transition: color 0.2s, border-color 0.2s, background 0.2s;
-        }
-
-        .skill-tag:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            background: var(--surface);
-        }
-
-        /* FOOTER */
-        .footer {
-            padding: clamp(4rem, 8vw, 8rem) var(--space-page);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            width: 100%;
-        }
-
-        .contact-link {
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            font-size: clamp(0.875rem, 1.3vw, 1.125rem);
-            font-family: var(--font-mono);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            transition: color 0.2s;
-        }
-
-        .contact-link:hover {
-            color: var(--accent);
-        }
-
-        /* MOBILE */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: clamp(3rem, 16vw, 5rem);
-            }
-
-            .hero {
-                min-height: 70svh;
-            }
-
-            .hero-meta {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .item {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .item-title {
-                font-size: clamp(1.75rem, 8vw, 2.5rem);
-            }
-
-            .item-desc {
-                font-size: 14px;
-                max-width: 100%;
-            }
-
-            .item-year {
-                display: none;
-            }
-
-            .contact-link {
-                font-size: 0.875rem;
-            }
-
-            .links {
-                gap: 5vw;
-                justify-content: center;
-            }
-
-            .cli-modal {
-                width: calc(100% - 1.5rem);
-            }
-
-            .cli-title {
-                display: none;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            #cursor,
-            .glow-overlay {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
+    <!-- THESIS: A screening room for the evidence behind an engineer's practice; it refuses the generic portfolio card wall. OWN-WORLD: A midnight stage of soot, bone, and projector amber, with film-strip pacing, editorial type, and precise production marks. STORY: Visitors understand the focus, inspect shipped work, and leave with a direct contact path. FIRST VIEWPORT: A full-height stage places the name in a cone of light, the work CTA at lower left, and a command-palette invitation at lower right. FORM: Direction 6 — cinematic screening room; seed key 4c48d74a. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md -->
     <a class="skip-link" href="#projects">Skip to projects</a>
-    <div id="cursor"></div>
-    <div class="glow-overlay"></div>
+    <div class="cursor-orb" aria-hidden="true"></div>
+    <div class="ambient-light" aria-hidden="true"></div>
 
-    <!-- CLI TERMINAL MODAL -->
+    <header class="site-header">
+        <a class="brand-mark" href="#top" aria-label="Srinivas Sivaratri home">
+            <span class="brand-initials">SS</span>
+            <span class="brand-name">Srinivas Sivaratri</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+            <a href="#work">Work</a>
+            <a href="#open-source">Open source</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="cli-hint" type="button" aria-haspopup="dialog" aria-controls="cli-dialog" aria-expanded="false">
+            <span>Open CLI</span>
+            <span class="keycap" aria-hidden="true">⌘K</span>
+        </button>
+    </header>
+
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-stage" aria-hidden="true">
+                <span class="stage-line stage-line--top"></span>
+                <span class="stage-line stage-line--right"></span>
+                <span class="stage-line stage-line--bottom"></span>
+                <span class="stage-line stage-line--left"></span>
+                <span class="stage-light"></span>
+                <span class="stage-ring stage-ring--one"></span>
+                <span class="stage-ring stage-ring--two"></span>
+            </div>
+            <div class="hero-topline">
+                <span>Self-directed engineer</span>
+                <span>Now screening / 2025—26</span>
+            </div>
+            <div class="hero-content">
+                <h1 id="hero-title">Srinivas <span>Sivaratri</span></h1>
+                <p class="hero-statement">Practical AI systems, developer tools, and open-source contributions — built close to the metal and useful in the real world.</p>
+            </div>
+            <div class="hero-footer">
+                <a class="primary-action" href="#projects">
+                    <span>View the work</span>
+                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                </a>
+                <div class="hero-note">
+                    <span class="pulse-dot" aria-hidden="true"></span>
+                    <span>Signal is live</span>
+                </div>
+                <span class="scroll-note">Scroll to inspect <span class="scroll-line" aria-hidden="true"></span></span>
+            </div>
+        </section>
+
+        <div class="ticker" aria-label="Areas of focus">
+            <div class="ticker-track">
+                <span>AI-assisted engineering</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Developer tools</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Open source</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Systems thinking</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>AI-assisted engineering</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Developer tools</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Open source</span><span class="ticker-dot" aria-hidden="true"></span>
+                <span>Systems thinking</span><span class="ticker-dot" aria-hidden="true"></span>
+            </div>
+        </div>
+
+        <section class="intro section-shell" aria-labelledby="intro-title">
+            <div class="section-label">The signal</div>
+            <div class="intro-grid">
+                <h2 id="intro-title">Builds that leave a trace.</h2>
+                <div class="intro-copy">
+                    <p>I like software that can explain itself: the small tools that make a system safer, the strange experiments that make an idea tangible, and the contributions that hold up under someone else's review.</p>
+                    <p>This is a working archive of that practice.</p>
+                </div>
+            </div>
+            <dl class="signal-ledger">
+                <div><dt>Focus</dt><dd>AI systems / dev tools</dd></div>
+                <div><dt>Method</dt><dd>Learn by shipping</dd></div>
+                <div><dt>Proof</dt><dd>Projects + merged work</dd></div>
+            </dl>
+        </section>
+
+        <section class="capabilities section-shell" aria-labelledby="capabilities-title">
+            <div class="section-label">The working set</div>
+            <div class="capabilities-heading">
+                <h2 id="capabilities-title">Tools for making the invisible legible.</h2>
+                <p>Select a capability to jump to its closest body of work.</p>
+            </div>
+            <div class="skill-cloud" role="list" aria-label="Technical skills">
+                <button class="skill-tag" type="button" role="listitem" data-skill="Python">Python</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="Go">Go</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="TypeScript">TypeScript</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="JavaScript">JavaScript</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="C">C</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="SQL">SQL</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="Linux">Linux</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="Docker">Docker</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="CI/CD">CI/CD</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="Git">Git</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="HTTP Servers">HTTP Servers</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="REST APIs">REST APIs</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="RAG">RAG</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="DSA">DSA</button>
+                <button class="skill-tag" type="button" role="listitem" data-skill="Memory Management">Memory Management</button>
+            </div>
+        </section>
+
+        <section id="open-source" class="evidence-section section-shell" aria-labelledby="open-source-title">
+            <div class="section-label">Merged work</div>
+            <div class="section-heading-row">
+                <h2 id="open-source-title">Open source, in the cut.</h2>
+                <div class="filter-set" role="group" aria-label="Open source categories">
+                    <button class="filter-btn is-active" type="button" data-filter="contributions" aria-pressed="true">Contributions</button>
+                    <button class="filter-btn" type="button" data-filter="enterprise" aria-pressed="false">Enterprise</button>
+                </div>
+            </div>
+            <div id="opensource-list" class="evidence-list">
+                <article class="evidence-row" data-category="contributions">
+                    <a class="row-link" href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" rel="noopener noreferrer" aria-label="Open Better-Auth pull request in a new tab"></a>
+                    <div class="row-title"><span>Better-Auth</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
+                    <p class="row-description">Stopped email enumeration at sign-in. An unknown email paired with a leaked password used to reveal which emails were registered. Added a request-scoped skip-flag and regression test.</p>
+                    <span class="row-meta">2025 <span>security</span></span>
+                </article>
+                <article class="evidence-row" data-category="contributions">
+                    <a class="row-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer" aria-label="Open Go-Ethereum pull request in a new tab"></a>
+                    <div class="row-title"><span>Go-Ethereum</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
+                    <p class="row-description">Added a <code>geth db truncate-freezer</code> subcommand for archive nodes. Binary-searches the merge block, keeps headers, drops pre-merge bodies, and includes tests.</p>
+                    <span class="row-meta">2025 <span>systems</span></span>
+                </article>
+                <article class="evidence-row" data-category="enterprise" hidden>
+                    <div class="row-title"><span>Accenture</span></div>
+                    <p class="row-description">Built ETL pipelines. Sped up DBs. Automated ops: -50hrs/mo.</p>
+                    <span class="row-meta">2021 <span>enterprise</span></span>
+                </article>
+            </div>
+        </section>
+
+        <section id="work" class="projects-section section-shell" aria-labelledby="projects-title">
+            <div class="section-label">Selected projects</div>
+            <div class="section-heading-row projects-heading-row">
+                <h2 id="projects-title">Small systems. Strange questions.</h2>
+                <div class="filter-set" role="group" aria-label="Project categories">
+                    <button class="filter-btn is-active" type="button" data-filter="ai-ml" aria-pressed="true">AI &amp; ML</button>
+                    <button class="filter-btn" type="button" data-filter="web-search" aria-pressed="false">Web &amp; Search</button>
+                    <button class="filter-btn" type="button" data-filter="cli-system" aria-pressed="false">CLI &amp; System</button>
+                </div>
+            </div>
+            <div id="projects-list" class="project-list">
+                <article class="project-row project-row--feature" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer" aria-label="Open Fuzz on GitHub in a new tab"></a>
+                    <div class="project-index">01</div>
+                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p></div>
+                    <span class="row-meta">AI / game</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/catBox" target="_blank" rel="noopener noreferrer" aria-label="Open catBox on GitHub in a new tab"></a>
+                    <div class="project-index">02</div><div class="project-main"><div class="row-title"><span>catBox</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like opening Schrödinger's famous box, where a split-second AI calculation decides if you find a cozy cat or an empty space.</p></div><span class="row-meta">AI / image</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/playcast" target="_blank" rel="noopener noreferrer" aria-label="Open Playcast on GitHub in a new tab"></a>
+                    <div class="project-index">03</div><div class="project-main"><div class="row-title"><span>Playcast</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a virtual ESPN commentator sitting on your couch, watching whatever game you point your camera at and calling it live in real-time.</p></div><span class="row-meta">AI / vision</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Auris" target="_blank" rel="noopener noreferrer" aria-label="Open Auris on GitHub in a new tab"></a>
+                    <div class="project-index">04</div><div class="project-main"><div class="row-title"><span>Auris</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a smart medical scribe listening in on your doctor's visit, instantly summarizing diagnoses and translating prescription instructions into clear, friendly audio.</p></div><span class="row-meta">AI / health</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer" aria-label="Open SunkeLo on GitHub in a new tab"></a>
+                    <div class="project-index">05</div><div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p></div><span class="row-meta">AI / voice</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/tally" target="_blank" rel="noopener noreferrer" aria-label="Open Tally on GitHub in a new tab"></a>
+                    <div class="project-index">06</div><div class="project-main"><div class="row-title"><span>Tally</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a digital accountant scanning invoice PDFs to extract the total amount while double-checking its own math to ensure it never makes a mistake.</p></div><span class="row-meta">AI / finance</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer" aria-label="Open SokoFlow on GitHub in a new tab"></a>
+                    <div class="project-index">07</div><div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p></div><span class="row-meta">machine learning</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/nosePrint" target="_blank" rel="noopener noreferrer" aria-label="Open nosePrint on GitHub in a new tab"></a>
+                    <div class="project-index">08</div><div class="project-main"><div class="row-title"><span>nosePrint</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like describing a scent you love to someone who has already smelled every perfume in existence, watching them pull every bottle that shares its character from memory.</p></div><span class="row-meta">AI / vectors</span>
+                </article>
+                <article class="project-row" data-category="web-search" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" rel="noopener noreferrer" aria-label="Open Hoopla on GitHub in a new tab"></a>
+                    <div class="project-index">09</div><div class="project-main"><div class="row-title"><span>Hoopla</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p></div><span class="row-meta">search</span>
+                </article>
+                <article class="project-row" data-category="ai-ml">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" rel="noopener noreferrer" aria-label="Open Fixer on GitHub in a new tab"></a>
+                    <div class="project-index">10</div><div class="project-main"><div class="row-title"><span>Fixer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a virtual coding assistant trapped in a safe digital sandbox, writing, testing, and fixing program loops automatically until they work.</p></div><span class="row-meta">agent</span>
+                </article>
+                <article class="project-row" data-category="web-search" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" rel="noopener noreferrer" aria-label="Open Rashomon on GitHub in a new tab"></a>
+                    <div class="project-index">11</div><div class="project-main"><div class="row-title"><span>Rashomon</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a digital book club where margins come to life, allowing readers to share thoughts and discuss stories in real-time as they read.</p></div><span class="row-meta">web</span>
+                </article>
+                <article class="project-row" data-category="cli-system" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" rel="noopener noreferrer" aria-label="Open ContextClips on GitHub in a new tab"></a>
+                    <div class="project-index">12</div><div class="project-main"><div class="row-title"><span>ContextClips</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a superpowered memory card for your clipboard that instantly finds text you copied hours ago without compromising your privacy.</p></div><span class="row-meta">extension</span>
+                </article>
+                <article class="project-row" data-category="cli-system" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Gator" target="_blank" rel="noopener noreferrer" aria-label="Open Gator on GitHub in a new tab"></a>
+                    <div class="project-index">13</div><div class="project-main"><div class="row-title"><span>Gator</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a terminal-based morning newspaper aggregator that pulls articles from your favorite blogs and stores them in a local library database.</p></div><span class="row-meta">CLI</span>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section section-shell" aria-labelledby="contact-title">
+            <div class="section-label">Final frame</div>
+            <div class="contact-stage">
+                <h2 id="contact-title">Let’s make the next useful thing.</h2>
+                <a class="contact-cta" href="mailto:srinivassivaratri1122@gmail.com">
+                    <span>Start a conversation</span>
+                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                </a>
+            </div>
+            <div class="contact-links" aria-label="Contact links">
+                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://www.boot.dev/u/shallowad54" target="_blank" rel="noopener noreferrer">Boot.dev</a>
+            </div>
+            <footer class="site-footer"><span>© 2025—26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
+        </section>
+    </main>
+
     <dialog id="cli-dialog" class="cli-modal" aria-labelledby="cli-title">
         <div class="cli-window">
             <div class="cli-header">
-                <span class="cli-dot red"></span>
-                <span class="cli-dot yellow"></span>
-                <span class="cli-dot green"></span>
-                <span class="cli-title" id="cli-title">srinivas@personal-site:~</span>
-                <button id="cli-close" class="cli-close-btn" type="button"
-                    aria-label="Close command palette">&times;</button>
+                <div class="cli-lights" aria-hidden="true"><span></span><span></span><span></span></div>
+                <span class="cli-title" id="cli-title">srinivas@screening-room:~</span>
+                <button id="cli-close" class="cli-close-btn" type="button" aria-label="Close command palette">Close</button>
             </div>
             <div class="cli-body">
                 <div class="cli-output" id="cli-output" aria-live="polite">
                     <p class="cli-line banner">Welcome to Srinivas Sivaratri's Interactive CLI. Version 1.0.0.</p>
-                    <p class="cli-line banner">Type 'help' to see list of available commands.</p>
-                    <br>
+                    <p class="cli-line system">Type 'help' to see the available commands.</p>
                 </div>
-                <div class="cli-input-line">
-                    <span class="cli-prompt">srinivas:~ $</span>
-                    <input type="text" id="cli-input" autofocus autocomplete="off" spellcheck="false"
-                        aria-label="Command" placeholder="Type a command">
-                </div>
+                <div class="cli-input-line"><span class="cli-prompt">srinivas:~ $</span><input type="text" id="cli-input" autocomplete="off" spellcheck="false" aria-label="Command" placeholder="Type a command"></div>
             </div>
         </div>
     </dialog>
 
-    <main class="grid">
-        <!-- HERO -->
-        <header class="row hero">
-            <h1 class="hero-title">
-                <span>SRINIVAS</span>
-                <span>SIVARATRI</span>
-            </h1>
-            <div class="hero-meta">
-                <span>Autodidact</span>
-                <button class="cli-hint" type="button" aria-haspopup="dialog" aria-controls="cli-dialog"
-                    aria-expanded="false">
-                    Open CLI <span aria-hidden="true">⌘K</span>
-                </button>
-                <span>[SCROLL FOR DATA]</span>
-            </div>
-        </header>
-
-        <!-- TECHNICAL SKILLS -->
-        <h2 class="section-header">Technical skills</h2>
-
-        <div class="item" style="grid-template-columns: 1fr;">
-            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <button class="skill-tag" type="button">Python</button>
-                <button class="skill-tag" type="button">Go</button>
-                <button class="skill-tag" type="button">TypeScript</button>
-                <button class="skill-tag" type="button">JavaScript</button>
-                <button class="skill-tag" type="button">C</button>
-                <button class="skill-tag" type="button">SQL</button>
-                <button class="skill-tag" type="button">Linux</button>
-                <button class="skill-tag" type="button">Docker</button>
-                <button class="skill-tag" type="button">CI/CD</button>
-                <button class="skill-tag" type="button">Git</button>
-                <button class="skill-tag" type="button">HTTP Servers</button>
-                <button class="skill-tag" type="button">REST APIs</button>
-                <button class="skill-tag" type="button">RAG</button>
-                <button class="skill-tag" type="button">DSA</button>
-                <button class="skill-tag" type="button">Memory Management</button>
-            </div>
-        </div>
-
-        <!-- WORK -->
-        <h2 class="section-header">Open source</h2>
-
-        <div class="opensource-filters" role="group" aria-label="Open source categories">
-            <button class="filter-btn active" type="button" data-filter="contributions"
-                aria-pressed="true">Contributions</button>
-            <button class="filter-btn" type="button" data-filter="enterprise"
-                aria-pressed="false">Enterprise</button>
-        </div>
-
-        <div id="opensource-list">
-            <div class="item" data-category="contributions">
-                <a href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" class="item-link"></a>
-                <div class="item-title">Better-Auth</div>
-                <div class="item-desc">Stopped email enumeration at sign-in. An unknown email paired with a leaked
-                    password used to reveal which emails were registered (the haveIBeenPwned check fired before the
-                    generic error). Added a request-scoped skip-flag so dummy hashes never trip it, plus a regression
-                    test. Covers every app using the plugin.</div>
-                <div class="item-year">2025</div>
-            </div>
-
-            <div class="item" data-category="contributions">
-                <a href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" class="item-link"></a>
-                <div class="item-title">Go-Ethereum</div>
-                <div class="item-desc">Added a `geth db truncate-freezer` subcommand for archive nodes. Binary-searches
-                    the merge block, keeps headers, drops pre-merge bodies to reclaim disk. Reuses the existing
-                    truncation primitive and includes tests.</div>
-                <div class="item-year">2025</div>
-            </div>
-
-            <div class="item" data-category="enterprise" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <div class="item-title">Accenture</div>
-                <div class="item-desc">Built ETL pipelines. Sped up DBs. Automated ops: -50hrs/mo.</div>
-                <div class="item-year">2021</div>
-            </div>
-        </div>
-
-        <!-- PROJECTS -->
-        <h2 class="section-header" id="projects">Projects</h2>
-
-        <div class="project-filters" role="group" aria-label="Project categories">
-            <button class="filter-btn active" type="button" data-filter="ai-ml" aria-pressed="true">AI & ML</button>
-            <button class="filter-btn" type="button" data-filter="web-search"
-                aria-pressed="false">Web & Search</button>
-            <button class="filter-btn" type="button" data-filter="cli-system"
-                aria-pressed="false">CLI & System</button>
-        </div>
-
-        <div id="projects-list">
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" class="item-link"></a>
-                <div class="item-title">Fuzz</div>
-                <div class="item-desc">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</div>
-                <div class="item-year">AI/GAME</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/catBox" target="_blank" class="item-link"></a>
-                <div class="item-title">catBox</div>
-                <div class="item-desc">Like opening Schrödinger's famous box, where a split-second AI calculation decides if you find a cozy cat or an empty space.</div>
-                <div class="item-year">AI/IMAGE</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/playcast" target="_blank" class="item-link"></a>
-                <div class="item-title">Playcast</div>
-                <div class="item-desc">Like a virtual ESPN commentator sitting on your couch, watching whatever game you point your camera at and calling it live in real-time.</div>
-                <div class="item-year">AI/VISION</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/Auris" target="_blank" class="item-link"></a>
-                <div class="item-title">Auris</div>
-                <div class="item-desc">Like a smart medical scribe listening in on your doctor's visit, instantly summarizing diagnoses and translating prescription instructions into clear, friendly audio.</div>
-                <div class="item-year">AI/HEALTH</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" class="item-link"></a>
-                <div class="item-title">SunkeLo</div>
-                <div class="item-desc">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</div>
-                <div class="item-year">AI/VOICE</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/tally" target="_blank" class="item-link"></a>
-                <div class="item-title">Tally</div>
-                <div class="item-desc">Like a digital accountant scanning invoice PDFs to extract the total amount while double-checking its own math to ensure it never makes a mistake.</div>
-                <div class="item-year">AI/FIN</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" class="item-link"></a>
-                <div class="item-title">SokoFlow</div>
-                <div class="item-desc">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</div>
-                <div class="item-year">ML</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/nosePrint" target="_blank" class="item-link"></a>
-                <div class="item-title">nosePrint</div>
-                <div class="item-desc">Like describing a scent you love to someone who has already smelled every perfume in existence, watching them pull every bottle that shares its character from memory.</div>
-                <div class="item-year">AI/VEC</div>
-            </div>
-
-            <div class="item" data-category="web-search" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <a href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" class="item-link"></a>
-                <div class="item-title">Hoopla</div>
-                <div class="item-desc">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</div>
-                <div class="item-year">SEARCH</div>
-            </div>
-
-            <div class="item" data-category="ai-ml">
-                <a href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" class="item-link"></a>
-                <div class="item-title">Fixer</div>
-                <div class="item-desc">Like a virtual coding assistant trapped in a safe digital sandbox, writing, testing, and fixing program loops automatically until they work.</div>
-                <div class="item-year">AGENT</div>
-            </div>
-
-            <div class="item" data-category="web-search" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <a href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" class="item-link"></a>
-                <div class="item-title">Rashomon</div>
-                <div class="item-desc">Like a digital book club where margins come to life, allowing readers to share thoughts and discuss stories in real-time as they read.</div>
-                <div class="item-year">WEB</div>
-            </div>
-
-            <div class="item" data-category="cli-system" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <a href="https://github.com/sivaratrisrinivas/contextclips" target="_blank" class="item-link"></a>
-                <div class="item-title">ContextClips</div>
-                <div class="item-desc">Like a superpowered memory card for your clipboard that instantly finds text you copied hours ago without compromising your privacy.</div>
-                <div class="item-year">EXT</div>
-            </div>
-
-            <div class="item" data-category="cli-system" style="display: none; opacity: 0; transform: scale(0.98); pointer-events: none;">
-                <a href="https://github.com/sivaratrisrinivas/Gator" target="_blank" class="item-link"></a>
-                <div class="item-title">Gator</div>
-                <div class="item-desc">Like a terminal-based morning newspaper aggregator that pulls articles from your favorite blogs and stores them in a local library database.</div>
-                <div class="item-year">CLI</div>
-            </div>
-        </div>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div class="links">
-                <a href="mailto:srinivassivaratri1122@gmail.com" class="contact-link">EMAIL</a>
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">GITHUB</a>
-                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">TWITTER</a>
-                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank"
-                    rel="noopener noreferrer" class="contact-link">LINKEDIN</a>
-                <a href="https://www.boot.dev/u/shallowad54" target="_blank" rel="noopener noreferrer"
-                    class="contact-link">BOOT.DEV</a>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // Custom cursor and mouse glow
-        const cursor = document.getElementById('cursor');
-        const root = document.documentElement;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const canUseCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches
-            && !prefersReducedMotion;
-        let mouse = { x: 0, y: 0 };
-        let pos = { x: 0, y: 0 };
-        const speed = 0.15;
-
-        function updateCursorActive() {
-            const links = document.querySelectorAll('a, .item, .filter-btn, .cli-hint, .cli-close-btn, .skill-tag');
-            links.forEach(link => {
-                link.removeEventListener('mouseenter', addCursorActive);
-                link.removeEventListener('mouseleave', removeCursorActive);
-                link.addEventListener('mouseenter', addCursorActive);
-                link.addEventListener('mouseleave', removeCursorActive);
-            });
-        }
-
-        function addCursorActive() { cursor.classList.add('active'); }
-        function removeCursorActive() { cursor.classList.remove('active'); }
-
-        if (canUseCustomCursor) {
-            document.addEventListener('mousemove', (event) => {
-                mouse.x = event.clientX;
-                mouse.y = event.clientY;
-                root.style.setProperty('--mouse-x', `${event.clientX}px`);
-                root.style.setProperty('--mouse-y', `${event.clientY}px`);
-                document.body.classList.add('cursor-ready');
-            });
-
-            function loop() {
-                pos.x += (mouse.x - pos.x) * speed;
-                pos.y += (mouse.y - pos.y) * speed;
-                cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
-                requestAnimationFrame(loop);
-            }
-
-            loop();
-            updateCursorActive();
-        }
-
-        document.querySelectorAll('.item-link').forEach((link) => {
-            const title = link.parentElement.querySelector('.item-title')?.textContent.trim();
-            link.setAttribute('aria-label', `Open ${title} in a new tab`);
-            link.setAttribute('rel', 'noopener noreferrer');
-        });
-
-        // Reusable Filter Setup Helper
-        function setupFiltering(filterContainerSelector, listContainerSelector) {
-            const filterButtons = document.querySelectorAll(`${filterContainerSelector} .filter-btn`);
-            const items = document.querySelectorAll(`${listContainerSelector} .item`);
-
-            items.forEach(item => {
-                item.setAttribute('aria-hidden', item.style.display === 'none' ? 'true' : 'false');
-            });
-
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const category = btn.getAttribute('data-filter');
-
-                    filterButtons.forEach(b => {
-                        b.classList.remove('active');
-                        b.setAttribute('aria-pressed', 'false');
-                    });
-                    btn.classList.add('active');
-                    btn.setAttribute('aria-pressed', 'true');
-
-                    items.forEach(item => {
-                        const itemCat = item.getAttribute('data-category');
-                        const match = itemCat === category;
-
-                        if (match) {
-                            if (item.style.display === 'none') {
-                                item.style.display = 'grid';
-                                // Force reflow
-                                void item.offsetHeight;
-                            }
-                            item.style.opacity = '1';
-                            item.style.transform = 'scale(1)';
-                            item.style.pointerEvents = 'auto';
-                            item.setAttribute('aria-hidden', 'false');
-                        } else {
-                            item.style.opacity = '0';
-                            item.style.transform = 'scale(0.98)';
-                            item.style.pointerEvents = 'none';
-                            item.setAttribute('aria-hidden', 'true');
-
-                            const handleTransitionEnd = (e) => {
-                                if (e.propertyName === 'opacity') {
-                                    if (item.style.opacity === '0') {
-                                        item.style.display = 'none';
-                                    }
-                                    item.removeEventListener('transitionend', handleTransitionEnd);
-                                }
-                            };
-                            item.addEventListener('transitionend', handleTransitionEnd);
-                        }
-                    });
-                });
-            });
-        }
-
-        // Initialize filtering for all lists
-        setupFiltering('.project-filters', '#projects-list');
-        setupFiltering('.opensource-filters', '#opensource-list');
-
-        // Clickable Skill Tags filtering & scrolling integration
-        const skillTags = document.querySelectorAll('.skill-tag');
-        const skillCategoryMap = {
-            'Python': 'ai-ml',
-            'Go': 'cli-system',
-            'TypeScript': 'ai-ml',
-            'JavaScript': 'web-search',
-            'C': 'cli-system',
-            'SQL': 'cli-system',
-            'RAG': 'web-search',
-            'Docker': 'cli-system',
-            'CI/CD': 'cli-system',
-            'Git': 'cli-system',
-            'Linux': 'cli-system',
-            'HTTP Servers': 'web-search',
-            'REST APIs': 'web-search',
-            'Memory Management': 'cli-system',
-            'DSA': 'ai-ml'
-        };
-
-        skillTags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                const skillText = tag.textContent.trim();
-                const targetCategory = skillCategoryMap[skillText];
-
-                if (targetCategory) {
-                    const filterBtn = document.querySelector(`.filter-btn[data-filter="${targetCategory}"]`);
-                    if (filterBtn) {
-                        filterBtn.click();
-                        document.getElementById('projects-list').scrollIntoView({
-                            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
-        });
-
-        // CLI Dialog Controller & Command Executor
-        const cliDialog = document.getElementById('cli-dialog');
-        const cliInput = document.getElementById('cli-input');
-        const cliOutput = document.getElementById('cli-output');
-        const cliClose = document.getElementById('cli-close');
-        const cliHint = document.querySelector('.cli-hint');
-
-        function openCLI() {
-            cliDialog.showModal();
-            cliInput.value = '';
-            cliInput.focus();
-            cliHint.setAttribute('aria-expanded', 'true');
-            if (canUseCustomCursor) updateCursorActive();
-        }
-
-        function closeCLI() {
-            cliDialog.close();
-        }
-
-        // Key combos (Cmd+K or Ctrl+K)
-        document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                if (cliDialog.open) {
-                    closeCLI();
-                } else {
-                    openCLI();
-                }
-            }
-        });
-
-        cliHint.addEventListener('click', openCLI);
-        cliClose.addEventListener('click', closeCLI);
-        cliDialog.addEventListener('close', () => {
-            cliHint.setAttribute('aria-expanded', 'false');
-            cliHint.focus();
-        });
-
-        // Close on backdrop clicks
-        cliDialog.addEventListener('click', (e) => {
-            if (e.target === cliDialog) {
-                closeCLI();
-            }
-        });
-
-        // Command Runner Log
-        function outputLine(text, type = '') {
-            const line = document.createElement('p');
-            line.className = `cli-line ${type}`;
-            line.textContent = text;
-            cliOutput.appendChild(line);
-            cliOutput.scrollTop = cliOutput.scrollHeight;
-        }
-
-        cliInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const inputVal = cliInput.value.trim();
-                cliInput.value = '';
-                
-                if (!inputVal) return;
-
-                outputLine(`srinivas:~ $ ${inputVal}`, 'user');
-                processCommand(inputVal);
-            }
-        });
-
-        function processCommand(cmdLine) {
-            const parts = cmdLine.toLowerCase().split(' ');
-            const cmd = parts[0];
-            const args = parts.slice(1);
-
-            switch (cmd) {
-                case 'help':
-                    outputLine('Available Commands:', 'success');
-                    outputLine('  about       - Tell me about Srinivas Sivaratri');
-                    outputLine('  projects    - View list of portfolio projects');
-                    outputLine('  skills      - List core engineering capabilities');
-                    outputLine('  contact     - View contact coordinates');
-                    outputLine('  theme [arg] - Change site theme (e.g. "theme light", "theme dark")');
-                    outputLine('  clear       - Wipe the console history');
-                    outputLine('  close       - Close the console modal');
-                    break;
-                case 'about':
-                    outputLine('Srinivas Sivaratri - Engineering & AI Solutions.', 'success');
-                    outputLine('Autodidact developer focused on AI-assisted engineering, open source tools, and scalable web architectures.');
-                    break;
-                case 'projects':
-                    outputLine('Core Projects:', 'success');
-                    outputLine('  Fuzz         - Scrambled-wave text diffusion reconstruction game.');
-                    outputLine('  catBox       - Schrödinger\'s cat image-generation local SD-Turbo boundary.');
-                    outputLine('  Playcast     - Live AI sports commentator (Gemini Vision + ElevenLabs).');
-                    outputLine('  Auris        - AI medical consultation transcriber and patient notes generator.');
-                    outputLine('  SunkeLo      - Voice-first regional product reviews parser.');
-                    outputLine('Type "projects" category filters inside the website grids for complete source codes.');
-                    break;
-                case 'skills':
-                    outputLine('Technical Skills Stack:', 'success');
-                    outputLine('  Languages  : Python, Go, TypeScript, JavaScript, C, SQL');
-                    outputLine('  Platform   : Linux, Docker, Git, CI/CD, REST APIs, HTTP Servers');
-                    outputLine('  Specialties: RAG, DSA, Memory Management');
-                    break;
-                case 'contact':
-                    outputLine('Find Srinivas:', 'success');
-                    outputLine('  Email    : srinivassivaratri1122@gmail.com');
-                    outputLine('  GitHub   : github.com/sivaratrisrinivas');
-                    outputLine('  Twitter  : x.com/SrinivasSi78619');
-                    outputLine('  LinkedIn : linkedin.com/in/srinivas-sivaratri-3a0a32162');
-                    break;
-                case 'theme':
-                    const themeName = args[0];
-                    if (themeName === 'light') {
-                        document.documentElement.style.setProperty('--bg', '#f4f4f4');
-                        document.documentElement.style.setProperty('--surface', '#e7e7e7');
-                        document.documentElement.style.setProperty('--fg', '#0f0f0f');
-                        document.documentElement.style.setProperty('--dim', '#666');
-                        document.documentElement.style.setProperty('--accent', '#b52300');
-                        document.documentElement.style.setProperty('--line', '#ddd');
-                        document.documentElement.style.setProperty('--focus', '#7a1400');
-                        outputLine('Theme swapped to Light.', 'success');
-                    } else if (themeName === 'dark') {
-                        document.documentElement.style.setProperty('--bg', '#080808');
-                        document.documentElement.style.setProperty('--surface', '#101010');
-                        document.documentElement.style.setProperty('--fg', '#f0f0ed');
-                        document.documentElement.style.setProperty('--dim', '#a3a3a0');
-                        document.documentElement.style.setProperty('--accent', '#ff2a00');
-                        document.documentElement.style.setProperty('--line', '#2b2b2b');
-                        document.documentElement.style.setProperty('--focus', '#ffb7a8');
-                        outputLine('Theme swapped back to Dark.', 'success');
-                    } else {
-                        outputLine('Error: Invalid theme name. Try "theme light" or "theme dark".', 'error');
-                    }
-                    break;
-                case 'clear':
-                    cliOutput.innerHTML = '';
-                    break;
-                case 'close':
-                    closeCLI();
-                    break;
-                default:
-                    outputLine(`cli: command not found: ${cmd}. Type 'help' for options.`, 'error');
-            }
-        }
-    </script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>

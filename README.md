@@ -1,15 +1,16 @@
 # Personal Portfolio
 
-Minimalist dark portfolio. Pure HTML/CSS/JS, no frameworks.
+A cinematic screening-room portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, no frameworks.
 
 ## Sections
 
 1. **Hero** — Name + tagline
-2. **Marquee** — Scrolling keywords (AI-Assisted Engineering, Dev Tools, Open Source)
-3. **Technical Skills** — Hoverable skill tags (Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, Memory Management)
-4. **Open Source** — Better-Auth, Go-Ethereum, Accenture
-5. **Projects** — Fuzz, catBox, Playcast, Auris, SunkeLo, Tally, SokoFlow, Hoopla, Fixer, Rashomon, ContextClips, Gator
-6. **Footer** — Contact links (Email, GitHub, Twitter, LinkedIn, Boot.dev)
+2. **Focus ticker** — AI-Assisted Engineering, Dev Tools, Open Source, Systems Thinking
+3. **Technical skills** — Clickable capability tags for Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, and Memory Management
+4. **Open Source** — Filterable Better-Auth, Go-Ethereum, and Accenture work
+5. **Projects** — Filterable Fuzz, catBox, Playcast, Auris, SunkeLo, Tally, SokoFlow, Hoopla, Fixer, Rashomon, ContextClips, and Gator
+6. **Contact** — Email, GitHub, Twitter, LinkedIn, and Boot.dev
+7. **CLI** — Command palette opened with the button or Cmd/Ctrl+K
 
 ## Quick Start
 
@@ -22,9 +23,9 @@ python -m http.server 8000
 
 ```
 personal-site/
-├── index.html      # Live site: markup + inline styles + script
-├── css/style.css   # Alternate earth-tone theme (unused)
-├── js/script.js    # Alternate interactions (unused)
+├── index.html      # Live site markup
+├── css/style.css   # Cinematic visual system and responsive layout
+├── js/script.js    # Filters, smooth navigation, cursor, and CLI
 └── README.md
 ```
 
@@ -34,9 +35,9 @@ Push to GitHub → enable GitHub Pages on `main` branch. Or drag-drop to Netlify
 
 ## Tech
 
-- HTML5 / CSS3 (inline) / Vanilla JS
-- Fonts: Manrope + Space Mono (Google Fonts)
-- Custom cursor, marquee animation, responsive grid
+- HTML5 / CSS3 / Vanilla JS
+- Fonts: Syne + DM Mono (Google Fonts)
+- Custom cursor, spotlight stage, marquee ticker, responsive layout, accessible dialog
 
 ---
 
