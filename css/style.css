@@ -133,7 +133,8 @@ code {
     pointer-events: none;
     opacity: 0;
     mix-blend-mode: screen;
-    transform: translate(-50%, -50%);
+    transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%);
+    will-change: transform;
     transition: transform 220ms var(--ease-out), background 220ms var(--ease-out), opacity 180ms ease;
 }
 
@@ -143,7 +144,7 @@ body.cursor-ready .cursor-orb {
 
 body.cursor-ready .cursor-orb.is-active {
     background: rgba(230, 173, 79, 0.12);
-    transform: translate(-50%, -50%) scale(2.9);
+    transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(2.9);
 }
 
 .ambient-light {
@@ -989,7 +990,7 @@ h2 {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    * { cursor: none; }
+    body.custom-cursor-enabled * { cursor: none; }
 }
 
 @media (hover: none), (pointer: coarse) {

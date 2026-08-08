@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const root = document.documentElement;
 
     if (canUseCustomCursor && cursor) {
+        document.body.classList.add("custom-cursor-enabled");
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let cursorX = mouseX;
@@ -15,14 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
             mouseY = event.clientY;
             root.style.setProperty("--mouse-x", `${mouseX}px`);
             root.style.setProperty("--mouse-y", `${mouseY}px`);
+            root.style.setProperty("--cursor-x", `${mouseX}px`);
+            root.style.setProperty("--cursor-y", `${mouseY}px`);
             document.body.classList.add("cursor-ready");
         });
 
         const moveCursor = () => {
             cursorX += (mouseX - cursorX) * 0.16;
             cursorY += (mouseY - cursorY) * 0.16;
-            cursor.style.left = `${cursorX}px`;
-            cursor.style.top = `${cursorY}px`;
+            root.style.setProperty("--cursor-x", `${cursorX}px`);
+            root.style.setProperty("--cursor-y", `${cursorY}px`);
             requestAnimationFrame(moveCursor);
         };
 
