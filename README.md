@@ -8,7 +8,7 @@ A cinematic screening-room portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, n
 2. **Focus ticker** — AI-Assisted Engineering, Dev Tools, Open Source, Systems Thinking
 3. **Technical skills** — Clickable capability tags for Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, and Memory Management
 4. **Open Source** — Filterable Better-Auth, Go-Ethereum, and Accenture work
-5. **Projects** — Filterable Fuzz, catBox, SunkeLo, Tally, SokoFlow, nosePrint, Hoopla, Fixer, Rashomon, and Gator
+5. **Projects** — Filterable Fuzz, catBox, SunkeLo, SokoFlow, Fixer, nosePrint, Hoopla, Rashomon, Tally, and Gator
 6. **Hackathons** — POSTDATED, the Push to Prod insurance-forecast build
 7. **Contact** — Email, GitHub, Twitter, LinkedIn, and Boot.dev
 8. **CLI** — Command palette opened with the button or Cmd/Ctrl+K
