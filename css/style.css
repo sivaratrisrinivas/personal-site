@@ -771,23 +771,6 @@ h2 {
     line-height: 1.65;
 }
 
-.row-inline-link {
-    position: relative;
-    z-index: 2;
-    color: var(--amber-soft);
-    text-decoration: underline;
-    text-decoration-color: var(--line-bright);
-    text-underline-offset: 3px;
-    white-space: nowrap;
-    transition: color 180ms ease, text-decoration-color 180ms ease;
-}
-
-.row-inline-link:hover,
-.row-inline-link:focus-visible {
-    color: var(--amber);
-    text-decoration-color: var(--amber);
-}
-
 .row-meta {
     justify-self: end;
     color: var(--faint);
