@@ -647,7 +647,8 @@ h2 {
 }
 
 .evidence-section,
-.projects-section {
+.projects-section,
+.hackathons-section {
     border-bottom: 1px solid var(--line);
 }
 
@@ -768,6 +769,23 @@ h2 {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     line-height: 1.65;
+}
+
+.row-inline-link {
+    position: relative;
+    z-index: 2;
+    color: var(--amber-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--line-bright);
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.row-inline-link:hover,
+.row-inline-link:focus-visible {
+    color: var(--amber);
+    text-decoration-color: var(--amber);
 }
 
 .row-meta {

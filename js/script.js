@@ -173,8 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 outputLine("Core projects:", "success");
                 outputLine("  Fuzz      - Scrambled-wave text diffusion reconstruction game.");
                 outputLine("  catBox    - Schrödinger's cat image-generation boundary.");
-                outputLine("  Playcast  - Live AI sports commentator.");
-                outputLine("  Auris     - AI medical consultation transcriber and notes generator.");
+                outputLine("  SunkeLo   - Voice-based product review aggregator.");
                 outputLine("Use the category controls on the page for the complete archive.");
                 break;
             case "skills":
