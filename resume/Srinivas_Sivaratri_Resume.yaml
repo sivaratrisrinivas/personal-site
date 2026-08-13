@@ -43,6 +43,7 @@ cv:
         date: 2026 · Flagship
         summary: Next.js, TypeScript, React, Anthropic SDK, Vitest
         highlights:
+          - Selected as one of approximately 150 builders from 5,000+ applications (about 3%) for the five-hour Push to Prod hackathon in Bengaluru.
           - Turns hospital paperwork into predicted insurance disallowances while recoverable gaps can still be fixed, converting each line into a document request or question for the doctor.
           - Separated multimodal extraction from deterministic policy arithmetic and a negation-aware medical-claim guard; covered the money and guard paths with 38 tests.
       - name: '[Fuzz](https://github.com/sivaratrisrinivas/fuzz)'
