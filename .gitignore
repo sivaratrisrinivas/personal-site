@@ -33,6 +33,7 @@ bower_components/
 dist/
 build/
 .cache/
+resume/rendercv_output/
 
 # Environment variables
 .env

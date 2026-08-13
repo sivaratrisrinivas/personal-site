@@ -6,12 +6,13 @@ A cinematic screening-room portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, n
 
 1. **Hero** — Name + tagline
 2. **Focus ticker** — AI-Assisted Engineering, Dev Tools, Open Source, Systems Thinking
-3. **Technical skills** — Clickable capability tags for Python, Go, TypeScript, JS, C, SQL, Linux, Docker, CI/CD, Git, HTTP Servers, REST APIs, RAG, DSA, and Memory Management
+3. **Technical skills** — Clickable Systems, Services, and AI capability groups
 4. **Open Source** — Filterable Better-Auth, Go-Ethereum, and Accenture work
-5. **Projects** — Filterable Fuzz, catBox, SunkeLo, SokoFlow, Fixer, nosePrint, Hoopla, Rashomon, Tally, and Gator
-6. **Hackathons** — POSTDATED, the Push to Prod insurance-forecast build
-7. **Contact** — Email, GitHub, Twitter, LinkedIn, and Boot.dev
-8. **CLI** — Command palette opened with the button or Cmd/Ctrl+K
+5. **How I build** — Domain modelling, adversarial review, vertical slices, and diff-level verification
+6. **Feature presentation** — POSTDATED, with a live demo and design write-up
+7. **Projects** — Filterable Fuzz, catBox, SunkeLo, SokoFlow, Fixer, nosePrint, Hoopla, Rashomon, Tally, and Gator
+8. **Contact** — Email, GitHub, Twitter, LinkedIn, Boot.dev, and résumé PDF
+9. **CLI** — Command palette opened with the button or Cmd/Ctrl+K
 
 ## Quick Start
 
@@ -27,7 +28,8 @@ personal-site/
 ├── index.html      # Live site markup
 ├── css/style.css   # Cinematic visual system and responsive layout
 ├── js/script.js    # Filters, smooth navigation, cursor, and CLI
-├── assets/         # Generated brand mark used in the header and browser tab
+├── assets/         # Brand assets, Open Graph image, and résumé PDF
+├── resume/         # RenderCV source and generated résumé artifacts
 └── README.md
 ```
 

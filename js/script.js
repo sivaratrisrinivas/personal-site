@@ -97,11 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
         Linux: "cli-system",
         Docker: "cli-system",
         "CI/CD": "cli-system",
-        Git: "cli-system",
         "HTTP Servers": "web-search",
         "REST APIs": "web-search",
         RAG: "web-search",
-        DSA: "ai-ml",
+        "LLM Integration": "ai-ml",
+        "Multimodal AI": "ai-ml",
         "Memory Management": "cli-system",
     };
 
@@ -138,6 +138,19 @@ document.addEventListener("DOMContentLoaded", () => {
         cliOutput.scrollTop = cliOutput.scrollHeight;
     };
 
+    const outputLink = (text, href) => {
+        const line = document.createElement("p");
+        const link = document.createElement("a");
+        line.className = "cli-line success";
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = text;
+        line.appendChild(link);
+        cliOutput.appendChild(line);
+        cliOutput.scrollTop = cliOutput.scrollHeight;
+    };
+
     const closeCLI = () => {
         if (cliDialog.open) cliDialog.close();
     };
@@ -161,6 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 outputLine("  projects    - View the portfolio project list");
                 outputLine("  skills      - List core engineering capabilities");
                 outputLine("  contact     - View contact coordinates");
+                outputLine("  resume      - Open the résumé PDF");
                 outputLine("  theme [arg] - Switch between light and dark modes");
                 outputLine("  clear       - Wipe the console history");
                 outputLine("  close       - Close the console modal");
@@ -171,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
             case "projects":
                 outputLine("Core projects:", "success");
+                outputLine("  POSTDATED - Predicts insurance disallowances while paperwork can still be fixed.");
                 outputLine("  Fuzz      - Scrambled-wave text diffusion reconstruction game.");
                 outputLine("  catBox    - Schrödinger's cat image-generation boundary.");
                 outputLine("  SunkeLo   - Voice-based product review aggregator.");
@@ -179,8 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
             case "skills":
                 outputLine("Technical skills stack:", "success");
                 outputLine("  Languages  : Python, Go, TypeScript, JavaScript, C, SQL");
-                outputLine("  Platform   : Linux, Docker, Git, CI/CD, REST APIs, HTTP Servers");
-                outputLine("  Specialties: RAG, DSA, Memory Management");
+                outputLine("  Platform   : Linux, Docker, CI/CD, REST APIs, HTTP Servers");
+                outputLine("  Specialties: RAG, LLM Integration, Multimodal AI, Memory Management");
                 break;
             case "contact":
                 outputLine("Find Srinivas:", "success");
@@ -188,6 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 outputLine("  GitHub   : github.com/sivaratrisrinivas");
                 outputLine("  Twitter  : x.com/SrinivasSi78619");
                 outputLine("  LinkedIn : linkedin.com/in/srinivas-sivaratri-3a0a32162");
+                break;
+            case "resume":
+                outputLine("Résumé ready:", "success");
+                outputLink("Open Srinivas Sivaratri — Résumé (PDF)", "assets/srinivas-sivaratri-resume.pdf");
                 break;
             case "theme":
                 if (argument === "light" || argument === "dark") {

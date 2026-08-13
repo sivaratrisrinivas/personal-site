@@ -7,6 +7,17 @@
     <meta name="description"
         content="Srinivas Sivaratri is a self-directed engineer building practical AI systems, developer tools, and open-source software." />
     <meta name="theme-color" content="#0c0a09" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Srinivas Sivaratri — Engineer" />
+    <meta property="og:description" content="Practical AI systems, developer tools, upstream contributions, and one flagship product built for the real world." />
+    <meta property="og:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Srinivas Sivaratri — Practical systems. Evidence on screen." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Srinivas Sivaratri — Engineer" />
+    <meta name="twitter:description" content="Practical AI systems, developer tools, upstream contributions, and one flagship product built for the real world." />
+    <meta name="twitter:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
     <title>Srinivas Sivaratri — Engineer</title>
 
     <link rel="icon" type="image/png" href="assets/screening-mark.png" />
@@ -21,7 +32,7 @@
 
 <body>
     <!-- THESIS: A screening room for the evidence behind an engineer's practice; it refuses the generic portfolio card wall. OWN-WORLD: A midnight stage of soot, bone, and projector amber, with film-strip pacing, editorial type, and precise production marks. STORY: Visitors understand the focus, inspect shipped work, and leave with a direct contact path. FIRST VIEWPORT: A full-height stage places the name in a cone of light, the work CTA at lower left, and a command-palette invitation at lower right. FORM: Direction 6 — cinematic screening room; seed key 4c48d74a. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md -->
-    <a class="skip-link" href="#projects">Skip to projects</a>
+    <a class="skip-link" href="#work">Skip to projects</a>
     <div class="cursor-orb" aria-hidden="true"></div>
     <div class="ambient-light" aria-hidden="true"></div>
 
@@ -33,6 +44,7 @@
         <nav class="site-nav" aria-label="Primary navigation">
             <a href="#work">Work</a>
             <a href="#open-source">Open source</a>
+            <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
             <a href="#contact">Contact</a>
         </nav>
         <button class="cli-hint" type="button" aria-haspopup="dialog" aria-controls="cli-dialog" aria-expanded="false">
@@ -61,7 +73,7 @@
                 <p class="hero-statement">Practical AI systems, developer tools, and open-source contributions — built close to the metal and useful in the real world.</p>
             </div>
             <div class="hero-footer">
-                <a class="primary-action" href="#projects">
+                <a class="primary-action" href="#work">
                     <span>View the work</span>
                     <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
                 </a>
@@ -98,8 +110,13 @@
             <dl class="signal-ledger">
                 <div><dt>Focus</dt><dd>AI systems / dev tools</dd></div>
                 <div><dt>Method</dt><dd>Learn by shipping</dd></div>
-                <div><dt>Proof</dt><dd>Projects + merged work</dd></div>
+                <div><dt>Proof</dt><dd>Projects + upstream contributions</dd></div>
             </dl>
+            <p class="availability-line">
+                <strong>Available</strong> — open to remote full-time or contract engineering roles
+                <span class="availability-sep" aria-hidden="true">·</span>
+                Based in India · UTC+5:30 (IST) · comfortable overlapping APAC and European time zones
+            </p>
         </section>
 
         <section class="capabilities section-shell" aria-labelledby="capabilities-title">
@@ -108,29 +125,44 @@
                 <h2 id="capabilities-title">Tools for making the invisible legible.</h2>
                 <p>Select a capability to jump to its closest body of work.</p>
             </div>
-            <div class="skill-cloud" role="list" aria-label="Technical skills">
-                <button class="skill-tag" type="button" role="listitem" data-skill="Python">Python</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="Go">Go</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="TypeScript">TypeScript</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="JavaScript">JavaScript</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="C">C</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="SQL">SQL</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="Linux">Linux</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="Docker">Docker</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="CI/CD">CI/CD</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="Git">Git</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="HTTP Servers">HTTP Servers</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="REST APIs">REST APIs</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="RAG">RAG</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="DSA">DSA</button>
-                <button class="skill-tag" type="button" role="listitem" data-skill="Memory Management">Memory Management</button>
+            <div class="skill-ledger" aria-label="Technical skills">
+                <section class="skill-cluster" aria-labelledby="systems-skills-title">
+                    <h3 id="systems-skills-title">Systems</h3>
+                    <div class="skill-group">
+                        <button class="skill-tag" type="button" data-skill="Go">Go</button>
+                        <button class="skill-tag" type="button" data-skill="C">C</button>
+                        <button class="skill-tag" type="button" data-skill="Linux">Linux</button>
+                        <button class="skill-tag" type="button" data-skill="Memory Management">Memory Management</button>
+                    </div>
+                </section>
+                <section class="skill-cluster" aria-labelledby="services-skills-title">
+                    <h3 id="services-skills-title">Services</h3>
+                    <div class="skill-group">
+                        <button class="skill-tag" type="button" data-skill="Python">Python</button>
+                        <button class="skill-tag" type="button" data-skill="TypeScript">TypeScript</button>
+                        <button class="skill-tag" type="button" data-skill="JavaScript">JavaScript</button>
+                        <button class="skill-tag" type="button" data-skill="SQL">SQL</button>
+                        <button class="skill-tag" type="button" data-skill="HTTP Servers">HTTP Servers</button>
+                        <button class="skill-tag" type="button" data-skill="REST APIs">REST APIs</button>
+                        <button class="skill-tag" type="button" data-skill="Docker">Docker</button>
+                        <button class="skill-tag" type="button" data-skill="CI/CD">CI/CD</button>
+                    </div>
+                </section>
+                <section class="skill-cluster" aria-labelledby="ai-skills-title">
+                    <h3 id="ai-skills-title">AI</h3>
+                    <div class="skill-group">
+                        <button class="skill-tag" type="button" data-skill="RAG">RAG</button>
+                        <button class="skill-tag" type="button" data-skill="LLM Integration">LLM Integration</button>
+                        <button class="skill-tag" type="button" data-skill="Multimodal AI">Multimodal AI</button>
+                    </div>
+                </section>
             </div>
         </section>
 
         <section id="open-source" class="evidence-section section-shell" aria-labelledby="open-source-title">
-            <div class="section-label">Merged work</div>
+            <div class="section-label">Upstream impact</div>
             <div class="section-heading-row">
-                <h2 id="open-source-title">Open source, in the cut.</h2>
+                <h2 id="open-source-title">Bugs found, fixes proposed, approaches adopted.</h2>
                 <div class="filter-set" role="group" aria-label="Open source categories">
                     <button class="filter-btn is-active" type="button" data-filter="contributions" aria-pressed="true">Contributions</button>
                     <button class="filter-btn" type="button" data-filter="enterprise" aria-pressed="false">Enterprise</button>
@@ -138,15 +170,17 @@
             </div>
             <div id="opensource-list" class="evidence-list">
                 <article class="evidence-row" data-category="contributions">
-                    <a class="row-link" href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" rel="noopener noreferrer" aria-label="Open Better-Auth pull request in a new tab"></a>
-                    <div class="row-title"><span>Better-Auth</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
-                    <p class="row-description">Stopped email enumeration at sign-in. An unknown email paired with a leaked password used to reveal which emails were registered. Added a request-scoped skip-flag and regression test.</p>
+                    <a class="row-link" href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" rel="noopener noreferrer" aria-label="better-auth — Email enumeration at sign-in on GitHub"></a>
+                    <div class="row-title"><span>better-auth — Email enumeration at sign-in</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
+                    <p class="row-description">Signing in with an unregistered email and a compromised password returned <code>PASSWORD_COMPROMISED</code> instead of the generic error, revealing which emails were registered. Traced it to the haveIBeenPwned plugin throwing during the dummy-password hash, and proposed a request-scoped skip flag plus a regression test.</p>
+                    <p class="row-status"><span class="row-status-label">Status:</span> maintainers adopted the approach and shipped it in #5998.</p>
                     <span class="row-meta">2025 <span>security</span></span>
                 </article>
                 <article class="evidence-row" data-category="contributions">
-                    <a class="row-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer" aria-label="Open Go-Ethereum pull request in a new tab"></a>
-                    <div class="row-title"><span>Go-Ethereum</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
-                    <p class="row-description">Added a <code>geth db truncate-freezer</code> subcommand for archive nodes. Binary-searches the merge block, keeps headers, drops pre-merge bodies, and includes tests.</p>
+                    <a class="row-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer" aria-label="go-ethereum — geth db truncate-freezer on GitHub"></a>
+                    <div class="row-title"><span>go-ethereum — <code>geth db truncate-freezer</code></span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
+                    <p class="row-description">A subcommand for archive nodes that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies. Reviewed across three rounds by core maintainers (<code>s1na</code>, <code>jwasinger</code>, <code>MariusVanDerWijden</code>); revised it to batch-process rather than hold ~15GB in memory on mainnet, to move headers into a fresh freezer instead of assuming equal table lengths, and to look up merge blocks per network.</p>
+                    <p class="row-status"><span class="row-status-label">Status:</span> core team built their own version of the command.</p>
                     <span class="row-meta">2025 <span>systems</span></span>
                 </article>
                 <article class="evidence-row" data-category="enterprise" hidden>
@@ -157,10 +191,46 @@
             </div>
         </section>
 
-        <section id="work" class="projects-section section-shell" aria-labelledby="projects-title">
-            <div class="section-label">Selected projects</div>
-            <div class="section-heading-row projects-heading-row">
-                <h2 id="projects-title">Small systems. Strange questions.</h2>
+        <section class="build-method section-shell" aria-labelledby="build-method-title">
+            <div class="section-label">How I build</div>
+            <div class="build-method-grid">
+                <h2 id="build-method-title">Judgment before velocity.</h2>
+                <div class="build-method-copy">
+                    <p>I start by naming the domain before I touch code, then keep that language in a maintained <code>CONTEXT.md</code> so the product and implementation do not drift apart. I grill the idea adversarially until the weak assumptions and unsafe edges are visible enough to cut or test. From there I break the work into vertical slices, each small enough to ship and prove end to end. Every slice gets a diff review and an explainer quiz, so I can defend not only what changed but why the design still holds. The result is a process that uses AI for speed without outsourcing judgment.</p>
+                    <a class="text-link" href="https://github.com/sivaratrisrinivas/postdated#readme" target="_blank" rel="noopener noreferrer">Read how POSTDATED was designed <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="projects-section section-shell" aria-labelledby="featured-project-title">
+            <div class="section-label">Feature presentation</div>
+            <article class="featured-project">
+                <div class="featured-project-lead">
+                    <h2 id="featured-project-title">POSTDATED</h2>
+                    <span class="featured-origin">2026 · Push to Prod hackathon</span>
+                </div>
+                <div class="featured-project-body">
+                    <p class="featured-hook">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p>
+                    <p class="featured-description">POSTDATED turns photos of hospital discharge paperwork and bills into a predicted, itemised insurance rejection while the paperwork can still be fixed. It separates money already lost from recoverable gaps, then translates each recoverable line into something the family can physically ask for at the counter.</p>
+                    <div class="featured-actions">
+                        <a class="primary-action" href="https://postdated.vercel.app" target="_blank" rel="noopener noreferrer">
+                            <span>Open live demo</span>
+                            <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                        </a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer">View source <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                    <div class="featured-stack">
+                        <span>Stack / build</span>
+                        <p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. The money and guard paths have 38 tests, and phone photos are resized to a 2,576px long edge before upload.</p>
+                    </div>
+                </div>
+            </article>
+
+            <div class="section-heading-row projects-heading-row selected-projects-heading">
+                <div>
+                    <div class="section-label">Selected projects</div>
+                    <h2 id="projects-title">Small systems. Strange questions.</h2>
+                </div>
                 <div class="filter-set" role="group" aria-label="Project categories">
                     <button class="filter-btn is-active" type="button" data-filter="ai-ml" aria-pressed="true">AI &amp; ML</button>
                     <button class="filter-btn" type="button" data-filter="web-search" aria-pressed="false">Web &amp; Search</button>
@@ -168,27 +238,27 @@
                 </div>
             </div>
             <div id="projects-list" class="project-list">
-                <article class="project-row project-row--feature" data-category="ai-ml">
+                <article class="project-row" data-category="ai-ml">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer" aria-label="Open Fuzz on GitHub in a new tab"></a>
                     <div class="project-index">01</div>
-                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p></div>
+                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p><p class="project-substance">Bun and TypeScript, with a Python/FastAPI helper and Hugging Face inference. The hard part is degrading text in real time while capturing newly restored words at their exact fuzz level without sending the original text to the server. Each round makes at most one model call; only the final fuzz and fresh clues cross the client boundary.</p></div></div>
                     <span class="row-meta">AI / game</span>
                 </article>
                 <article class="project-row" data-category="ai-ml">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/catBox" target="_blank" rel="noopener noreferrer" aria-label="Open catBox on GitHub in a new tab"></a>
-                    <div class="project-index">02</div><div class="project-main"><div class="row-title"><span>catBox</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like opening Schrödinger's famous box, where a split-second AI calculation decides if you find a cozy cat or an empty space.</p></div><span class="row-meta">AI / image</span>
+                    <div class="project-index">02</div><div class="project-main"><div class="row-title"><span>catBox</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like opening Schrödinger's famous box, where a split-second AI calculation decides if you find a cozy cat or an empty space.</p><p class="project-substance">Python, PyTorch, Diffusers, and Stable Diffusion Turbo. The hard part is capturing and serving real intermediate denoising frames while leaving outcome selection authoritative on the backend. Both outcome branches use a 512px, six-step image-to-image run, and only the selected branch is generated.</p></div></div><span class="row-meta">AI / image</span>
                 </article>
                 <article class="project-row" data-category="ai-ml">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer" aria-label="Open SunkeLo on GitHub in a new tab"></a>
-                    <div class="project-index">03</div><div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p></div><span class="row-meta">AI / voice</span>
+                    <div class="project-index">03</div><div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through evidence-gated review synthesis, localization, and text-to-speech while streaming partial results to the browser. It supports 11 languages and caches reviews and localized results for 30 days.</p></div></div><span class="row-meta">AI / voice</span>
                 </article>
                 <article class="project-row" data-category="ai-ml">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer" aria-label="Open SokoFlow on GitHub in a new tab"></a>
-                    <div class="project-index">04</div><div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p></div><span class="row-meta">machine learning</span>
+                    <div class="project-index">04</div><div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p><p class="project-substance">Python, PyTorch, NumPy, and Flask. The hard part is a conditional diffusion policy combining an 8×8 CNN board encoder with a Transformer action denoiser trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p></div></div><span class="row-meta">machine learning</span>
                 </article>
                 <article class="project-row" data-category="ai-ml">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" rel="noopener noreferrer" aria-label="Open Fixer on GitHub in a new tab"></a>
-                    <div class="project-index">05</div><div class="project-main"><div class="row-title"><span>Fixer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a virtual coding assistant trapped in a safe digital sandbox, writing, testing, and fixing program loops automatically until they work.</p></div><span class="row-meta">agent</span>
+                    <div class="project-index">05</div><div class="project-main"><div class="row-title"><span>Fixer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a virtual coding assistant working inside a designated project folder, writing, testing, and fixing program loops automatically until they work.</p><p class="project-substance">Python, Gemini 2.0 Flash, <code>google-genai</code>, and <code>python-dotenv</code>. The hard part is a function-calling loop that returns filesystem and execution results to the model while injecting a working-directory boundary. It exposes four tools, caps the agent at 20 model turns, and limits Python execution to 30 seconds.</p></div></div><span class="row-meta">agent</span>
                 </article>
                 <article class="project-row" data-category="web-search" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/nosePrint" target="_blank" rel="noopener noreferrer" aria-label="Open nosePrint on GitHub in a new tab"></a>
@@ -213,21 +283,6 @@
             </div>
         </section>
 
-        <section id="hackathons" class="hackathons-section section-shell" aria-labelledby="hackathons-title">
-            <div class="section-label">Hackathons</div>
-            <div class="section-heading-row">
-                <h2 id="hackathons-title">One weekend. One shot.</h2>
-            </div>
-            <div id="hackathons-list" class="evidence-list">
-                <article class="evidence-row" data-category="hackathon">
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer" aria-label="Open POSTDATED on GitHub in a new tab"></a>
-                    <div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div>
-                    <p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p>
-                    <span class="row-meta">2026 <span>push to prod</span></span>
-                </article>
-            </div>
-        </section>
-
         <section id="contact" class="contact-section section-shell" aria-labelledby="contact-title">
             <div class="section-label">Final frame</div>
             <div class="contact-stage">
@@ -243,6 +298,7 @@
                 <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">Twitter</a>
                 <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 <a href="https://www.boot.dev/u/shallowad54" target="_blank" rel="noopener noreferrer">Boot.dev</a>
+                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
             </div>
             <footer class="site-footer"><span>© 2025—26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
         </section>

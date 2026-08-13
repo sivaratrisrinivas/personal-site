@@ -1,0 +1,131 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+cv:
+  name: Srinivas Sivaratri
+  headline: Software Engineer | AI Systems, Developer Tools, Open Source
+  location: Hyderabad, Telangana, India
+  email: srinivassivaratri1122@gmail.com
+  website: https://personal-site-five-jade.vercel.app/
+  social_networks:
+    - network: LinkedIn
+      username: srinivas-sivaratri-3a0a32162
+    - network: GitHub
+      username: sivaratrisrinivas
+
+  sections:
+    summary:
+      - Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript, with upstream contributions reviewed by maintainers of better-auth and go-ethereum.
+
+    experience:
+      - company: Accenture
+        position: Software Engineer
+        start_date: 2021-07
+        end_date: 2022-07
+        location: Bangalore, Karnataka, India
+        highlights:
+          - Managed 100+ client health records monthly using SQL and Excel; data-validation processes reduced reporting errors by 30%.
+          - Improved SQL query performance by 25% by indexing frequently queried columns.
+          - Developed a Python ETL script that automated data-processing workflows, saved 50 labor hours monthly, and reduced processing errors.
+          - Implemented a GitHub Actions CI/CD pipeline that accelerated project delivery by 20%.
+          - Collaborated with cross-functional teams on scalable database solutions that reduced daily support requests by 15%.
+
+    Upstream Impact:
+      - name: '[better-auth — email enumeration at sign-in](https://github.com/better-auth/better-auth/pull/5973)'
+        date: 2025 · Security
+        highlights:
+          - Traced an account-enumeration leak to the Have I Been Pwned plugin throwing during the dummy-password hash; proposed a request-scoped skip flag and regression test. Maintainers adopted the approach and shipped it in [#5998](https://github.com/better-auth/better-auth/pull/5998).
+      - name: '[go-ethereum — geth db truncate-freezer](https://github.com/ethereum/go-ethereum/pull/31351)'
+        date: 2025 · Systems
+        highlights:
+          - Designed an archive-node command that binary-searches the merge block, preserves headers and hashes, and removes pre-merge bodies; revised it across three core-maintainer review rounds to batch work instead of retaining roughly 15 GB in memory. The core team built its own version.
+
+    Selected Projects:
+      - name: '[POSTDATED](https://postdated.vercel.app)'
+        date: 2026 · Flagship
+        summary: Next.js, TypeScript, React, Anthropic SDK, Vitest
+        highlights:
+          - Turns hospital paperwork into predicted insurance disallowances while recoverable gaps can still be fixed, converting each line into a document request or question for the doctor.
+          - Separated multimodal extraction from deterministic policy arithmetic and a negation-aware medical-claim guard; covered the money and guard paths with 38 tests.
+      - name: '[Fuzz](https://github.com/sivaratrisrinivas/fuzz)'
+        date: 2025 · Project
+        summary: Bun, TypeScript, Python, FastAPI, Hugging Face
+        highlights:
+          - Built a real-time text-degradation game that captures restored words at their exact fuzz level; each round makes at most one model call, and the original text never crosses the server boundary.
+
+    education:
+      - institution: University of Alabama at Birmingham
+        area: Computer Science
+        degree: MS
+        start_date: 2023-08
+        end_date: 2025-05
+        location: Birmingham, AL, USA
+      - institution: BV Raju Institute of Technology
+        area: Computer Science
+        degree: BS
+        start_date: 2017-08
+        end_date: 2021-06
+        location: Medak, Telangana, India
+
+    skills:
+      - label: Languages
+        details: Python, Go, TypeScript, JavaScript, C, SQL
+      - label: Systems and Services
+        details: Linux, Docker, GitHub Actions, CI/CD, HTTP servers, REST APIs, memory management
+      - label: AI
+        details: RAG, LLM integration, multimodal AI, PyTorch, Hugging Face
+
+    Continuing Education:
+      - label: '[Boot.dev — selected completed coursework](https://www.boot.dev/u/shallowad54)'
+        details: HTTP Servers in Go, Retrieval Augmented Generation, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+
+design:
+  theme: engineeringresumes
+  page:
+    size: us-letter
+    top_margin: 0.55in
+    bottom_margin: 0.55in
+    left_margin: 0.6in
+    right_margin: 0.6in
+    show_footer: false
+    show_top_note: false
+  typography:
+    alignment: left
+    font_size:
+      body: 9.5pt
+      name: 24pt
+      headline: 10pt
+      connections: 9pt
+      section_titles: 1.15em
+  header:
+    space_below_name: 0.2cm
+    space_below_headline: 0.25cm
+    space_below_connections: 0.35cm
+    connections:
+      display_urls_instead_of_usernames: true
+      separator: '|'
+      space_between_connections: 0.35cm
+  section_titles:
+    space_above: 0.34cm
+    space_below: 0.18cm
+  sections:
+    space_between_regular_entries: 0.25cm
+    space_between_text_based_entries: 0.1cm
+  entries:
+    date_and_location_width: 3.5cm
+    highlights:
+      space_above: 0.04cm
+      space_between_items: 0.035cm
+
+locale:
+  language: english
+  phrases:
+    degree_with_area: DEGREE in AREA
+
+settings:
+  current_date: today
+  render_command:
+    output_folder: rendercv_output
+    pdf_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Resume.pdf
+    typst_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Resume.typ
+    markdown_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Resume.md
+    html_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Resume.html
+    png_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Resume.png
