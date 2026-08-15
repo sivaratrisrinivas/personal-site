@@ -2,7 +2,7 @@
 
 ## Direction
 
-The portfolio is a cinematic screening room: a dark stage where shipped work is the evidence and the interface behaves like a precise production surface. The page uses pauses, frames, and editorial pacing to make a long archive feel intentional without turning the work into a card wall.
+The portfolio is a daylight screening room: a warm, inviting stage where shipped work is the evidence and the interface behaves like a precise production surface. The page uses pauses, frames, and editorial pacing to make a long archive feel intentional without turning the work into a card wall.
 
 ## Brand mark
 
@@ -10,20 +10,24 @@ The portfolio is a cinematic screening room: a dark stage where shipped work is 
 
 ## Palette
 
-- `--bg` / soot: `#0c0a09`
-- `--surface`: `#15110f`
-- `--bone`: `#f0e8dc`
-- `--muted`: `#b4a99d`
-- `--faint`: `#766d64`
-- `--amber`: `#e6ad4f`
-- `--amber-soft`: `#f3cf8b`
-- Lines are warm, transparent separators rather than hard white rules.
+Light is the default theme; a dark variant remains available through the CLI (`theme dark`).
+
+- `--bg` / ivory: `#f7f1e6`
+- `--surface`: `#efe6d8`
+- `--bone`: `#261c10`
+- `--muted`: `#4a3d2c`
+- `--faint`: `#6f614d`
+- `--amber`: `#9a4f0d`
+- `--amber-soft`: `#7c3f06`
+- Dark variant (`body[data-theme="dark"]`): soot `#0c0a09`, bone `#f0e8dc`, amber `#e6ad4f`, amber-soft `#f3cf8b`.
+- All accent surfaces (ticker, buttons, selection, glows, stage rings) derive from theme-aware variables so they adapt with the theme.
+- Lines are warm, transparent separators rather than hard rules.
 
 ## Typography
 
 - Syne is the display voice: wide, slightly eccentric, and used for the hero and section titles.
 - DM Mono is reserved for production marks, metadata, filters, skills, and CLI copy.
-- Display text uses tight negative tracking; body copy is measured and kept near 65 characters per line.
+- Display text uses tight negative tracking (floor −0.04em); functional labels stay at or above the 11px legibility floor. Body copy is measured and kept near 65 characters per line.
 
 ## Composition
 
@@ -37,4 +41,9 @@ The portfolio is a cinematic screening room: a dark stage where shipped work is 
 - Filter controls use real buttons with `aria-pressed`; inactive items are removed from the accessibility tree.
 - Skill tags focus the nearest project category and scroll the visitor to the relevant evidence.
 - The CLI uses a native dialog and supports Cmd/Ctrl+K, a visible close control, and reduced-motion-safe behavior.
+- The CLI theme command toggles `light` (default) and `dark` variants.
 - Motion is limited to the opening title/beam reveal, ticker, and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
+
+## Browser surfaces
+
+- Selection, focus rings, caret, placeholder, and scrollbars are themed from the palette; `color-scheme` follows the active theme.
