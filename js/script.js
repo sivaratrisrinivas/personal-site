@@ -88,21 +88,33 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFiltering("#work", "#projects-list");
 
     const skillCategoryMap = {
-        Python: "ai-ml",
-        Go: "cli-system",
-        TypeScript: "ai-ml",
-        JavaScript: "web-search",
-        C: "cli-system",
-        SQL: "cli-system",
-        Linux: "cli-system",
-        Docker: "cli-system",
-        "CI/CD": "cli-system",
-        "HTTP Servers": "web-search",
-        "REST APIs": "web-search",
-        RAG: "web-search",
-        "LLM Integration": "ai-ml",
-        "Multimodal AI": "ai-ml",
-        "Memory Management": "cli-system",
+        Python: "models-systems",
+        Go: "models-systems",
+        TypeScript: "eval-safety",
+        JavaScript: "retrieval",
+        C: "models-systems",
+        SQL: "retrieval",
+        Linux: "models-systems",
+        Docker: "models-systems",
+        "CI/CD": "models-systems",
+        "HTTP Servers": "retrieval",
+        "REST APIs": "retrieval",
+        RAG: "retrieval",
+        "LLM Integration": "eval-safety",
+        "Multimodal AI": "eval-safety",
+        "Memory Management": "models-systems",
+        PyTorch: "models-systems",
+        "sentence-transformers": "retrieval",
+        CLIP: "retrieval",
+        "hybrid search": "retrieval",
+        reranking: "retrieval",
+        "eval harness design": "eval-safety",
+        "deterministic grading": "eval-safety",
+        "golden datasets": "eval-safety",
+        "precision/recall/F1": "eval-safety",
+        grounding: "eval-safety",
+        abstention: "eval-safety",
+        "LLM-as-judge tradeoffs": "eval-safety",
     };
 
     document.querySelectorAll(".skill-tag").forEach((skill) => {
@@ -186,9 +198,9 @@ document.addEventListener("DOMContentLoaded", () => {
             case "projects":
                 outputLine("Core projects:", "success");
                 outputLine("  POSTDATED - Predicts insurance disallowances while paperwork can still be fixed.");
+                outputLine("  Bouncer   - Eval for when an agent with write access may touch money.");
                 outputLine("  Fuzz      - Scrambled-wave text diffusion reconstruction game.");
-                outputLine("  catBox    - Schrödinger's cat image-generation boundary.");
-                outputLine("  SunkeLo   - Voice-based product review aggregator.");
+                outputLine("  SunkeLo   - Evidence-gated review synthesis.");
                 outputLine("Use the category controls on the page for the complete archive.");
                 break;
             case "skills":

@@ -5,18 +5,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-        content="Srinivas Sivaratri is a self-directed engineer building practical AI systems, developer tools, and open-source software." />
+        content="Srinivas Sivaratri is a self-directed engineer who measures whether a model is actually right, and refuses to act when it is not." />
     <meta name="theme-color" content="#f7f1e6" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Srinivas Sivaratri — Engineer" />
-    <meta property="og:description" content="Practical AI systems, developer tools, upstream contributions, and one flagship product built for the real world." />
+    <meta property="og:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta property="og:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Srinivas Sivaratri — Practical systems. Evidence on screen." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Srinivas Sivaratri — Engineer" />
-    <meta name="twitter:description" content="Practical AI systems, developer tools, upstream contributions, and one flagship product built for the real world." />
+    <meta name="twitter:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta name="twitter:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
     <title>Srinivas Sivaratri — Engineer</title>
 
@@ -70,7 +70,11 @@
             </div>
             <div class="hero-content">
                 <h1 id="hero-title">Srinivas <span>Sivaratri</span></h1>
-                <p class="hero-statement">Practical AI systems, developer tools, and open-source contributions — built close to the metal and useful in the real world.</p>
+                <!-- HERO COPY OPTIONS (human pick)
+                     A: I measure whether a model is actually right, and refuse to act when it is not.
+                     B: Practical systems that check the answer first. If the model is wrong, it does not get to act.
+                -->
+                <p class="hero-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
             </div>
             <div class="hero-footer">
                 <a class="primary-action" href="#work">
@@ -101,15 +105,21 @@
         <section class="intro section-shell" aria-labelledby="intro-title">
             <div class="section-label">The signal</div>
             <div class="intro-grid">
-                <h2 id="intro-title">Builds that leave a trace.</h2>
+                <!-- THE SIGNAL COPY OPTIONS (human pick)
+                     A heading: Measure it, or it does not ship.
+                     A body: I like software that can be scored. A convincing demo is not the work. The work is a check for whether the model was actually right, and a refusal to act when it was not.
+                     B heading: Right, or it does not act.
+                     B body: The work is measurement. I want the unsafe action rate, the reconstruction curve, the grounding failure. If the evidence is not there, the system should stop.
+                -->
+                <h2 id="intro-title">Measure it, or it does not ship.</h2>
                 <div class="intro-copy">
-                    <p>I like software that can explain itself: the small tools that make a system safer, the strange experiments that make an idea tangible, and the contributions that hold up under someone else's review.</p>
+                    <p>I like software that can be scored. A convincing demo is not the work. The work is a check for whether the model was actually right, and a refusal to act when it was not.</p>
                     <p>This is a working archive of that practice.</p>
                 </div>
             </div>
             <dl class="signal-ledger">
-                <div><dt>Focus</dt><dd>AI systems / dev tools</dd></div>
-                <div><dt>Method</dt><dd>Learn by shipping</dd></div>
+                <div><dt>Focus</dt><dd>Measurement / refusal</dd></div>
+                <div><dt>Method</dt><dd>Eval before action</dd></div>
                 <div><dt>Proof</dt><dd>Projects + upstream contributions</dd></div>
             </dl>
             <p class="availability-line">
@@ -154,6 +164,23 @@
                         <button class="skill-tag" type="button" data-skill="RAG">RAG</button>
                         <button class="skill-tag" type="button" data-skill="LLM Integration">LLM Integration</button>
                         <button class="skill-tag" type="button" data-skill="Multimodal AI">Multimodal AI</button>
+                        <button class="skill-tag" type="button" data-skill="PyTorch">PyTorch</button>
+                        <button class="skill-tag" type="button" data-skill="sentence-transformers">sentence-transformers</button>
+                        <button class="skill-tag" type="button" data-skill="CLIP">CLIP</button>
+                        <button class="skill-tag" type="button" data-skill="hybrid search">hybrid search</button>
+                        <button class="skill-tag" type="button" data-skill="reranking">reranking</button>
+                    </div>
+                </section>
+                <section class="skill-cluster" aria-labelledby="eval-skills-title">
+                    <h3 id="eval-skills-title">Evaluation &amp; guardrails</h3>
+                    <div class="skill-group">
+                        <button class="skill-tag" type="button" data-skill="eval harness design">eval harness design</button>
+                        <button class="skill-tag" type="button" data-skill="deterministic grading">deterministic grading</button>
+                        <button class="skill-tag" type="button" data-skill="golden datasets">golden datasets</button>
+                        <button class="skill-tag" type="button" data-skill="precision/recall/F1">precision/recall/F1</button>
+                        <button class="skill-tag" type="button" data-skill="grounding">grounding</button>
+                        <button class="skill-tag" type="button" data-skill="abstention">abstention</button>
+                        <button class="skill-tag" type="button" data-skill="LLM-as-judge tradeoffs">LLM-as-judge tradeoffs</button>
                     </div>
                 </section>
             </div>
@@ -204,6 +231,7 @@
 
         <section id="work" class="projects-section section-shell" aria-labelledby="featured-project-title">
             <div class="section-label">Feature presentation</div>
+            <div class="featured-projects">
             <article class="featured-project">
                 <div class="featured-project-lead">
                     <h2 id="featured-project-title">POSTDATED</h2>
@@ -226,6 +254,28 @@
                     </div>
                 </div>
             </article>
+            <article class="featured-project">
+                <div class="featured-project-lead">
+                    <h2 id="featured-bouncer-title">Bouncer</h2>
+                    <a class="featured-origin" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer">Eval · Amboras AI Engineer application</a>
+                </div>
+                <div class="featured-project-body">
+                    <p class="featured-hook">Both LLMs tested were roughly 5x less safe than a plain rules engine, and the larger model performed worse.</p>
+                    <p class="featured-description">Bouncer is an eval for when an AI agent with write access to a store should be allowed to touch money. Five actions: ACT, REPLY, ASK, ESCALATE, ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate. Exact Unsafe Action Rate per model: &lt;&lt;NEEDS-NUMBER: exact Unsafe Action Rate per model&gt;&gt;. Live demo: &lt;&lt;NEEDS-FACT: live demo URL once deployed&gt;&gt;.</p>
+                    <div class="featured-actions">
+                        <a class="primary-action" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer">
+                            <span>View source</span>
+                            <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                        </a>
+                        <span class="text-link">Demo &lt;&lt;NEEDS-FACT: live demo URL once deployed&gt;&gt;</span>
+                    </div>
+                    <div class="featured-stack">
+                        <span>Stack / build</span>
+                        <p class="project-substance">Python, a deterministic grader, a rules baseline, and OpenAI-compatible LLM adapters. The demo replays committed fixtures for the LLM agents and runs the rules engine live, and it labels which is which.</p>
+                    </div>
+                </div>
+            </article>
+            </div>
 
             <div class="section-heading-row projects-heading-row selected-projects-heading">
                 <div>
@@ -233,53 +283,91 @@
                     <h2 id="projects-title">Small systems. Strange questions.</h2>
                 </div>
                 <div class="filter-set" role="group" aria-label="Project categories">
-                    <button class="filter-btn is-active" type="button" data-filter="ai-ml" aria-pressed="true">AI &amp; ML</button>
-                    <button class="filter-btn" type="button" data-filter="web-search" aria-pressed="false">Web &amp; Search</button>
-                    <button class="filter-btn" type="button" data-filter="cli-system" aria-pressed="false">CLI &amp; System</button>
+                    <button class="filter-btn is-active" type="button" data-filter="eval-safety" aria-pressed="true">Evaluation &amp; safety</button>
+                    <button class="filter-btn" type="button" data-filter="retrieval" aria-pressed="false">Retrieval</button>
+                    <button class="filter-btn" type="button" data-filter="models-systems" aria-pressed="false">Models &amp; systems</button>
                 </div>
             </div>
             <div id="projects-list" class="project-list">
-                <article class="project-row" data-category="ai-ml">
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer" aria-label="Open Fuzz on GitHub in a new tab"></a>
+                <article class="project-row" data-category="eval-safety">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer" aria-label="Open Bouncer on GitHub in a new tab"></a>
                     <div class="project-index">01</div>
-                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p><p class="project-substance">Bun and TypeScript, with a Python/FastAPI helper and Hugging Face inference. The hard part is degrading text in real time while capturing newly restored words at their exact fuzz level without sending the original text to the server. Each round makes at most one model call; only the final fuzz and fresh clues cross the client boundary.</p></div></div>
-                    <span class="row-meta">AI / game</span>
+                    <div class="project-main"><div class="row-title"><span>Bouncer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a bouncer at the door of a cash drawer, deciding whether the agent may refund, must ask a question, or should keep its hands off the money.</p><p class="project-substance">Python, a rules baseline, and OpenAI-compatible model adapters. An agent sees a merchant refund policy, the current order and customer records, and a customer message, then must pick ACT, REPLY, ASK, ESCALATE, or ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate. The demo replays committed fixtures for the LLM agents and runs the rules engine live, and it labels which is which. Both LLMs tested were roughly 5x less safe than a plain rules engine, and the larger model performed worse. Exact Unsafe Action Rate per model: &lt;&lt;NEEDS-NUMBER: exact Unsafe Action Rate per model&gt;&gt;. Live demo: &lt;&lt;NEEDS-FACT: live demo URL once deployed&gt;&gt;.</p></div></div>
+                    <span class="row-meta">eval / safety</span>
                 </article>
-                <article class="project-row" data-category="ai-ml">
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/catBox" target="_blank" rel="noopener noreferrer" aria-label="Open catBox on GitHub in a new tab"></a>
-                    <div class="project-index">02</div><div class="project-main"><div class="row-title"><span>catBox</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like opening Schrödinger's famous box, where a split-second AI calculation decides if you find a cozy cat or an empty space.</p><p class="project-substance">Python, PyTorch, Diffusers, and Stable Diffusion Turbo. The hard part is capturing and serving real intermediate denoising frames while leaving outcome selection authoritative on the backend. Both outcome branches use a 512px, six-step image-to-image run, and only the selected branch is generated.</p></div></div><span class="row-meta">AI / image</span>
+                <article class="project-row" data-category="eval-safety">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer" aria-label="Open POSTDATED on GitHub in a new tab"></a>
+                    <div class="project-index">02</div>
+                    <div class="project-main"><div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p><p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. The money and guard paths have 38 tests, and phone photos are resized to a 2,576px long edge before upload. A ten-case evaluation harness with hand-written ground truth gates the release: safety, deterministic money, and the end-to-end workflow must fail zero; live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p></div></div>
+                    <span class="row-meta">eval / insurance</span>
                 </article>
-                <article class="project-row" data-category="ai-ml">
+                <article class="project-row" data-category="retrieval" hidden data-slug="&lt;&lt;NEEDS-DECISION: new name for hoopla, collides with an existing streaming product&gt;&gt;">
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" rel="noopener noreferrer" aria-label="Open &lt;&lt;NEEDS-DECISION: new name for hoopla, collides with an existing streaming product&gt;&gt; on GitHub in a new tab"></a>
+                    <div class="project-index">03</div>
+                    <div class="project-main"><div class="row-title"><span>&lt;&lt;NEEDS-DECISION: new name for hoopla, collides with an existing streaming product&gt;&gt;</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p><p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder. p95 query latency and index build time: &lt;&lt;NEEDS-NUMBER: p95 query latency and index build time from the hoopla repo&gt;&gt;.</p>
+                    <table class="project-substance">
+                        <caption>Search quality on the &lt;&lt;NEEDS-DECISION: new name for hoopla, collides with an existing streaming product&gt;&gt; golden dataset</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Method</th>
+                                <th scope="col">Precision@k</th>
+                                <th scope="col">Recall@k</th>
+                                <th scope="col">F1</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">BM25</th>
+                                <td>&lt;&lt;NEEDS-NUMBER: BM25 precision@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: BM25 recall@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: BM25 F1 from the hoopla repo&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Semantic</th>
+                                <td>&lt;&lt;NEEDS-NUMBER: semantic precision@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: semantic recall@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: semantic F1 from the hoopla repo&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">RRF</th>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF precision@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF recall@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF F1 from the hoopla repo&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">RRF + cross-encoder</th>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF plus cross-encoder precision@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF plus cross-encoder recall@k from the hoopla repo&gt;&gt;</td>
+                                <td>&lt;&lt;NEEDS-NUMBER: RRF plus cross-encoder F1 from the hoopla repo&gt;&gt;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div></div>
+                    <span class="row-meta">retrieval / search</span>
+                </article>
+                <article class="project-row" data-category="retrieval" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer" aria-label="Open SunkeLo on GitHub in a new tab"></a>
-                    <div class="project-index">03</div><div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through evidence-gated review synthesis, localization, and text-to-speech while streaming partial results to the browser. It supports 11 languages and caches reviews and localized results for 30 days.</p></div></div><span class="row-meta">AI / voice</span>
+                    <div class="project-index">04</div>
+                    <div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is evidence-gated synthesis: the summary is constrained to claims present in the scraped reviews. The summary asserts something absent from the source reviews at &lt;&lt;NEEDS-NUMBER: rate at which the summary asserts something absent from the source reviews, from the sunkelo repo&gt;&gt;. Cache hit rate is &lt;&lt;NEEDS-NUMBER: cache hit rate from the sunkelo repo&gt;&gt;, and cost per query is &lt;&lt;NEEDS-NUMBER: cost per query from the sunkelo repo&gt;&gt;. It supports 11 languages and caches base reviews and localized results for 30 days.</p></div></div>
+                    <span class="row-meta">retrieval / voice</span>
                 </article>
-                <article class="project-row" data-category="ai-ml">
+                <article class="project-row" data-category="retrieval" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/contextlens" target="_blank" rel="noopener noreferrer" aria-label="Open Context Lens on GitHub in a new tab"></a>
+                    <div class="project-index">05</div>
+                    <div class="project-main"><div class="row-title"><span>Context Lens</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like reading a paper with a patient colleague who will stop on any word and tell you what it means, why the author chose it, and what the sentence is assuming.</p><p class="project-substance">React, FastAPI, MongoDB, and Gemini. Every word is clickable, returning definition, authorial intent, and assumption stress-test. The hard part is cost control: responses are pre-cached per word-plus-context fingerprint using SHA-256, with batch prefetch hydrating all three cache types in one call on load, so the same lookup never hits the model twice. Cache hit rate and cost saved per session: &lt;&lt;NEEDS-NUMBER: cache hit rate and cost saved per session from the contextlens repo&gt;&gt;.</p></div></div>
+                    <span class="row-meta">retrieval / reading</span>
+                </article>
+                <article class="project-row" data-category="models-systems" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer" aria-label="Open SokoFlow on GitHub in a new tab"></a>
-                    <div class="project-index">04</div><div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p><p class="project-substance">Python, PyTorch, NumPy, and Flask. The hard part is a conditional diffusion policy combining an 8×8 CNN board encoder with a Transformer action denoiser trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p></div></div><span class="row-meta">machine learning</span>
+                    <div class="project-index">06</div>
+                    <div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p><p class="project-substance">Python, PyTorch, NumPy, and Flask. The hard part is a conditional diffusion policy combining an 8×8 CNN board encoder with a Transformer action denoiser trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations. Solve rate against the BFS baseline is &lt;&lt;NEEDS-NUMBER: solve rate against the BFS baseline, from the sokoflow repo&gt;&gt;. On harder boards it degrades by &lt;&lt;NEEDS-NUMBER: solve-rate degradation on harder boards, from the sokoflow repo&gt;&gt;.</p></div></div>
+                    <span class="row-meta">machine learning</span>
                 </article>
-                <article class="project-row" data-category="ai-ml">
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Fixer" target="_blank" rel="noopener noreferrer" aria-label="Open Fixer on GitHub in a new tab"></a>
-                    <div class="project-index">05</div><div class="project-main"><div class="row-title"><span>Fixer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a virtual coding assistant working inside a designated project folder, writing, testing, and fixing program loops automatically until they work.</p><p class="project-substance">Python, Gemini 2.0 Flash, <code>google-genai</code>, and <code>python-dotenv</code>. The hard part is a function-calling loop that returns filesystem and execution results to the model while injecting a working-directory boundary. It exposes four tools, caps the agent at 20 model turns, and limits Python execution to 30 seconds.</p></div></div><span class="row-meta">agent</span>
-                </article>
-                <article class="project-row" data-category="web-search" hidden>
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/nosePrint" target="_blank" rel="noopener noreferrer" aria-label="Open nosePrint on GitHub in a new tab"></a>
-                    <div class="project-index">06</div><div class="project-main"><div class="row-title"><span>nosePrint</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like describing a scent you love to someone who has already smelled every perfume in existence, watching them pull every bottle that shares its character from memory.</p></div><span class="row-meta">AI / vectors</span>
-                </article>
-                <article class="project-row" data-category="web-search" hidden>
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" rel="noopener noreferrer" aria-label="Open Hoopla on GitHub in a new tab"></a>
-                    <div class="project-index">07</div><div class="project-main"><div class="row-title"><span>Hoopla</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p></div><span class="row-meta">search</span>
-                </article>
-                <article class="project-row" data-category="web-search" hidden>
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" rel="noopener noreferrer" aria-label="Open Rashomon on GitHub in a new tab"></a>
-                    <div class="project-index">08</div><div class="project-main"><div class="row-title"><span>Rashomon</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a digital book club where margins come to life, allowing readers to share thoughts and discuss stories in real-time as they read.</p></div><span class="row-meta">web</span>
-                </article>
-                <article class="project-row" data-category="cli-system" hidden>
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/tally" target="_blank" rel="noopener noreferrer" aria-label="Open Tally on GitHub in a new tab"></a>
-                    <div class="project-index">09</div><div class="project-main"><div class="row-title"><span>Tally</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a digital accountant scanning invoice PDFs to extract the total amount while double-checking its own math to ensure it never makes a mistake.</p></div><span class="row-meta">AI / finance</span>
-                </article>
-                <article class="project-row" data-category="cli-system" hidden>
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Gator" target="_blank" rel="noopener noreferrer" aria-label="Open Gator on GitHub in a new tab"></a>
-                    <div class="project-index">10</div><div class="project-main"><div class="row-title"><span>Gator</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><p class="row-description">Like a terminal-based morning newspaper aggregator that pulls articles from your favorite blogs and stores them in a local library database.</p></div><span class="row-meta">CLI</span>
+                <article class="project-row" data-category="models-systems" hidden>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer" aria-label="Open Fuzz on GitHub in a new tab"></a>
+                    <div class="project-index">07</div>
+                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p><p class="project-substance">Bun and TypeScript, with a Python/FastAPI helper and Hugging Face inference. The original text never crosses the client boundary. Only the final fuzz level and newly restored words go to the server, and each round makes at most one model call. Reconstruction accuracy across fuzz levels is &lt;&lt;NEEDS-NUMBER: reconstruction accuracy by fuzz level, from the fuzz repo&gt;&gt;.</p></div></div>
+                    <span class="row-meta">AI / game</span>
                 </article>
             </div>
         </section>
