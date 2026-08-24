@@ -6,7 +6,7 @@ A cinematic screening-room portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, n
 
 1. **Hero** — Name + tagline
 2. **Focus ticker** — AI-Assisted Engineering, Dev Tools, Open Source, Systems Thinking
-3. **Technical skills** — Clickable Systems, Services, AI, and Evaluation & guardrails capability groups
+3. **Technical skills** — Clickable Systems, Services, and AI capability groups
 4. **Open Source** — Filterable Better-Auth, Go-Ethereum, and Accenture work
 5. **How I build** — Domain modelling, adversarial review, vertical slices, and diff-level verification
 6. **Feature presentation** — POSTDATED, with live demo and design write-up, plus Bouncer, source-only until a demo URL exists
