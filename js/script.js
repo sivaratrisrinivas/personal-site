@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 outputLine("Core projects:", "success");
                 outputLine("  POSTDATED - Predicts insurance disallowances while paperwork can still be fixed.");
                 outputLine("  Bouncer   - Eval for when an agent with write access may touch money.");
+                outputLine("  Bingo     - BM25, semantic, and hybrid movie search with a comparison table.");
                 outputLine("  Fuzz      - Scrambled-wave text diffusion reconstruction game.");
                 outputLine("  SunkeLo   - Evidence-gated review synthesis.");
                 outputLine("Use the category controls on the page for the complete archive.");
