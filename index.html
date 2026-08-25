@@ -498,12 +498,14 @@
                         <caption>Results</caption>
                         <thead>
                             <tr>
-                                <th scope="col">Method</th>
+                                <th scope="col">Group</th>
+                                <th scope="col">Name</th>
                                 <th scope="col">Solve rate</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <th scope="rowgroup" rowspan="2">overall</th>
                                 <th scope="row">diffusion</th>
                                 <td>20.8% (50/240)</td>
                             </tr>
@@ -512,6 +514,7 @@
                                 <td>95.4% (229/240)</td>
                             </tr>
                             <tr>
+                                <th scope="rowgroup" rowspan="3">diffusion difficulty</th>
                                 <th scope="row">easy</th>
                                 <td>33.3% (20/60)</td>
                             </tr>
@@ -536,19 +539,14 @@
                         <caption>Results</caption>
                         <thead>
                             <tr>
+                                <th colspan="2">Qwen2.5-7B-Instruct Q4_K_M, n=4</th>
+                            </tr>
+                            <tr>
                                 <th scope="col">Fuzz</th>
                                 <th scope="col">Word F1</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">Model</th>
-                                <td>Qwen2.5-7B-Instruct Q4_K_M</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">n</th>
-                                <td>4</td>
-                            </tr>
                             <tr>
                                 <th scope="row">0.0</th>
                                 <td>0.876</td>
