@@ -1061,6 +1061,51 @@ h2 {
     line-height: 1.7;
 }
 
+.project-copy {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.project-copy:has(> table.project-substance),
+.featured-stack:has(> table.project-substance) {
+    overflow-x: auto;
+}
+
+table.project-substance {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+table.project-substance caption {
+    caption-side: top;
+    text-align: left;
+    margin-bottom: 0.35rem;
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.7;
+}
+
+table.project-substance th,
+table.project-substance td {
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+table.project-substance th {
+    font-weight: 500;
+}
+
 .selected-projects-heading {
     margin-top: clamp(6rem, 11vw, 11rem);
 }
