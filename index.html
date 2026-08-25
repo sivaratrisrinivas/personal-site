@@ -245,7 +245,25 @@
                     </div>
                     <div class="featured-stack">
                         <span>Stack / build</span>
-                        <p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. The money and guard paths have 38 tests, and phone photos are resized to a 2,576px long edge before upload. A 40-case evaluation harness with hand-written ground truth gates the release: safety, deterministic money, and the end-to-end workflow must fail zero; live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p>
+                        <p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
+                        <table class="project-substance">
+                            <caption>Results</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Evaluation</th>
+                                    <th scope="col">Gate</th>
+                                    <th scope="col">Money/guard tests</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">40-case harness with hand-written ground truth</th>
+                                    <td>safety, deterministic money, and end-to-end workflow must fail zero</td>
+                                    <td>38</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="project-substance">Live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p>
                     </div>
                 </div>
             </article>
@@ -256,7 +274,7 @@
                 </div>
                 <div class="featured-project-body">
                     <p class="featured-hook">Both LLMs tested were roughly 5x less safe than a plain rules engine, and the larger model performed worse.</p>
-                    <p class="featured-description">Bouncer is an eval for when an AI agent with write access to a store should be allowed to touch money. Five actions: ACT, REPLY, ASK, ESCALATE, ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate. Exact Unsafe Action Rate per model: rules live UAR 2.0% (1/50) VAR 100.0% (20/20); cheap gemma-4-31b replay UAR 10.0% (5/50) VAR 85.0% (17/20); strong gpt-oss-120b replay UAR 10.0% (5/50) VAR 60.0% (12/20); llama3.1-8b and llama-3.3-70b failed with HTTP 403 error 1010, no rates. Live demo: https://bouncer-eval.vercel.app.</p>
+                    <p class="featured-description">Bouncer is an eval for when an AI agent with write access to a store should be allowed to touch money. Five actions: ACT, REPLY, ASK, ESCALATE, ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate.</p>
                     <div class="featured-actions">
                         <a class="primary-action" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer">
                             <span>View source</span>
@@ -267,6 +285,34 @@
                     <div class="featured-stack">
                         <span>Stack / build</span>
                         <p class="project-substance">Python, a deterministic grader, a rules baseline, and OpenAI-compatible LLM adapters. The demo replays committed fixtures for the LLM agents and runs the rules engine live, and it labels which is which.</p>
+                        <table class="project-substance">
+                            <caption>Results</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Model</th>
+                                    <th scope="col">UAR</th>
+                                    <th scope="col">VAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">rules live</th>
+                                    <td>2.0% (1/50)</td>
+                                    <td>100.0% (20/20)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">cheap gemma-4-31b replay</th>
+                                    <td>10.0% (5/50)</td>
+                                    <td>85.0% (17/20)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">strong gpt-oss-120b replay</th>
+                                    <td>10.0% (5/50)</td>
+                                    <td>60.0% (12/20)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="project-substance">llama3.1-8b and llama-3.3-70b failed with HTTP 403 error 1010, no rates.</p>
                     </div>
                 </div>
             </article>
@@ -287,27 +333,74 @@
                 <article class="project-row" data-category="eval-safety">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer" aria-label="Open Bouncer on GitHub in a new tab"></a>
                     <div class="project-index">01</div>
-                    <div class="project-main"><div class="row-title"><span>Bouncer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a bouncer at the door of a cash drawer, deciding whether the agent may refund, must ask a question, or should keep its hands off the money.</p><p class="project-substance">Python, a rules baseline, and OpenAI-compatible model adapters. An agent sees a merchant refund policy, the current order and customer records, and a customer message, then must pick ACT, REPLY, ASK, ESCALATE, or ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate. The demo replays committed fixtures for the LLM agents and runs the rules engine live, and it labels which is which. Both LLMs tested were roughly 5x less safe than a plain rules engine, and the larger model performed worse. Exact Unsafe Action Rate per model: rules live UAR 2.0% (1/50) VAR 100.0% (20/20); cheap gemma-4-31b replay UAR 10.0% (5/50) VAR 85.0% (17/20); strong gpt-oss-120b replay UAR 10.0% (5/50) VAR 60.0% (12/20); llama3.1-8b and llama-3.3-70b failed with HTTP 403 error 1010, no rates. Live demo: https://bouncer-eval.vercel.app.</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>Bouncer</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a bouncer at the door of a cash drawer, deciding whether the agent may refund, must ask a question, or should keep its hands off the money.</p><p class="project-substance">Python, a rules baseline, and OpenAI-compatible model adapters. An agent sees a merchant refund policy, the current order and customer records, and a customer message, then must pick ACT, REPLY, ASK, ESCALATE, or ABSTAIN. Grading is fully deterministic, with no LLM judges; that is a deliberate design decision. Headline metrics are Unsafe Action Rate and Valid Automation Rate. The demo replays committed fixtures for the LLM agents and runs the rules engine live, and it labels which is which. Live demo: https://bouncer-eval.vercel.app.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Model</th>
+                                <th scope="col">UAR</th>
+                                <th scope="col">VAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">rules live</th>
+                                <td>2.0% (1/50)</td>
+                                <td>100.0% (20/20)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">cheap gemma-4-31b replay</th>
+                                <td>10.0% (5/50)</td>
+                                <td>85.0% (17/20)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">strong gpt-oss-120b replay</th>
+                                <td>10.0% (5/50)</td>
+                                <td>60.0% (12/20)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">llama3.1-8b and llama-3.3-70b failed with HTTP 403 error 1010, no rates.</p></div></div>
                     <span class="row-meta">eval / safety</span>
                 </article>
                 <article class="project-row" data-category="eval-safety">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer" aria-label="Open POSTDATED on GitHub in a new tab"></a>
                     <div class="project-index">02</div>
-                    <div class="project-main"><div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p><p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. The money and guard paths have 38 tests, and phone photos are resized to a 2,576px long edge before upload. A 40-case evaluation harness with hand-written ground truth gates the release: safety, deterministic money, and the end-to-end workflow must fail zero; live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p><p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Evaluation</th>
+                                <th scope="col">Gate</th>
+                                <th scope="col">Money/guard tests</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">40-case harness with hand-written ground truth</th>
+                                <td>safety, deterministic money, and end-to-end workflow must fail zero</td>
+                                <td>38</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">Live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p></div></div>
                     <span class="row-meta">eval / insurance</span>
                 </article>
                 <article class="project-row" data-category="retrieval" hidden data-slug="Bingo">
-                    <a class="row-link" href="https://github.com/sivaratrisrinivas/hoopla" target="_blank" rel="noopener noreferrer" aria-label="Open Bingo on GitHub in a new tab"></a>
+                    <a class="row-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer" aria-label="Open Bingo on GitHub in a new tab"></a>
                     <div class="project-index">03</div>
-                    <div class="project-main"><div class="row-title"><span>Bingo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p><p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder. p95 query latency and index build time: BM25 3419.2 ms, Semantic 335.1 ms, RRF 3804.8 ms, RRF + cross-encoder 4038.2 ms; index build 353.36s (BM25 16.31s, chunk embeddings 337.05s, cold rebuild).</p>
+                    <div class="project-main"><div class="row-title"><span>Bingo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p><p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder.</p>
                     <table class="project-substance">
-                        <caption>Search quality on the Bingo golden dataset</caption>
+                        <caption>Results</caption>
                         <thead>
                             <tr>
                                 <th scope="col">Method</th>
                                 <th scope="col">Precision@5</th>
                                 <th scope="col">Recall@5</th>
                                 <th scope="col">F1</th>
+                                <th scope="col">p95</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -316,52 +409,193 @@
                                 <td>0.3800</td>
                                 <td>0.5157</td>
                                 <td>0.3607</td>
+                                <td>3419.2 ms</td>
                             </tr>
                             <tr>
                                 <th scope="row">Semantic</th>
                                 <td>0.3200</td>
                                 <td>0.4606</td>
                                 <td>0.3088</td>
+                                <td>335.1 ms</td>
                             </tr>
                             <tr>
                                 <th scope="row">RRF</th>
                                 <td>0.3800</td>
                                 <td>0.5049</td>
                                 <td>0.3599</td>
+                                <td>3804.8 ms</td>
                             </tr>
                             <tr>
                                 <th scope="row">RRF + cross-encoder</th>
                                 <td>0.3600</td>
                                 <td>0.4824</td>
                                 <td>0.3357</td>
+                                <td>4038.2 ms</td>
                             </tr>
                         </tbody>
                     </table>
+                    <p class="project-substance">Index build 353.36s (BM25 16.31s, chunk embeddings 337.05s, cold rebuild).</p>
                     </div></div>
                     <span class="row-meta">retrieval / search</span>
                 </article>
                 <article class="project-row" data-category="retrieval" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer" aria-label="Open SunkeLo on GitHub in a new tab"></a>
                     <div class="project-index">04</div>
-                    <div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through review synthesis, localization, and text-to-speech while streaming partial results to the browser. STRICT_REVIEW_EVIDENCE_MODE is opt-in, so the default summary is not constrained to claims present in the scraped reviews. Cache hit rate is 0.5 (5/10 hits), and cost per query is ₹0.124858704 (USD failed, no published USD rate). It supports 11 languages and caches base reviews and localized results for 30 days.</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through review synthesis, localization, and text-to-speech while streaming partial results to the browser. STRICT_REVIEW_EVIDENCE_MODE is opt-in, so the default summary is not constrained to claims present in the scraped reviews. It supports 11 languages and caches base reviews and localized results for 30 days.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Metric</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Cache hit rate</th>
+                                <td>0.5 (5/10 hits)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Cost per query</th>
+                                <td>₹0.124858704</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">USD failed, no published USD rate.</p></div></div>
                     <span class="row-meta">retrieval / voice</span>
                 </article>
                 <article class="project-row" data-category="retrieval" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/contextlens" target="_blank" rel="noopener noreferrer" aria-label="Open Context Lens on GitHub in a new tab"></a>
                     <div class="project-index">05</div>
-                    <div class="project-main"><div class="row-title"><span>Context Lens</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like reading a paper with a patient colleague who will stop on any word and tell you what it means, why the author chose it, and what the sentence is assuming.</p><p class="project-substance">React, FastAPI, MongoDB, and Gemini. Every word is clickable, returning definition, authorial intent, and assumption stress-test. The hard part is cost control: responses are pre-cached per word-plus-context fingerprint using SHA-256, with batch prefetch hydrating all three cache types in one call on load, so the same lookup never hits the model twice. Cache hit rate and cost saved per session: 53.67% and $0.04888810, in-process fingerprint replay because the preview host returned 403, not a live Gemini completion.</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>Context Lens</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like reading a paper with a patient colleague who will stop on any word and tell you what it means, why the author chose it, and what the sentence is assuming.</p><p class="project-substance">React, FastAPI, MongoDB, and Gemini. Every word is clickable, returning definition, authorial intent, and assumption stress-test. The hard part is cost control: responses are pre-cached per word-plus-context fingerprint using SHA-256, with batch prefetch hydrating all three cache types in one call on load, so the same lookup never hits the model twice.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Metric</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Cache hit rate</th>
+                                <td>53.67%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Cost saved per session</th>
+                                <td>$0.04888810</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">In-process fingerprint replay because the preview host returned 403, not a live Gemini completion.</p></div></div>
                     <span class="row-meta">retrieval / reading</span>
                 </article>
                 <article class="project-row" data-category="models-systems" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer" aria-label="Open SokoFlow on GitHub in a new tab"></a>
                     <div class="project-index">06</div>
-                    <div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p><p class="project-substance">Python, PyTorch, NumPy, and Flask. The hard part is a conditional diffusion policy combining an 8×8 CNN board encoder with a Transformer action denoiser trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations. Solve rate against the BFS baseline is 20.8% (50/240) versus BFS 95.4% (229/240); 43 of 50 successes are 1-box-off. Per-difficulty rates are easy 33.3% (20/60), medium 18.8% (15/80), hard 15.0% (15/100).</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>SokoFlow</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like an AI puzzle master solving Sokoban warehouse games by starting from random movements and gradually refining them into a perfect path to the solution.</p><p class="project-substance">Python, PyTorch, NumPy, and Flask. The hard part is a conditional diffusion policy combining an 8×8 CNN board encoder with a Transformer action denoiser trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Method</th>
+                                <th scope="col">Solve rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">diffusion</th>
+                                <td>20.8% (50/240)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">BFS</th>
+                                <td>95.4% (229/240)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">easy</th>
+                                <td>33.3% (20/60)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">medium</th>
+                                <td>18.8% (15/80)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">hard</th>
+                                <td>15.0% (15/100)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">43 of 50 successes are 1-box-off.</p></div></div>
                     <span class="row-meta">machine learning</span>
                 </article>
                 <article class="project-row" data-category="models-systems" hidden>
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer" aria-label="Open Fuzz on GitHub in a new tab"></a>
                     <div class="project-index">07</div>
-                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p><p class="project-substance">Bun and TypeScript, with a Python/FastAPI helper and Hugging Face inference. The original text never crosses the client boundary. Only the final fuzz level and newly restored words go to the server, and each round makes at most one model call. Reconstruction accuracy across fuzz levels is Word F1 n=4, Qwen2.5-7B-Instruct Q4_K_M: 0.0=0.876, 0.1=0.717, 0.2=0.757, 0.3=0.432, 0.4=0.243, 0.5=0.185, 0.6=0.180, 0.7=0.124, 0.8=0.117, 0.9=0.141, 1.0=0.124 (prompt-boilerplate regurgitation). Exact match 0 at every level.</p></div></div>
+                    <div class="project-main"><div class="row-title"><span>Fuzz</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like writing a secret in the sand while waves wash it away, then seeing if an AI can reconstruct your original words from the remaining dots.</p><p class="project-substance">Bun and TypeScript, with a Python/FastAPI helper and Hugging Face inference. The original text never crosses the client boundary. Only the final fuzz level and newly restored words go to the server, and each round makes at most one model call.</p>
+                    <table class="project-substance">
+                        <caption>Results</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Fuzz</th>
+                                <th scope="col">Word F1</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Model</th>
+                                <td>Qwen2.5-7B-Instruct Q4_K_M</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">n</th>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.0</th>
+                                <td>0.876</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.1</th>
+                                <td>0.717</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.2</th>
+                                <td>0.757</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.3</th>
+                                <td>0.432</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.4</th>
+                                <td>0.243</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.5</th>
+                                <td>0.185</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.6</th>
+                                <td>0.180</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.7</th>
+                                <td>0.124</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.8</th>
+                                <td>0.117</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">0.9</th>
+                                <td>0.141</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1.0</th>
+                                <td>0.124</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="project-substance">1.0 Word F1 0.124 is prompt-boilerplate regurgitation; exact match 0 at every level.</p></div></div>
                     <span class="row-meta">AI / game</span>
                 </article>
             </div>
