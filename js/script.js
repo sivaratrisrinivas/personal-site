@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         moveCursor();
 
-        document.querySelectorAll("a, button, .evidence-row, .project-row").forEach((element) => {
+        document.querySelectorAll("a, button, .evidence-row, .project-row, .finding-post").forEach((element) => {
             element.addEventListener("mouseenter", () => cursor.classList.add("is-active"));
             element.addEventListener("mouseleave", () => cursor.classList.remove("is-active"));
         });
