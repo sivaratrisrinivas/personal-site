@@ -4,7 +4,7 @@ cv:
   headline: Software Engineer | AI Systems, Developer Tools, Open Source
   location: Remote
   email: srinivassivaratri1122@gmail.com
-  website: https://personal-site-five-jade.vercel.app/
+  website: https://srinivassivaratri.is-a.dev/
   social_networks:
     - network: LinkedIn
       username: srinivas-sivaratri-3a0a32162
@@ -16,17 +16,24 @@ cv:
       - Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript, with upstream contributions reviewed by maintainers of better-auth and go-ethereum.
 
     experience:
+      - company: Independent engineering
+        position: Software Engineer
+        start_date: 2025-05
+        end_date: present
+        location: Remote
+        highlights:
+          - Proposed a request-scoped skip flag and regression test for an email-enumeration leak in better-auth; maintainers adopted the approach and shipped it in [#5998](https://github.com/better-auth/better-auth/pull/5998).
+          - Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.
+          - Shipped POSTDATED, which turns hospital paperwork into predicted insurance disallowances while recoverable gaps can still be fixed, using Cerebras Chat Completions (gemma-4-31b) for extraction and 38 tests on the money and guard paths.
+          - Built Fuzz, a real-time text-degradation game that captures restored words at their exact fuzz level; each round makes at most one model call, and the original text never crosses the server boundary.
       - company: Accenture
         position: Software Engineer
         start_date: 2021-07
         end_date: 2022-07
         location: Bangalore, Karnataka, India
         highlights:
-          - Managed 100+ client health records monthly using SQL and Excel; data-validation processes reduced reporting errors by 30%.
-          - Improved SQL query performance by 25% by indexing frequently queried columns.
           - Developed a Python ETL script that automated data-processing workflows, saved 50 labor hours monthly, and reduced processing errors.
-          - Implemented a GitHub Actions CI/CD pipeline that accelerated project delivery by 20%.
-          - Collaborated with cross-functional teams on scalable database solutions that reduced daily support requests by 15%.
+          - Implemented a GitHub Actions CI/CD pipeline.
 
     Upstream Impact:
       - name: '[better-auth — email enumeration at sign-in](https://github.com/better-auth/better-auth/pull/5973)'
@@ -41,7 +48,7 @@ cv:
     Selected Projects:
       - name: '[POSTDATED](https://postdated.vercel.app)'
         date: 2026 · Flagship
-        summary: Next.js, TypeScript, React, Anthropic SDK, Vitest
+        summary: Next.js, TypeScript, React, Cerebras Chat Completions (gemma-4-31b), Vitest
         highlights:
           - Selected as one of approximately 150 builders from 5,000+ applications (about 3%) for the five-hour Push to Prod hackathon in Bengaluru.
           - Turns hospital paperwork into predicted insurance disallowances while recoverable gaps can still be fixed, converting each line into a document request or question for the doctor.
