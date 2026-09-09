@@ -10,14 +10,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Srinivas Sivaratri — Engineer" />
     <meta property="og:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
-    <meta property="og:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
+    <meta property="og:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Srinivas Sivaratri — Practical systems. Evidence on screen." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Srinivas Sivaratri — Engineer" />
     <meta name="twitter:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
-    <meta name="twitter:image" content="https://personal-site-five-jade.vercel.app/assets/og-image.png" />
+    <meta name="twitter:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <title>Srinivas Sivaratri — Engineer</title>
 
     <link rel="icon" type="image/png" href="assets/screening-mark.png" />
@@ -245,7 +245,7 @@
                     </div>
                     <div class="featured-stack">
                         <span>Stack / build</span>
-                        <p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
+                        <p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, Cerebras Chat Completions (gemma-4-31b), and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
                         <table class="project-substance">
                             <caption>Results</caption>
                             <thead>
@@ -316,6 +316,50 @@
                     </div>
                 </div>
             </article>
+            <article class="featured-project">
+                <div class="featured-project-lead">
+                    <h2 id="featured-sunkelo-title">SunkeLo</h2>
+                    <a class="featured-origin" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <div class="featured-project-body">
+                    <p class="featured-hook">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p>
+                    <p class="featured-description">SunkeLo is a voice-first product review app: you ask about a product in your language, and it returns one combined review as text and spoken audio.</p>
+                    <div class="featured-actions">
+                        <a class="primary-action" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer">
+                            <span>View source</span>
+                            <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                        </a>
+                    </div>
+                    <div class="featured-stack">
+                        <span>Stack / build</span>
+                        <p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through review synthesis, localization, and text-to-speech while streaming partial results to the browser. STRICT_REVIEW_EVIDENCE_MODE is opt-in, so the default summary is not constrained to claims present in the scraped reviews. It supports 11 languages and caches base reviews and localized results for 30 days.</p>
+                        <table class="project-substance">
+                            <caption>Results</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Metric</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Cache hit rate</th>
+                                    <td>0.5 (5/10 hits), Redis configured</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Cost per query</th>
+                                    <td>₹0.124858704</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Absent-claim rate</th>
+                                    <td>0.7586 (22/29)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="project-substance">USD failed, no published USD rate. STRICT_REVIEW_EVIDENCE_MODE is opt-in; the default summary is not evidence-gated. 22 of 29 summary claims were not grounded in sources at overlap 0.6.</p>
+                    </div>
+                </div>
+            </article>
             </div>
 
             <div class="section-heading-row projects-heading-row selected-projects-heading">
@@ -367,7 +411,7 @@
                 <article class="project-row" data-category="eval-safety">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer" aria-label="Open POSTDATED on GitHub in a new tab"></a>
                     <div class="project-index">02</div>
-                    <div class="project-main"><div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p><p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, the Anthropic SDK, and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
+                    <div class="project-main"><div class="row-title"><span>POSTDATED</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like receiving the insurer's rejection letter three weeks before it exists — every red line becomes one physical ask: a document to request or a question for the doctor.</p><p class="project-substance">TypeScript, Next.js 16, React 19, Tailwind CSS 4, Cerebras Chat Completions (gemma-4-31b), and Vitest. The hard part is separating multimodal document extraction from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge before upload.</p>
                     <table class="project-substance">
                         <caption>Results</caption>
                         <thead>
@@ -438,7 +482,7 @@
                     </div></div>
                     <span class="row-meta">retrieval / search</span>
                 </article>
-                <article class="project-row" data-category="retrieval" hidden>
+                <article class="project-row" data-category="retrieval">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer" aria-label="Open SunkeLo on GitHub in a new tab"></a>
                     <div class="project-index">04</div>
                     <div class="project-main"><div class="row-title"><span>SunkeLo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like having a local shopping assistant read through hundreds of product reviews online, summarize them, and explain the verdict out loud in your regional language.</p><p class="project-substance">Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. The hard part is carrying voice input through review synthesis, localization, and text-to-speech while streaming partial results to the browser. STRICT_REVIEW_EVIDENCE_MODE is opt-in, so the default summary is not constrained to claims present in the scraped reviews. It supports 11 languages and caches base reviews and localized results for 30 days.</p>
@@ -453,15 +497,19 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Cache hit rate</th>
-                                <td>0.5 (5/10 hits)</td>
+                                <td>0.5 (5/10 hits), Redis configured</td>
                             </tr>
                             <tr>
                                 <th scope="row">Cost per query</th>
                                 <td>₹0.124858704</td>
                             </tr>
+                            <tr>
+                                <th scope="row">Absent-claim rate</th>
+                                <td>0.7586 (22/29)</td>
+                            </tr>
                         </tbody>
                     </table>
-                    <p class="project-substance">USD failed, no published USD rate.</p></div></div>
+                    <p class="project-substance">USD failed, no published USD rate. STRICT_REVIEW_EVIDENCE_MODE is opt-in; the default summary is not evidence-gated. 22 of 29 summary claims were not grounded in sources at overlap 0.6.</p></div></div>
                     <span class="row-meta">retrieval / voice</span>
                 </article>
                 <article class="project-row" data-category="retrieval" hidden>
