@@ -753,8 +753,45 @@ h2 {
 
 .evidence-section,
 .projects-section,
-.build-method {
+.build-method,
+.findings-section {
     border-bottom: 1px solid var(--line);
+}
+
+.findings-section .section-heading-row h2 {
+    max-width: 18ch;
+}
+
+.findings-list {
+    border-top: 1px solid var(--line);
+}
+
+.finding-post {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.finding-post:last-child {
+    border-bottom: 0;
+}
+
+.finding-post .row-title {
+    pointer-events: auto;
+}
+
+.finding-post .row-meta {
+    display: block;
+    justify-self: start;
+    margin-bottom: 0.85rem;
+    text-align: left;
+}
+
+.finding-post .row-description {
+    margin-top: 0.85rem;
+}
+
+.finding-post .featured-actions {
+    margin-top: 1.25rem;
 }
 
 .build-method {
