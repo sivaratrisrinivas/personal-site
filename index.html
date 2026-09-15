@@ -472,6 +472,71 @@
                     </div>
                 </div>
             </article>
+            <article class="featured-project">
+                <div class="featured-project-lead">
+                    <h2 id="featured-bingo-title">Bingo</h2>
+                    <a class="featured-origin" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <div class="featured-project-body">
+                    <p class="featured-hook">Like searching a film library twice: once by the words you type (BM25), once by the scene you mean (semantic).</p>
+                    <p class="featured-description">Bingo ranks the same movie corpus with BM25 keyword search and semantic search, then publishes Precision@5, Recall@5, F1, and p95 for BM25, semantic, RRF, and RRF plus cross-encoder.</p>
+                    <div class="featured-actions">
+                        <a class="primary-action" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">
+                            <span>View source</span>
+                            <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                        </a>
+                        <a class="text-link" href="https://srinivassivaratri.is-a.dev/" target="_blank" rel="noopener noreferrer">Published site <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                    <div class="featured-stack">
+                        <span>Stack / build</span>
+                        <p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. Embedding model all-MiniLM-L6-v2. Reranker cross-encoder/ms-marco-TinyBERT-L2-v2. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder.</p>
+                        <p class="project-substance">Retrieval quality on golden dataset: 10 queries, 5000 movies, k=5. Measured 2026-08-24.</p>
+                        <table class="project-substance">
+                            <caption>Results</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Method</th>
+                                    <th scope="col">Precision@5</th>
+                                    <th scope="col">Recall@5</th>
+                                    <th scope="col">F1</th>
+                                    <th scope="col">p95</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">BM25</th>
+                                    <td>0.3800</td>
+                                    <td>0.5157</td>
+                                    <td>0.3607</td>
+                                    <td>3419.2 ms</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Semantic</th>
+                                    <td>0.3200</td>
+                                    <td>0.4606</td>
+                                    <td>0.3088</td>
+                                    <td>335.1 ms</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">RRF</th>
+                                    <td>0.3800</td>
+                                    <td>0.5049</td>
+                                    <td>0.3599</td>
+                                    <td>3804.8 ms</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">RRF + cross-encoder</th>
+                                    <td>0.3600</td>
+                                    <td>0.4824</td>
+                                    <td>0.3357</td>
+                                    <td>4038.2 ms</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="project-substance">Index build 353.36s (BM25 16.31s, chunk embeddings 337.05s, cold rebuild).</p>
+                    </div>
+                </div>
+            </article>
             </div>
 
             <div class="section-heading-row projects-heading-row selected-projects-heading">
@@ -544,10 +609,11 @@
                     <p class="project-substance">Live extraction reports precision, recall, grounding, and abstention separately rather than one headline score.</p></div></div>
                     <span class="row-meta">eval / insurance</span>
                 </article>
-                <article class="project-row" data-category="retrieval" hidden data-slug="Bingo">
+                <article class="project-row" data-category="retrieval" data-slug="Bingo">
                     <a class="row-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer" aria-label="Open Bingo on GitHub in a new tab"></a>
                     <div class="project-index">03</div>
-                    <div class="project-main"><div class="row-title"><span>Bingo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like a movie critic who understands exactly what you mean when you describe a film scene, even if you can't remember the title or actors.</p><p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder.</p>
+                    <div class="project-main"><div class="row-title"><span>Bingo</span><svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></div><div class="project-copy"><p class="row-description">Like searching a film library twice: once by the words you type (BM25), once by the scene you mean (semantic).</p><p class="project-substance">Python, NLTK, sentence-transformers, CLIP, and a local cross-encoder. Embedding model all-MiniLM-L6-v2. Reranker cross-encoder/ms-marco-TinyBERT-L2-v2. The hard part is implementing BM25 from scratch over an inverted index, then ranking the same corpus with semantic search over sentence-transformer embeddings, both fixed-window and sentence-aware chunking, hybrid ranking two ways (weighted alpha blend and Reciprocal Rank Fusion at k=60), three reranking strategies including a local cross-encoder, query enhancement for spelling and rewriting and synonym expansion, CLIP image search, and RAG with citations. The constraint is that none of this is the result until the comparison is published: precision@k, recall@k, and F1 for BM25 alone, semantic alone, RRF, and RRF plus cross-encoder.</p>
+                    <p class="project-substance">Retrieval quality on golden dataset: 10 queries, 5000 movies, k=5. Measured 2026-08-24.</p>
                     <table class="project-substance">
                         <caption>Results</caption>
                         <thead>
