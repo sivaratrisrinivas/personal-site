@@ -311,7 +311,7 @@
                     <h3 class="row-title"><span>First-divergence class did not separate disagreement at N=30</span></h3>
                     <p class="row-description">GS-T22q measured sampling disagree 10/30 (0.3333) and decoding-config disagree 13/30 (0.4333). The GS-T22n 2x descriptive label is null.</p>
                     <div class="project-copy">
-                        <p class="project-substance">The llmfr README records the GS-T22q run on Qwen/Qwen2.5-0.5B-Instruct (Hub revision 7ae557604adf67be50417f59c2c2f167def9a775): N=30 gradeable items, sampling disagree 10/30 (0.3333), decoding-config disagree 13/30 (0.4333). First-divergence class did not separate wrong-answer disagreement under the documented 2x rule. That label is not a p-value. Llama was not recorded. The OpenAI adapter fails closed when the API omits per-token logprob content; llmfr does not invent scores.</p>
+                        <p class="project-substance">The llmfr README records the GS-T22q run: sampling disagree 10/30 (0.3333), decoding-config disagree 13/30 (0.4333), on N=30 Qwen/Qwen2.5-0.5B-Instruct items (Hub revision 7ae557604adf67be50417f59c2c2f167def9a775). Sampling and decoding-config splits did not separate on this correctness-disagreement count. The GS-T22n 2x descriptive label is null; that label is not a p-value. First-divergence class is still a useful debug label; it did not predict wrong-answer disagreement here. Llama was not recorded. The OpenAI adapter fails closed when the API omits per-token logprob content; llmfr does not invent scores.</p>
                         <table class="project-substance">
                             <caption>llmfr GS-T22q</caption>
                             <thead>
@@ -474,7 +474,7 @@
                 </div>
                 <div class="featured-project-body">
                     <p class="featured-hook">First-divergence class did not separate wrong-answer disagreement at N=30.</p>
-                    <p class="featured-description">llmfr records a local LLM generation step by step so you can replay two runs, name where they first split, and treat later diffs as fallout. Commands: record, compare, replay, study, and batch. Traces stay local. The OpenAI adapter fails closed when the API omits per-token logprob content; it does not invent scores.</p>
+                    <p class="featured-description">LLM Flight Recorder (llmfr) records a local LLM generation step by step so you can replay two runs, name where they first split, and treat later diffs as fallout. Commands: record, compare, replay, study, and batch. Traces stay local. The OpenAI adapter fails closed when the API omits per-token logprob content; it does not invent scores.</p>
                     <div class="featured-actions">
                         <a class="primary-action" href="https://github.com/sivaratrisrinivas/llm-flight-recorder" target="_blank" rel="noopener noreferrer">
                             <span>View source</span>
@@ -485,7 +485,7 @@
                     </div>
                     <div class="featured-stack">
                         <span>Stack / build</span>
-                        <p class="project-substance">Python, Hugging Face transformers, a local SQLite index, and JSON/JSONL traces. The hard part is naming the first causal split (sampling vs decoding config) instead of treating a string diff as one blob. Default smoke path is <code>sshleifer/tiny-gpt2</code>. The N=30 finding uses Qwen/Qwen2.5-0.5B-Instruct at Hub revision 7ae557604adf67be50417f59c2c2f167def9a775. Llama was not recorded.</p>
+                        <p class="project-substance">Python, Hugging Face transformers, a local SQLite index, and JSON/JSONL traces. The hard part is naming the first causal split (sampling vs decoding config) instead of treating a string diff as one blob. The N=30 finding uses Qwen/Qwen2.5-0.5B-Instruct at Hub revision 7ae557604adf67be50417f59c2c2f167def9a775. Llama was not recorded.</p>
                         <table class="project-substance">
                             <caption>Results</caption>
                             <thead>
