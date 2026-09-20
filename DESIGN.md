@@ -2,7 +2,7 @@
 
 ## Direction
 
-The portfolio is a daylight screening room: a warm, inviting stage where shipped work is the evidence and the interface behaves like a precise production surface. The page uses pauses, frames, and editorial pacing to make a long archive feel intentional without turning the work into a card wall.
+The portfolio is a daylight screening room: a warm, inviting surface where shipped work is the evidence. The page uses labeled sections and editorial type to make a short archive feel intentional without turning the work into a card wall or a findings wall.
 
 ## Brand mark
 
@@ -10,7 +10,7 @@ The portfolio is a daylight screening room: a warm, inviting stage where shipped
 
 ## Palette
 
-Light is the default theme; a dark variant remains available through the CLI (`theme dark`).
+Light is the default theme.
 
 - `--bg` / ivory: `#f7f1e6`
 - `--surface`: `#efe6d8`
@@ -19,31 +19,26 @@ Light is the default theme; a dark variant remains available through the CLI (`t
 - `--faint`: `#6f614d`
 - `--amber`: `#9a4f0d`
 - `--amber-soft`: `#7c3f06`
-- Dark variant (`body[data-theme="dark"]`): soot `#0c0a09`, bone `#f0e8dc`, amber `#e6ad4f`, amber-soft `#f3cf8b`.
-- All accent surfaces (ticker, buttons, selection, glows, stage rings) derive from theme-aware variables so they adapt with the theme.
 - Lines are warm, transparent separators rather than hard rules.
 
 ## Typography
 
 - Syne is the display voice: wide, slightly eccentric, and used for the hero and section titles.
-- DM Mono is reserved for production marks, metadata, filters, skills, and CLI copy.
+- DM Mono is reserved for production marks, metadata, What/Why/How labels, and project copy.
 - Display text uses tight negative tracking (floor −0.04em); functional labels stay at or above the 11px legibility floor. Body copy is measured and kept near 65 characters per line.
 
 ## Composition
 
-- The first viewport is a full-height stage with a restrained spotlight, framing lines, title, statement, and one primary work action.
-- Long-form content is paced as labeled sections, an amber ticker, ledger-style metadata, and open rows.
-- Projects and open-source work are evidence rows, not cards. Each row exposes its name, explanation, classification, and direct source link.
+- The first viewport is name, one-line positioning, and profile links (GitHub, X, LinkedIn, email, résumé).
+- About is a short profile: independent engineering, Accenture, education, and two upstream one-liners.
+- Work is one numbered list. Each project is What / Why / How, plus GitHub and a live demo only when a real URL exists. Findings fold into How as one evidence line or one small table.
 - The contact section closes the page as a final frame with one direct email action.
 
 ## Interaction
 
-- Filter controls use real buttons with `aria-pressed`; inactive items are removed from the accessibility tree.
-- Skill tags focus the nearest project category and scroll the visitor to the relevant evidence.
-- The CLI uses a native dialog and supports Cmd/Ctrl+K, a visible close control, and reduced-motion-safe behavior.
-- The CLI theme command toggles `light` (default) and `dark` variants.
-- Motion is limited to the opening title/beam reveal, ticker, and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
+- In-page nav uses hash links with a sticky-header offset.
+- Motion is limited to the opening title reveal and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
 
 ## Browser surfaces
 
-- Selection, focus rings, caret, placeholder, and scrollbars are themed from the palette; `color-scheme` follows the active theme.
+- Selection, focus rings, and scrollbars are themed from the palette; `color-scheme` is light.
