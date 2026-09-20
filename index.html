@@ -278,48 +278,11 @@
                             <dt>How</dt>
                             <dd>
                                 <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), CLIP, and a local cross-encoder (<code>ms-marco-TinyBERT-L2-v2</code>). BM25 is implemented from scratch over an inverted index; hybrid ranking uses a weighted blend and Reciprocal Rank Fusion at k=60.</p>
-                                <table class="project-substance">
-                                    <caption>Golden set: 10 queries, 5000 movies, k=5. Measured 2026-08-24. Index build 353.36s (cold rebuild).</caption>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Method</th>
-                                            <th scope="col">P@5</th>
-                                            <th scope="col">R@5</th>
-                                            <th scope="col">F1</th>
-                                            <th scope="col">p95</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">BM25</th>
-                                            <td>0.3800</td>
-                                            <td>0.5157</td>
-                                            <td>0.3607</td>
-                                            <td>3419.2 ms</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Semantic</th>
-                                            <td>0.3200</td>
-                                            <td>0.4606</td>
-                                            <td>0.3088</td>
-                                            <td>335.1 ms</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">RRF</th>
-                                            <td>0.3800</td>
-                                            <td>0.5049</td>
-                                            <td>0.3599</td>
-                                            <td>3804.8 ms</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">RRF + cross-encoder</th>
-                                            <td>0.3600</td>
-                                            <td>0.4824</td>
-                                            <td>0.3357</td>
-                                            <td>4038.2 ms</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <ul class="project-evidence-list">
+                                    <li>BM25 Precision@5 0.3800 vs semantic 0.3200 (10 queries, 5000 movies, k=5)</li>
+                                    <li>RRF + cross-encoder Precision@5 0.3600 — did not beat BM25 on this set</li>
+                                    <li>Golden set measured 2026-08-24; index build 353.36s (cold rebuild)</li>
+                                </ul>
                             </dd>
                         </div>
                     </dl>
@@ -336,7 +299,7 @@
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>A real-time text-degradation game: waves scramble a private paragraph, you rewrite to save pieces, and a model reconstructs from what remains. The original text never crosses the client boundary.</dd>
+                            <dd>A real-time text-degradation game: waves scramble a private paragraph, you rewrite to save pieces, and a model reconstructs from what remains. The original text never leaves the browser.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
