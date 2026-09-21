@@ -38,7 +38,7 @@ Light is the default theme.
 
 ## Interaction
 
-- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Work, Open source, and Contact.
+- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Open source, Work, and Contact.
 - Motion is limited to the opening title reveal and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
 
 ## Browser surfaces

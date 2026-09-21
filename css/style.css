@@ -20,6 +20,7 @@
     --content-width: 1400px;
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --header-height: 76px;
+    --header-offset: var(--header-height);
 }
 
 * {
@@ -426,7 +427,7 @@ h2 {
 .opensource-section,
 .projects-section {
     border-bottom: 1px solid var(--line);
-    scroll-margin-top: calc(var(--header-height) + 12px);
+    scroll-margin-top: calc(var(--header-offset, var(--header-height)) + 12px);
 }
 
 
@@ -735,7 +736,7 @@ table.project-substance th {
 
 .contact-section {
     padding-bottom: 2rem;
-    scroll-margin-top: calc(var(--header-height) + 12px);
+    scroll-margin-top: calc(var(--header-offset, var(--header-height)) + 12px);
 }
 
 .contact-stage {

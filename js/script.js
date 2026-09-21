@@ -49,6 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .filter(Boolean)
     );
 
+    const syncHeaderOffset = () => {
+        const height = header ? header.offsetHeight : 76;
+        root.style.setProperty("--header-offset", `${height}px`);
+        return height + 12;
+    };
+
     const headerOffset = () => (header ? header.offsetHeight + 12 : 12);
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
@@ -69,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const setActiveNav = (id) => {
         navLinks.forEach((link) => {
-            if (link.getAttribute("href") === id) {
+            if (id && link.getAttribute("href") === id) {
                 link.setAttribute("aria-current", "page");
             } else {
                 link.removeAttribute("aria-current");
@@ -78,11 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const syncActiveNav = () => {
-        if (window.scrollY < 80) {
-            navLinks.forEach((link) => link.removeAttribute("aria-current"));
-            return;
-        }
-
         const offset = headerOffset();
         let activeId = null;
 
@@ -91,10 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
             if (top <= 24) activeId = id;
         });
 
-        if (activeId) setActiveNav(activeId);
+        setActiveNav(activeId);
     };
 
+    syncHeaderOffset();
     syncActiveNav();
     window.addEventListener("scroll", syncActiveNav, { passive: true });
-    window.addEventListener("resize", syncActiveNav);
+    window.addEventListener("resize", () => {
+        syncHeaderOffset();
+        syncActiveNav();
+    });
+
+    if (header && typeof ResizeObserver === "function") {
+        new ResizeObserver(syncHeaderOffset).observe(header);
+    }
 });
