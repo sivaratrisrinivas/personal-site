@@ -2,23 +2,25 @@
 
 ## Direction
 
-The portfolio is a daylight screening room: a warm, inviting surface where shipped work is the evidence. The page uses labeled sections and editorial type to make a short archive feel intentional without turning the work into a card wall or a findings wall.
+The portfolio is Soft daylight: a cream surface with a quiet sky accent, where shipped work is the evidence. The page uses labeled sections and editorial type to make a short archive feel intentional without turning the work into a card wall or a findings wall.
 
 ## Brand mark
 
-`assets/screening-mark.png` is the project emblem: an amber geometric aperture framed by four crop marks, with interlocking negative space that quietly suggests the SS initials. It is used in the header, favicon, and Apple touch icon, and is designed to remain legible at small sizes.
+`assets/screening-mark.png` is the project emblem: a sky geometric aperture framed by four crop marks, with interlocking negative space that quietly suggests the SS initials. It is used in the header, favicon, and Apple touch icon, and is designed to remain legible at small sizes.
 
 ## Palette
 
-Light is the default theme. Dark inverts the same daylight tokens: ivory text on bone, with a lifted amber so marks still read on the darker ground.
+Soft daylight. Light is the default theme. Dark inverts the same family carefully: cream-ish text on a deep warm charcoal/navy-adjacent ground, with a readable sky accent — not pure black and neon.
 
-- `--bg` / ivory: `#f7f1e6` (dark: `--bg` / bone `#261c10`)
-- `--surface`: `#efe6d8` (dark: `#322418`)
-- `--bone`: `#261c10` (dark: ivory `#f7f1e6`)
-- `--muted`: `#4a3d2c` (dark: `#d4c4ae`)
-- `--faint`: `#6f614d` (dark: `#b8a48a`)
-- `--amber`: `#9a4f0d` (dark: `#e08a3c`)
-- `--amber-soft`: `#7c3f06` (dark: `#f0b06a`)
+These `--color-*` / `--accent` tokens live on `:root` so a parallel `/game` route can inherit the same palette. Do not fork a second color system there.
+
+- `--color-bg` / cream: `#f4f0e6` (dark: `#1b2228`)
+- `--color-surface`: `#ebe6da` (dark: `#242c34`)
+- `--color-text` / warm charcoal: `#2c2a26` (dark: cream-ish `#ede8dc`)
+- `--color-muted`: `#565248` (dark: `#b8b2a6`)
+- `--color-faint`: `#6f6a61` (dark: `#9a9488`)
+- `--accent` / soft sky: `#2e6584` (dark: `#7aadc2`)
+- `--accent-strong`: `#24536e` (dark: `#8fbfcf`)
 - Lines are warm, transparent separators rather than hard rules.
 
 The first visit follows `prefers-color-scheme`. After the header toggle is used, the choice is stored in `localStorage` and `theme-color` updates with the active background.

@@ -1,18 +1,20 @@
 :root {
-    --bg: #f7f1e6;
-    --surface: #efe6d8;
-    --surface-strong: #e7dcc9;
-    --bone: #261c10;
-    --muted: #4a3d2c;
-    --faint: #6f614d;
-    --amber: #9a4f0d;
-    --amber-soft: #7c3f06;
-    --line: rgba(38, 28, 16, 0.14);
-    --line-bright: rgba(38, 28, 16, 0.28);
-    --shadow: rgba(90, 60, 25, 0.16);
-    --amber-wash: rgba(154, 79, 13, 0.1);
-    --glow-tint: rgba(180, 105, 30, 0.12);
-    --scanline: rgba(38, 28, 16, 0.03);
+    /* Soft daylight — shared --color-* / --accent tokens for this site
+       and a parallel /game route. Do not fork a second palette there. */
+    --color-bg: #f4f0e6;
+    --color-surface: #ebe6da;
+    --color-surface-strong: #e1dbcd;
+    --color-text: #2c2a26;
+    --color-muted: #565248;
+    --color-faint: #6f6a61;
+    --accent: #2e6584;
+    --accent-strong: #24536e;
+    --accent-wash: rgba(46, 101, 132, 0.12);
+    --color-line: rgba(44, 42, 38, 0.12);
+    --color-line-bright: rgba(44, 42, 38, 0.26);
+    --color-shadow: rgba(42, 50, 60, 0.12);
+    --color-glow: rgba(88, 148, 180, 0.14);
+    --color-scanline: rgba(44, 42, 38, 0.03);
     --color-scheme: light;
     --font-display: "Syne", sans-serif;
     --font-mono: "DM Mono", monospace;
@@ -24,39 +26,39 @@
 }
 
 html[data-theme="dark"] {
-    --bg: #261c10;
-    --surface: #322418;
-    --surface-strong: #3c2c1c;
-    --bone: #f7f1e6;
-    --muted: #d4c4ae;
-    --faint: #b8a48a;
-    --amber: #e08a3c;
-    --amber-soft: #f0b06a;
-    --line: rgba(247, 241, 230, 0.14);
-    --line-bright: rgba(247, 241, 230, 0.3);
-    --shadow: rgba(0, 0, 0, 0.42);
-    --amber-wash: rgba(224, 138, 60, 0.16);
-    --glow-tint: rgba(224, 138, 60, 0.12);
-    --scanline: rgba(247, 241, 230, 0.045);
+    --color-bg: #1b2228;
+    --color-surface: #242c34;
+    --color-surface-strong: #2d3640;
+    --color-text: #ede8dc;
+    --color-muted: #b8b2a6;
+    --color-faint: #9a9488;
+    --accent: #7aadc2;
+    --accent-strong: #8fbfcf;
+    --accent-wash: rgba(122, 173, 194, 0.16);
+    --color-line: rgba(237, 232, 220, 0.14);
+    --color-line-bright: rgba(237, 232, 220, 0.28);
+    --color-shadow: rgba(8, 10, 14, 0.45);
+    --color-glow: rgba(122, 173, 194, 0.12);
+    --color-scanline: rgba(237, 232, 220, 0.04);
     --color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) {
-        --bg: #261c10;
-        --surface: #322418;
-        --surface-strong: #3c2c1c;
-        --bone: #f7f1e6;
-        --muted: #d4c4ae;
-        --faint: #b8a48a;
-        --amber: #e08a3c;
-        --amber-soft: #f0b06a;
-        --line: rgba(247, 241, 230, 0.14);
-        --line-bright: rgba(247, 241, 230, 0.3);
-        --shadow: rgba(0, 0, 0, 0.42);
-        --amber-wash: rgba(224, 138, 60, 0.16);
-        --glow-tint: rgba(224, 138, 60, 0.12);
-        --scanline: rgba(247, 241, 230, 0.045);
+        --color-bg: #1b2228;
+        --color-surface: #242c34;
+        --color-surface-strong: #2d3640;
+        --color-text: #ede8dc;
+        --color-muted: #b8b2a6;
+        --color-faint: #9a9488;
+        --accent: #7aadc2;
+        --accent-strong: #8fbfcf;
+        --accent-wash: rgba(122, 173, 194, 0.16);
+        --color-line: rgba(237, 232, 220, 0.14);
+        --color-line-bright: rgba(237, 232, 220, 0.28);
+        --color-shadow: rgba(8, 10, 14, 0.45);
+        --color-glow: rgba(122, 173, 194, 0.12);
+        --color-scanline: rgba(237, 232, 220, 0.04);
         --color-scheme: dark;
     }
 }
@@ -69,18 +71,18 @@ html[data-theme="dark"] {
 
 html {
     scroll-behavior: smooth;
-    background: var(--bg);
+    background: var(--color-bg);
     color-scheme: var(--color-scheme);
 }
 
 body {
     min-width: 320px;
     overflow-x: hidden;
-    color: var(--bone);
+    color: var(--color-text);
     color-scheme: var(--color-scheme);
     background:
-        radial-gradient(circle at 76% 12%, var(--glow-tint), transparent 31rem),
-        var(--bg);
+        radial-gradient(circle at 76% 12%, var(--color-glow), transparent 31rem),
+        var(--color-bg);
     font-family: var(--font-display);
     font-size: 16px;
     line-height: 1.5;
@@ -95,7 +97,7 @@ body::before {
     pointer-events: none;
     content: "";
     opacity: 0.25;
-    background: linear-gradient(105deg, transparent 0 48%, var(--scanline) 49%, transparent 50% 100%);
+    background: linear-gradient(105deg, transparent 0 48%, var(--color-scanline) 49%, transparent 50% 100%);
 }
 
 body,
@@ -118,24 +120,24 @@ button {
 }
 
 code {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.85em;
 }
 
 ::selection {
-    color: var(--bg);
-    background: var(--amber);
+    color: var(--color-bg);
+    background: var(--accent);
 }
 
 :focus-visible {
-    outline: 2px solid var(--amber-soft);
+    outline: 2px solid var(--accent-strong);
     outline-offset: 5px;
 }
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--faint) transparent;
+    scrollbar-color: var(--color-faint) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -150,12 +152,12 @@ code {
 ::-webkit-scrollbar-thumb {
     border: 2px solid transparent;
     border-radius: 999px;
-    background: var(--faint);
+    background: var(--color-faint);
     background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--amber);
+    background: var(--accent);
     background-clip: content-box;
 }
 
@@ -165,8 +167,8 @@ code {
     top: 1rem;
     left: 1rem;
     padding: 0.7rem 1rem;
-    color: var(--bg);
-    background: var(--amber);
+    color: var(--color-bg);
+    background: var(--accent);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     transform: translateY(-200%);
@@ -184,7 +186,7 @@ code {
     left: 0;
     width: 18px;
     height: 18px;
-    border: 1px solid var(--amber-soft);
+    border: 1px solid var(--accent-strong);
     border-radius: 50%;
     pointer-events: none;
     opacity: 0;
@@ -203,7 +205,7 @@ body.cursor-ready .cursor-orb {
 }
 
 body.cursor-ready .cursor-orb.is-active {
-    background: var(--amber-wash);
+    background: var(--accent-wash);
     transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0) translate(-50%, -50%) scale(2.9);
 }
 
@@ -212,7 +214,7 @@ body.cursor-ready .cursor-orb.is-active {
     z-index: 0;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 10%), var(--glow-tint), transparent 80%);
+    background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 10%), var(--color-glow), transparent 80%);
 }
 
 .site-header {
@@ -227,8 +229,8 @@ body.cursor-ready .cursor-orb.is-active {
     gap: 1rem;
     min-height: var(--header-height);
     padding: 0 var(--page-gutter);
-    border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--bg) 84%, transparent);
+    border-bottom: 1px solid var(--color-line);
+    background: color-mix(in srgb, var(--color-bg) 84%, transparent);
     backdrop-filter: blur(18px);
 }
 
@@ -286,7 +288,7 @@ body.cursor-ready .cursor-orb.is-active {
 }
 
 .brand-name {
-    color: var(--muted);
+    color: var(--color-muted);
     transition: color 180ms ease;
 }
 
@@ -295,7 +297,7 @@ body.cursor-ready .cursor-orb.is-active {
 .site-nav a[aria-current="page"],
 .hero-links a:hover,
 .contact-links a:hover {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
 }
 
 .site-nav {
@@ -303,7 +305,7 @@ body.cursor-ready .cursor-orb.is-active {
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: clamp(0.75rem, 2.5vw, 3rem);
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: 0.7rem;
 }
 
@@ -327,7 +329,7 @@ body.cursor-ready .cursor-orb.is-active {
     left: 0;
     height: 1px;
     content: "";
-    background: var(--amber);
+    background: var(--accent);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 220ms var(--ease-out);
@@ -352,17 +354,17 @@ body.cursor-ready .cursor-orb.is-active {
     min-width: 44px;
     min-height: 44px;
     padding: 0 0.75rem;
-    border: 1px solid var(--line-bright);
-    color: var(--muted);
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-muted);
     font-size: 0.7rem;
     transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
 .theme-toggle:hover,
 .theme-toggle:focus-visible {
-    color: var(--amber-soft);
-    border-color: var(--amber);
-    background: var(--amber-wash);
+    color: var(--accent-strong);
+    border-color: var(--accent);
+    background: var(--accent-wash);
 }
 
 .theme-toggle svg {
@@ -402,7 +404,7 @@ main {
 
 .hero h1 {
     max-width: 10ch;
-    color: var(--bone);
+    color: var(--color-text);
     font-size: clamp(4rem, 11vw, 10.5rem);
     font-weight: 600;
     letter-spacing: -0.04em;
@@ -413,13 +415,13 @@ main {
 
 .hero h1 span {
     display: block;
-    color: var(--amber);
+    color: var(--accent);
 }
 
 .hero-statement {
     max-width: 56ch;
     margin-top: clamp(1.75rem, 4vw, 3.25rem);
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: clamp(1rem, 1.5vw, 1.28rem);
     line-height: 1.55;
     animation: rise-in 900ms 260ms var(--ease-out) both;
@@ -430,7 +432,7 @@ main {
     flex-wrap: wrap;
     gap: clamp(0.75rem, 3vw, 2.25rem);
     margin-top: 1.75rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: 0.7rem;
     animation: rise-in 900ms 340ms var(--ease-out) both;
 }
@@ -449,8 +451,8 @@ main {
     gap: 1.1rem;
     min-height: 48px;
     padding: 0.85rem 1rem;
-    border: 1px solid var(--amber);
-    color: var(--amber-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.08em;
@@ -462,8 +464,8 @@ main {
 .primary-action:focus-visible,
 .contact-cta:hover,
 .contact-cta:focus-visible {
-    color: var(--bg);
-    background: var(--amber);
+    color: var(--color-bg);
+    background: var(--accent);
 }
 
 .icon-arrow {
@@ -489,7 +491,7 @@ a:focus-visible .icon-arrow {
 
 .section-label {
     margin-bottom: clamp(2.5rem, 5vw, 5rem);
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
 }
 
@@ -504,7 +506,7 @@ a:focus-visible .icon-arrow {
 
 h2 {
     max-width: 11ch;
-    color: var(--bone);
+    color: var(--color-text);
     font-size: clamp(2.5rem, 6vw, 6.8rem);
     font-weight: 500;
     letter-spacing: -0.04em;
@@ -516,7 +518,7 @@ h2 {
 .experience-section,
 .opensource-section,
 .projects-section {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--color-line);
     scroll-margin-top: calc(var(--header-offset, var(--header-height)) + 12px);
 }
 
@@ -530,7 +532,7 @@ h2 {
 .about-copy {
     max-width: 62ch;
     padding-top: 0.5rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: clamp(1rem, 1.4vw, 1.18rem);
     line-height: 1.65;
 }
@@ -538,14 +540,14 @@ h2 {
 .availability-line {
     margin-top: 1.75rem;
     padding: 1.15rem 0 0;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
     font-size: 0.7rem;
     line-height: 1.8;
 }
 
 .availability-line strong {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
     font-weight: 500;
 }
 
@@ -561,13 +563,13 @@ h2 {
 
 .role-list,
 .contribution-list {
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--color-line);
 }
 
 .role-card,
 .contribution-card {
     padding: clamp(2rem, 5vw, 3.5rem) 0;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--color-line);
 }
 
 .role-card:last-child,
@@ -586,7 +588,7 @@ h2 {
 
 .role-card h3,
 .contribution-card h3 {
-    color: var(--bone);
+    color: var(--color-text);
     font-size: clamp(1.5rem, 2.8vw, 2.6rem);
     font-weight: 500;
     letter-spacing: -0.03em;
@@ -599,14 +601,14 @@ h2 {
 
 .role-position {
     margin-top: 0.45rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: 0.7rem;
 }
 
 .role-meta,
 .contribution-meta {
     flex-shrink: 0;
-    color: var(--faint);
+    color: var(--color-faint);
     font-size: 0.7rem;
     line-height: 1.7;
     text-align: right;
@@ -615,14 +617,14 @@ h2 {
 .role-meta span,
 .contribution-meta span {
     display: block;
-    color: var(--amber);
+    color: var(--accent);
 }
 
 .role-highlights,
 .education-block ul {
     max-width: 72ch;
     padding-left: 1.15rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     line-height: 1.7;
@@ -635,7 +637,7 @@ h2 {
 
 .role-highlights a,
 .contribution-card a:not(.text-link) {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
     text-underline-offset: 0.2em;
 }
 
@@ -652,13 +654,13 @@ h2 {
 
 .education-block h3 {
     margin-bottom: 1rem;
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
 }
 
 .education-block li span {
     display: block;
-    color: var(--bone);
+    color: var(--color-text);
     font-family: var(--font-display);
     font-size: 1.05rem;
     letter-spacing: -0.02em;
@@ -667,7 +669,7 @@ h2 {
 
 .contribution-card p {
     max-width: 72ch;
-    color: var(--muted);
+    color: var(--color-muted);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     line-height: 1.7;
@@ -675,7 +677,7 @@ h2 {
 
 .contribution-status {
     margin-top: 0.85rem;
-    color: var(--faint);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     line-height: 1.7;
@@ -683,16 +685,16 @@ h2 {
 
 .contribution-status span {
     margin-right: 0.55rem;
-    color: var(--amber);
+    color: var(--accent);
 }
 
 .project-list {
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--color-line);
 }
 
 .project-card {
     padding: clamp(2rem, 5vw, 3.5rem) 0;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--color-line);
 }
 
 .project-card:last-child {
@@ -707,7 +709,7 @@ h2 {
 }
 
 .project-index {
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
     line-height: 1;
     padding-top: 0.55em;
@@ -718,7 +720,7 @@ h2 {
 }
 
 .project-card h3 {
-    color: var(--bone);
+    color: var(--color-text);
     font-size: clamp(1.8rem, 3.4vw, 3.2rem);
     font-weight: 500;
     letter-spacing: -0.03em;
@@ -739,24 +741,24 @@ h2 {
     align-items: center;
     min-height: 1.75rem;
     padding: 0.2rem 0.55rem;
-    border: 1px solid var(--line);
-    color: var(--faint);
+    border: 1px solid var(--color-line);
+    color: var(--color-faint);
     font-size: 0.7rem;
     line-height: 1;
 }
 
 a.proof-chip-link {
     min-height: 44px;
-    color: var(--amber-soft);
-    border-color: color-mix(in srgb, var(--amber) 40%, var(--line));
+    color: var(--accent-strong);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--color-line));
     transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
 a.proof-chip-link:hover,
 a.proof-chip-link:focus-visible {
-    color: var(--amber-soft);
-    border-color: var(--amber);
-    background: var(--amber-wash);
+    color: var(--accent-strong);
+    border-color: var(--accent);
+    background: var(--accent-wash);
 }
 
 .project-beats {
@@ -767,12 +769,12 @@ a.proof-chip-link:focus-visible {
 
 .project-beats dt {
     margin-bottom: 0.4rem;
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
 }
 
 .project-beats dd {
-    color: var(--muted);
+    color: var(--color-muted);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     line-height: 1.7;
@@ -787,7 +789,7 @@ a.proof-chip-link:focus-visible {
 .project-evidence,
 .project-evidence-list,
 .project-substance {
-    color: var(--faint);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     line-height: 1.7;
@@ -815,7 +817,7 @@ table.project-substance caption {
     caption-side: top;
     text-align: left;
     margin-bottom: 0.35rem;
-    color: var(--faint);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     line-height: 1.7;
@@ -823,13 +825,13 @@ table.project-substance caption {
 
 table.project-substance th,
 table.project-substance td {
-    border: 1px solid var(--line);
+    border: 1px solid var(--color-line);
     padding: 0.3rem 0.5rem;
     text-align: left;
     vertical-align: top;
     overflow-wrap: anywhere;
     word-break: break-word;
-    color: var(--faint);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     line-height: 1.7;
@@ -852,7 +854,7 @@ table.project-substance th {
     align-items: center;
     gap: 0.65rem;
     min-height: 44px;
-    color: var(--amber-soft);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.06em;
@@ -876,7 +878,7 @@ table.project-substance th {
     gap: 2rem;
     min-height: clamp(220px, 32vw, 420px);
     padding-bottom: clamp(3rem, 8vw, 7rem);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--color-line);
 }
 
 .contact-stage h2 {
@@ -893,7 +895,7 @@ table.project-substance th {
     flex-wrap: wrap;
     gap: clamp(1.25rem, 4vw, 4rem);
     padding: 1.4rem 0 5rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: 0.7rem;
 }
 
@@ -902,8 +904,8 @@ table.project-substance th {
     justify-content: space-between;
     gap: 1rem;
     padding-top: 1.2rem;
-    border-top: 1px solid var(--line);
-    color: var(--faint);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-faint);
     font-size: 0.7rem;
 }
 
