@@ -19,6 +19,20 @@
     <meta name="twitter:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta name="twitter:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <title>Srinivas Sivaratri — Engineer</title>
+    <script>
+        (function () {
+            var key = "theme";
+            var stored = null;
+            try { stored = localStorage.getItem(key); } catch (e) {}
+            var theme = (stored === "dark" || stored === "light")
+                ? stored
+                : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", theme);
+            document.documentElement.style.colorScheme = theme;
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", theme === "dark" ? "#261c10" : "#f7f1e6");
+        })();
+    </script>
 
     <link rel="icon" type="image/png" href="assets/screening-mark.png" />
     <link rel="apple-touch-icon" href="assets/screening-mark.png" />
@@ -40,14 +54,26 @@
             <span class="brand-initials"><img src="assets/screening-mark.png" alt="" /></span>
             <span class="brand-name">Srinivas Sivaratri</span>
         </a>
-        <nav class="site-nav" aria-label="Primary navigation">
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#open-source">Open source</a>
-            <a href="#work">Work</a>
-            <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
-            <a href="#contact">Contact</a>
-        </nav>
+        <div class="header-controls">
+            <nav class="site-nav" aria-label="Primary navigation">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#open-source">Open source</a>
+                <a href="#work">Work</a>
+                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark appearance">
+                <svg class="icon-sun" viewBox="0 0 20 20" aria-hidden="true">
+                    <circle cx="10" cy="10" r="3.25" />
+                    <path d="M10 2.4v1.6M10 16v1.6M2.4 10H4M16 10h1.6M4.7 4.7l1.1 1.1M14.2 14.2l1.1 1.1M15.3 4.7l-1.1 1.1M5.8 14.2l-1.1 1.1" />
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M16.2 12.4A6.4 6.4 0 0 1 7.6 3.8 6.6 6.6 0 1 0 16.2 12.4Z" />
+                </svg>
+                <span class="theme-toggle-text">Dark</span>
+            </button>
+        </div>
     </header>
 
     <main id="top">
@@ -184,7 +210,13 @@
                 <article class="project-card" id="llmfr">
                     <header class="project-card-head">
                         <span class="project-index">01</span>
-                        <h3>llmfr</h3>
+                        <div class="project-heading">
+                            <h3>llmfr</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -211,7 +243,13 @@
                 <article class="project-card" id="tiny-lora">
                     <header class="project-card-head">
                         <span class="project-index">02</span>
-                        <h3>tiny-lora</h3>
+                        <div class="project-heading">
+                            <h3>tiny-lora</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/tiny-lora/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -242,7 +280,13 @@
                 <article class="project-card" id="bouncer">
                     <header class="project-card-head">
                         <span class="project-index">03</span>
-                        <h3>Bouncer</h3>
+                        <div class="project-heading">
+                            <h3>Bouncer</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://bouncer-eval.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+                                <li><span class="proof-chip">Measured</span></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -296,7 +340,14 @@
                 <article class="project-card" id="postdated">
                     <header class="project-card-head">
                         <span class="project-index">04</span>
-                        <h3>POSTDATED</h3>
+                        <div class="project-heading">
+                            <h3>POSTDATED</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://postdated.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/postdated/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -328,7 +379,12 @@
                 <article class="project-card" id="sunkelo">
                     <header class="project-card-head">
                         <span class="project-index">05</span>
-                        <h3>SunkeLo</h3>
+                        <div class="project-heading">
+                            <h3>SunkeLo</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -355,7 +411,12 @@
                 <article class="project-card" id="bingo">
                     <header class="project-card-head">
                         <span class="project-index">06</span>
-                        <h3>Bingo</h3>
+                        <div class="project-heading">
+                            <h3>Bingo</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -386,7 +447,14 @@
                 <article class="project-card" id="fuzz">
                     <header class="project-card-head">
                         <span class="project-index">07</span>
-                        <h3>Fuzz</h3>
+                        <div class="project-heading">
+                            <h3>Fuzz</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/fuzz/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -411,13 +479,21 @@
                     </dl>
                     <div class="project-actions">
                         <a class="text-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
                 <article class="project-card" id="sokoflow">
                     <header class="project-card-head">
                         <span class="project-index">08</span>
-                        <h3>SokoFlow</h3>
+                        <div class="project-heading">
+                            <h3>SokoFlow</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/sokoflow/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
                     </header>
                     <dl class="project-beats">
                         <div>
@@ -442,6 +518,7 @@
                     </dl>
                     <div class="project-actions">
                         <a class="text-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 

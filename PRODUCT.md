@@ -22,7 +22,7 @@ Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, d
 
 ## Design Principles
 
-- Lead with evidence: let shipped projects and measured one-liners carry the story.
+- Lead with evidence: let shipped projects, measured one-liners, and honest Live / Measured / CI chips carry the story. Never invent a chip.
 - Keep one path: hero, about, experience, open source, work, contact.
 - Keep the interface as precise and legible as the engineering it represents.
 - Use a few memorable interactions with restraint.
@@ -30,4 +30,4 @@ Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, d
 
 ## Accessibility & Inclusion
 
-Target WCAG 2.2 AA. Preserve visible focus, semantic structure, keyboard access, sufficient contrast, 44px touch targets, and reduced-motion support.
+Target WCAG 2.2 AA. Preserve visible focus, semantic structure, keyboard access, sufficient contrast, 44px touch targets, and reduced-motion support. Appearance follows the system theme until the visitor chooses otherwise; that choice persists locally and keeps focus rings and `theme-color` in sync.

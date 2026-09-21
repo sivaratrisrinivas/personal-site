@@ -10,16 +10,18 @@ The portfolio is a daylight screening room: a warm, inviting surface where shipp
 
 ## Palette
 
-Light is the default theme.
+Light is the default theme. Dark inverts the same daylight tokens: ivory text on bone, with a lifted amber so marks still read on the darker ground.
 
-- `--bg` / ivory: `#f7f1e6`
-- `--surface`: `#efe6d8`
-- `--bone`: `#261c10`
-- `--muted`: `#4a3d2c`
-- `--faint`: `#6f614d`
-- `--amber`: `#9a4f0d`
-- `--amber-soft`: `#7c3f06`
+- `--bg` / ivory: `#f7f1e6` (dark: `--bg` / bone `#261c10`)
+- `--surface`: `#efe6d8` (dark: `#322418`)
+- `--bone`: `#261c10` (dark: ivory `#f7f1e6`)
+- `--muted`: `#4a3d2c` (dark: `#d4c4ae`)
+- `--faint`: `#6f614d` (dark: `#b8a48a`)
+- `--amber`: `#9a4f0d` (dark: `#e08a3c`)
+- `--amber-soft`: `#7c3f06` (dark: `#f0b06a`)
 - Lines are warm, transparent separators rather than hard rules.
+
+The first visit follows `prefers-color-scheme`. After the header toggle is used, the choice is stored in `localStorage` and `theme-color` updates with the active background.
 
 ## Typography
 
@@ -33,14 +35,14 @@ Light is the default theme.
 - About is a short bio and availability line. Job history and upstream writeups are not repeated here.
 - Experience is two roles (Independent engineering, Accenture) plus a short education block.
 - Open source is evidence-style writeups for better-auth, go-ethereum, and peft, with PR links — not a ticker, CLI, findings wall, or skills cluster.
-- Work is one numbered list. Each project is What / Why / How, plus GitHub and a live demo only when a real URL exists. Findings fold into How as one evidence line or one small table.
+- Work is one numbered list. Each project is What / Why / How, plus GitHub and a live demo only when a real URL exists. Findings fold into How as one evidence line or one small table. Proof chips (Live demo / Measured / CI) sit under the title and appear only when they are true: a public demo URL, published numbers already on the card, or confirmed green GitHub Actions on that repo.
 - The contact section closes the page as a final frame with one direct email action.
 
 ## Interaction
 
-- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Open source, Work, and Contact.
+- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Open source, Work, and Contact. The appearance toggle lives in that same header so offset measurement still tracks wrap height.
 - Motion is limited to the opening title reveal and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
 
 ## Browser surfaces
 
-- Selection, focus rings, and scrollbars are themed from the palette; `color-scheme` is light.
+- Selection, focus rings, and scrollbars are themed from the palette; `color-scheme` follows the active light or dark appearance.
