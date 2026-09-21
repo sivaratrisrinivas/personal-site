@@ -767,6 +767,7 @@ a.proof-chip-link:focus-visible {
 }
 
 .project-beats dt {
+    display: block;
     margin-bottom: 0.4rem;
     color: var(--accent);
     font-size: 0.7rem;

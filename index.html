@@ -123,8 +123,6 @@
                     <ul class="role-highlights">
                         <li>Proposed a request-scoped skip flag and regression test for an email-enumeration leak in better-auth; maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</li>
                         <li>Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.</li>
-                        <li>Shipped POSTDATED, which turns hospital paperwork into predicted insurance disallowances while recoverable gaps can still be fixed, using Cerebras Chat Completions (<code>gemma-4-31b</code>) for extraction and 38 tests on the money and guard paths.</li>
-                        <li>Built Fuzz, a real-time text-degradation game that captures restored words at their exact fuzz level; each round makes at most one model call, and the original text never crosses the server boundary.</li>
                     </ul>
                 </article>
                 <article class="role-card">
@@ -185,79 +183,9 @@
             <h2 id="projects-title">Projects</h2>
             <div class="project-list">
 
-                <article class="project-card" id="llmfr">
-                    <header class="project-card-head">
-                        <span class="project-index">01</span>
-                        <div class="project-heading">
-                            <h3>llmfr</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>LLM Flight Recorder records a local generation step by step so you can replay two runs, name where they first split, and treat later diffs as fallout.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Prompt and final-string logs cannot tell those apart. A string diff treats a sampling split, a truncated window, and downstream fallout as one blob.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Python, Hugging Face transformers, a local SQLite index, and JSON/JSONL traces. Commands: record, compare, replay, study, and batch. Traces stay local. The OpenAI adapter fails closed when the API omits per-token logprob content; it does not invent scores. Llama was not recorded (gated Hub repo; no <code>HF_TOKEN</code> in the capture environment).</p>
-                                <p class="project-evidence">N=30 <code>Qwen/Qwen2.5-0.5B-Instruct</code>: sampling disagree 10/30, decoding-config disagree 13/30; GS-T22n 2x descriptive label is null (not a p-value). First-divergence class did not predict wrong-answer disagreement here.</p>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="tiny-lora">
-                    <header class="project-card-head">
-                        <span class="project-index">02</span>
-                        <div class="project-heading">
-                            <h3>tiny-lora</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/tiny-lora/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>CPU-small PEFT LoRA demo: train a LoRA adapter on a tiny randomly initialized BERT classifier, then score the same texts on a polarity lexicon split and a scrambled-label split.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>To show what the adapter actually fitted. Perfect lexicon accuracy is expected; it is not a generalization claim, and this is not a leaderboard run.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Hugging Face PEFT LoRA (<code>r=8</code>) on <code>local-tiny-bert</code> (hidden 64, 2 layers). CPU is forced. Demo-scale: 80 train / 40 eval. Teaching point: adapted lexicon 1.0 plus scrambled near chance means this run memorized the toy polarity words.</p>
-                                <ul class="project-evidence-list">
-                                    <li>Lexicon accuracy 0.50 → 1.00 (n=40)</li>
-                                    <li>Scrambled accuracy 0.50 → 0.55 (n=40; chance band [0.40, 0.65])</li>
-                                    <li>Demo-scale CPU measurement — not a public-benchmark result</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/tiny-lora" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
                 <article class="project-card" id="bouncer">
                     <header class="project-card-head">
-                        <span class="project-index">03</span>
+                        <span class="project-index">01</span>
                         <div class="project-heading">
                             <h3>Bouncer</h3>
                             <ul class="proof-chips" aria-label="Proof">
@@ -269,7 +197,7 @@
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>An eval for when an AI agent with write access to a store should be allowed to touch money. Five actions: ACT, REPLY, ASK, ESCALATE, ABSTAIN. Grading is fully deterministic — no LLM judges.</dd>
+                            <dd>An eval for when an AI agent with write access to a store should be allowed to touch money. Five actions: ACT, REPLY, ASK, ESCALATE, ABSTAIN. Grading is fully deterministic. No LLM judges.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
@@ -278,9 +206,9 @@
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Python, a rules engine, and OpenAI-compatible adapters. The demo runs rules live and replays committed fixtures for the LLM agents, labeled as such. <code>llama3.1-8b</code> and <code>llama-3.3-70b</code> failed with HTTP 403 error 1010 — no rates.</p>
+                                <p>Python, a rules engine, and OpenAI-compatible adapters. The demo runs rules live and replays committed fixtures for the LLM agents, labeled as such. <code>llama3.1-8b</code> and <code>llama-3.3-70b</code> failed with HTTP 403 error 1010. No rates for those two.</p>
                                 <table class="project-substance">
-                                    <caption>50-case run. Both measured LLMs are about 5x less safe than rules on this set; two points, not a trend.</caption>
+                                    <caption>50-case run. Both measured LLMs are about 5x less safe than rules on this set. Two points, not a trend.</caption>
                                     <thead>
                                         <tr>
                                             <th scope="col">Model</th>
@@ -310,8 +238,78 @@
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://bouncer-eval.vercel.app" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/bouncer-eval" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://bouncer-eval.vercel.app" target="_blank" rel="noopener noreferrer">Demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                </article>
+
+                <article class="project-card" id="llmfr">
+                    <header class="project-card-head">
+                        <span class="project-index">02</span>
+                        <div class="project-heading">
+                            <h3>llmfr</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
+                    </header>
+                    <dl class="project-beats">
+                        <div>
+                            <dt>What</dt>
+                            <dd>Records a local LLM generation step by step so you can replay two runs, name where they first split, and treat later diffs as fallout.</dd>
+                        </div>
+                        <div>
+                            <dt>Why</dt>
+                            <dd>Prompt and final-string logs cannot tell those apart. A string diff treats a sampling split, a truncated window, and downstream fallout as one blob.</dd>
+                        </div>
+                        <div>
+                            <dt>How</dt>
+                            <dd>
+                                <p>Python, Hugging Face transformers, a local SQLite index, and JSON/JSONL traces. Commands: record, compare, replay, study, and batch. Traces stay local. The OpenAI adapter fails closed when the API omits per-token logprob content. It does not invent scores. Llama was not recorded (gated Hub repo; no <code>HF_TOKEN</code> in the capture environment).</p>
+                                <p class="project-evidence">N=30 <code>Qwen/Qwen2.5-0.5B-Instruct</code>: sampling disagree 10/30, decoding-config disagree 13/30. GS-T22n 2x descriptive label is null (not a p-value). First-divergence class did not predict wrong-answer disagreement here.</p>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div class="project-actions">
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                </article>
+
+                <article class="project-card" id="tiny-lora">
+                    <header class="project-card-head">
+                        <span class="project-index">03</span>
+                        <div class="project-heading">
+                            <h3>tiny-lora</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/tiny-lora/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
+                    </header>
+                    <dl class="project-beats">
+                        <div>
+                            <dt>What</dt>
+                            <dd>CPU-small PEFT LoRA demo: train a LoRA adapter on a tiny randomly initialized BERT classifier, then score the same texts on a polarity lexicon split and a scrambled-label split.</dd>
+                        </div>
+                        <div>
+                            <dt>Why</dt>
+                            <dd>To show what the adapter actually fitted. Perfect lexicon accuracy is expected. It is not a generalization claim, and this is not a leaderboard run.</dd>
+                        </div>
+                        <div>
+                            <dt>How</dt>
+                            <dd>
+                                <p>Hugging Face PEFT LoRA (<code>r=8</code>) on <code>local-tiny-bert</code> (hidden 64, 2 layers). CPU is forced. Demo-scale: 80 train / 40 eval. Teaching point: adapted lexicon 1.0 plus scrambled near chance means this run memorized the toy polarity words.</p>
+                                <ul class="project-evidence-list">
+                                    <li>Lexicon accuracy 0.50 → 1.00 (n=40)</li>
+                                    <li>Scrambled accuracy 0.50 → 0.55 (n=40; chance band [0.40, 0.65])</li>
+                                    <li>Demo-scale CPU measurement. Not a public-benchmark result.</li>
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div class="project-actions">
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/tiny-lora" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
@@ -340,54 +338,100 @@
                             <dd>
                                 <p>TypeScript, Next.js 16, React 19, Tailwind CSS 4, Cerebras Chat Completions (<code>gemma-4-31b</code>), and Vitest. Extraction is separated from deterministic policy arithmetic and a negation-aware guard that blocks unsupported medical claims. Phone photos are resized to a 2,576px long edge. There is no Anthropic / Claude client. Prediction accuracy is unmeasured.</p>
                                 <ul class="project-evidence-list">
-                                    <li>Selected builder — one of ~150 from 5,000+ applications (≈3%) for the five-hour Push to Prod sprint in Bengaluru</li>
-                                    <li>38 tests on the money and guard paths</li>
-                                    <li>Live extraction reports precision, recall, grounding, and abstention separately rather than one headline score</li>
+                                    <li>Forty fictional extraction cases in the eval harness</li>
+                                    <li>CI runs offline safety, arithmetic, and reference-workflow gates</li>
+                                    <li>Live extraction reports precision, recall, grounding, and abstention separately rather than one headline score. Those live rates and human alignment are unmeasured here.</li>
                                 </ul>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://postdated.vercel.app" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/postdated" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://postdated.vercel.app" target="_blank" rel="noopener noreferrer">Demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
-                <article class="project-card" id="sunkelo">
+                <article class="project-card" id="fuzz">
                     <header class="project-card-head">
                         <span class="project-index">05</span>
                         <div class="project-heading">
-                            <h3>SunkeLo</h3>
+                            <h3>Fuzz</h3>
                             <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
                                 <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/fuzz/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
                             </ul>
                         </div>
                     </header>
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>A voice-first product review app: ask about a product in your language, get one combined review as text and spoken audio. Eleven languages.</dd>
+                            <dd>A real-time text-degradation game: waves scramble a private paragraph, you rewrite to save pieces, and a model reconstructs from what remains. The original text never leaves the browser.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
-                            <dd>Shoppers more comfortable speaking than reading English or Hindi review pages still need to research a product before they buy.</dd>
+                            <dd>Makes diffusion tangible with words instead of pictures. Reconstructing from damage is a best guess, not a copy.</dd>
                         </div>
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. Voice input runs through scrape, synthesis, localization, and TTS, streamed over SSE. <code>STRICT_REVIEW_EVIDENCE_MODE</code> is opt-in; the default summary is not evidence-gated.</p>
-                                <p class="project-evidence">GS-T7 absent-claim rate 0.7586 (22/29) at overlap 0.6 — 22 of 29 summary claims were not grounded in sources. That rate does not block the default product.</p>
+                                <p>Bun and TypeScript on the client; Python/FastAPI helper and Hugging Face inference on the server. Each round makes at most one model call. Only the final fuzz level and newly restored words leave the browser.</p>
+                                <ul class="project-evidence-list">
+                                    <li>GS-T6 historical, Qwen2.5-7B-Instruct Q4_K_M, n=4, user-only chat: Word F1 0.876 at fuzz 0.0, 0.124 at 1.0</li>
+                                    <li>Fuzz 1.0 Word F1 0.124 is prompt-boilerplate regurgitation</li>
+                                    <li>Exact match 0 at every level</li>
+                                </ul>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                </article>
+
+                <article class="project-card" id="sokoflow">
+                    <header class="project-card-head">
+                        <span class="project-index">06</span>
+                        <div class="project-heading">
+                            <h3>SokoFlow</h3>
+                            <ul class="proof-chips" aria-label="Proof">
+                                <li><a class="proof-chip proof-chip-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+                                <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/sokoflow/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
+                            </ul>
+                        </div>
+                    </header>
+                    <dl class="project-beats">
+                        <div>
+                            <dt>What</dt>
+                            <dd>A conditional diffusion policy that generates Sokoban action sequences: random moves denoised toward a solution.</dd>
+                        </div>
+                        <div>
+                            <dt>Why</dt>
+                            <dd>The same idea as image diffusion, applied to puzzle plans. Can a denoiser turn noise into a legal path?</dd>
+                        </div>
+                        <div>
+                            <dt>How</dt>
+                            <dd>
+                                <p>Python, PyTorch, NumPy, and Flask. An 8×8 CNN board encoder plus a Transformer action denoiser, trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p>
+                                <ul class="project-evidence-list">
+                                    <li>GS-T5, 240 reverse-scrambled 8×8 boards: diffusion 20.8% (50/240) vs BFS 95.4% (229/240). 20.8% is not a scramble-hard rate.</li>
+                                    <li>43 of 50 diffusion successes are 1-box-off boards</li>
+                                    <li>By difficulty: easy 33.3% (20/60), medium 18.8% (15/80), hard 15.0% (15/100)</li>
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div class="project-actions">
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
                 <article class="project-card" id="bingo">
                     <header class="project-card-head">
-                        <span class="project-index">06</span>
+                        <span class="project-index">07</span>
                         <div class="project-heading">
                             <h3>Bingo</h3>
                             <ul class="proof-chips" aria-label="Proof">
@@ -407,95 +451,49 @@
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), CLIP, and a local cross-encoder (<code>ms-marco-TinyBERT-L2-v2</code>). BM25 is implemented from scratch over an inverted index; hybrid ranking uses a weighted blend and Reciprocal Rank Fusion at k=60.</p>
+                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), CLIP, and a local cross-encoder (<code>ms-marco-TinyBERT-L2-v2</code>). BM25 is implemented from scratch over an inverted index. Hybrid ranking uses a weighted blend and Reciprocal Rank Fusion at k=60.</p>
                                 <ul class="project-evidence-list">
                                     <li>BM25 Precision@5 0.3800 vs semantic 0.3200 (10 queries, 5000 movies, k=5)</li>
-                                    <li>RRF + cross-encoder Precision@5 0.3600 — did not beat BM25 on this set</li>
-                                    <li>Golden set measured 2026-08-24; index build 353.36s (cold rebuild)</li>
+                                    <li>RRF + cross-encoder Precision@5 0.3600. Did not beat BM25 on this set.</li>
+                                    <li>Golden set measured 2026-08-24. Index build 353.36s (cold rebuild).</li>
                                 </ul>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
-                <article class="project-card" id="fuzz">
-                    <header class="project-card-head">
-                        <span class="project-index">07</span>
-                        <div class="project-heading">
-                            <h3>Fuzz</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><a class="proof-chip proof-chip-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
-                                <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/fuzz/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>A real-time text-degradation game: waves scramble a private paragraph, you rewrite to save pieces, and a model reconstructs from what remains. The original text never leaves the browser.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Makes diffusion tangible with words instead of pictures — reconstructing from damage is a best guess, not a copy.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Bun and TypeScript on the client; Python/FastAPI helper and Hugging Face inference on the server. Each round makes at most one model call. Only the final fuzz level and newly restored words leave the browser.</p>
-                                <ul class="project-evidence-list">
-                                    <li>Qwen2.5-7B-Instruct Q4_K_M, n=4: Word F1 0.876 at fuzz 0.0, 0.124 at 1.0</li>
-                                    <li>Fuzz 1.0 Word F1 0.124 is prompt-boilerplate regurgitation</li>
-                                    <li>Exact match 0 at every level</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="sokoflow">
+                <article class="project-card" id="sunkelo">
                     <header class="project-card-head">
                         <span class="project-index">08</span>
                         <div class="project-heading">
-                            <h3>SokoFlow</h3>
+                            <h3>SunkeLo</h3>
                             <ul class="proof-chips" aria-label="Proof">
-                                <li><a class="proof-chip proof-chip-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Live demo</a></li>
                                 <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/sokoflow/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
                             </ul>
                         </div>
                     </header>
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>A conditional diffusion policy that generates Sokoban action sequences: random moves denoised toward a solution.</dd>
+                            <dd>A voice-first product review app: ask about a product in your language, get one combined review as text and spoken audio. Eleven languages.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
-                            <dd>The same idea as image diffusion, applied to puzzle plans — can a denoiser turn noise into a legal path?</dd>
+                            <dd>Shoppers more comfortable speaking than reading English or Hindi review pages still need to research a product before they buy.</dd>
                         </div>
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Python, PyTorch, NumPy, and Flask. An 8×8 CNN board encoder plus a Transformer action denoiser, trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p>
-                                <ul class="project-evidence-list">
-                                    <li>GS-T5, 240 reverse-scrambled 8×8 boards: diffusion 20.8% (50/240) vs BFS 95.4% (229/240)</li>
-                                    <li>43 of 50 diffusion successes are 1-box-off boards</li>
-                                    <li>By difficulty: easy 33.3% (20/60), medium 18.8% (15/80), hard 15.0% (15/100)</li>
-                                </ul>
+                                <p>Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI, Gemini, and Firecrawl. Voice input runs through scrape, synthesis, localization, and TTS, streamed over SSE. <code>STRICT_REVIEW_EVIDENCE_MODE</code> is opt-in. The default summary is not evidence-gated.</p>
+                                <p class="project-evidence">GS-T7 absent-claim rate 0.7586 (22/29) at overlap 0.6. 22 of 29 summary claims were not grounded in sources. That rate does not block the default product.</p>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/sokoflow" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://huggingface.co/spaces/Srini410/sokoflow" target="_blank" rel="noopener noreferrer">Live demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
