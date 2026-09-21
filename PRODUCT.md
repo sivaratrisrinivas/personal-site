@@ -18,12 +18,13 @@ Direct, inventive, and technically assured. The experience should feel focused a
 
 ## Anti-references
 
-Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, duplicate featured-plus-archive lists, findings walls, capability clusters, and motion that competes with the work.
+Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, duplicate featured-plus-archive lists, findings walls, capability clusters, motion that competes with the work, and any use of Entourage (or other show) character names, logos, clips, episode titles, or trademarked branding.
 
 ## Design Principles
 
 - Lead with evidence: let shipped projects, measured one-liners, and honest Live / Measured / CI chips carry the story. Never invent a chip.
-- Keep one path: hero, about, experience, open source, work, contact.
+- Keep one path: hero, about, experience, open source, work, contact. `/game` is an optional briefing off that path, reached from a quiet footer link — it must not dominate a recruiter scan.
+- The game restates published site and résumé facts only. No invented employers, metrics, PR outcomes, or proof chips.
 - Keep the interface as precise and legible as the engineering it represents.
 - Use a few memorable interactions with restraint.
 - Make every project and contact path work equally well with touch, mouse, or keyboard.
