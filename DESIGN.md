@@ -12,8 +12,6 @@ The portfolio is Soft daylight: a cream surface with a quiet sky accent, where s
 
 Soft daylight. Light is the default theme. Dark inverts the same family carefully: cream-ish text on a deep warm charcoal/navy-adjacent ground, with a readable sky accent — not pure black and neon.
 
-These `--color-*` / `--accent` tokens live on `:root` so a parallel `/game` route can inherit the same palette. Do not fork a second color system there.
-
 - `--color-bg` / cream: `#f4f0e6` (dark: `#1b2228`)
 - `--color-surface`: `#ebe6da` (dark: `#242c34`)
 - `--color-text` / warm charcoal: `#2c2a26` (dark: cream-ish `#ede8dc`)
@@ -48,11 +46,3 @@ The first visit follows `prefers-color-scheme`. After the header toggle is used,
 ## Browser surfaces
 
 - Selection, focus rings, and scrollbars are themed from the palette; `color-scheme` follows the active light or dark appearance.
-
-## The game (`/game`)
-
-A separate route. The recruiter homepage does not change. `/game` inherits Soft daylight from `css/style.css` (`--color-*`, `--accent`, dark via `data-theme`) — no second palette. Syne / DM Mono, appearance toggle, and proof-chip language stay shared.
-
-The page is a three-act briefing — land the meeting, close the upstream deals, screen the reel — that unlocks copy already on the main site. Upstream unlocks are better-auth and go-ethereum only. Chips are Live demo / Measured / CI only when the matching project card already carries them. Motion is optional; `prefers-reduced-motion` holds the stage still.
-
-Open Graph for `/game` uses `assets/og-game.png` and does not replace the main recruiter card. A quiet “The game” link sits in the homepage footer next to the copyright line.
