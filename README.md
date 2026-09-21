@@ -10,14 +10,12 @@ A Soft daylight portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, no framework
 4. **Open source** — better-auth, go-ethereum, and peft writeups with PR links
 5. **Work** — One project list; each card is What / Why / How plus GitHub and a live demo when real
 6. **Contact** — Email, GitHub, X, LinkedIn, résumé PDF
-7. **The game** — Optional `/game` briefing (quiet footer link: “The game”). Three short acts unlock Experience, Open source, and four project clips using only published facts. Dedicated OG; main recruiter card stays put.
 
 ## Quick Start
 
 ```bash
 python -m http.server 8000
 # visit http://localhost:8000
-# game: http://localhost:8000/game
 ```
 
 ## Structure
@@ -25,11 +23,9 @@ python -m http.server 8000
 ```
 personal-site/
 ├── index.html      # Live site markup
-├── game/           # /game briefing (index.html, CSS, JS)
-├── vercel.json     # Rewrites /game → /game/index.html
 ├── css/style.css   # Visual system and responsive layout
 ├── js/script.js    # Smooth navigation, theme, and cursor
-├── assets/         # Brand assets, Open Graph images, and résumé PDF
+├── assets/         # Brand assets, Open Graph image, and résumé PDF
 ├── resume/         # RenderCV source and generated résumé artifacts
 └── README.md
 ```
