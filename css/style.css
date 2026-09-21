@@ -391,7 +391,7 @@ main {
     flex-direction: column;
     justify-content: space-between;
     min-height: 88svh;
-    padding: calc(var(--header-height) + 2rem) var(--page-gutter) 2.5rem;
+    padding: calc(var(--header-offset) + 2rem) var(--page-gutter) 2.5rem;
 }
 
 .hero-content {
@@ -932,8 +932,36 @@ table.project-substance th {
 }
 
 @media (max-width: 780px) {
-    .site-header { min-height: 68px; }
-    .hero { min-height: auto; padding-top: calc(68px + 1.5rem); }
+    .site-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "brand toggle"
+            "nav nav";
+        align-items: center;
+        column-gap: 0.75rem;
+        row-gap: 0.15rem;
+        min-height: 68px;
+        padding-top: 0.25rem;
+        padding-bottom: 0.4rem;
+    }
+
+    .brand-mark { grid-area: brand; }
+
+    .header-controls {
+        display: contents;
+        margin-left: 0;
+    }
+
+    .site-nav {
+        grid-area: nav;
+        justify-content: flex-start;
+        gap: 0.15rem 1rem;
+    }
+
+    .theme-toggle { grid-area: toggle; }
+
+    .hero { min-height: auto; padding-top: calc(var(--header-offset) + 1.5rem); }
     .hero-content { padding: 3.5rem 0 2rem; }
     .hero h1 { font-size: clamp(4rem, 18vw, 7rem); }
     .about-grid { display: block; }
