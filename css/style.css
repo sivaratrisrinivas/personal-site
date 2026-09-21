@@ -426,7 +426,9 @@ h2 {
 .opensource-section,
 .projects-section {
     border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--header-height) + 12px);
 }
+
 
 .about-grid {
     display: grid;
@@ -498,6 +500,10 @@ h2 {
     font-weight: 500;
     letter-spacing: -0.03em;
     line-height: 1.1;
+}
+
+.contribution-card h3 code {
+    color: inherit;
 }
 
 .role-position {
@@ -729,6 +735,7 @@ table.project-substance th {
 
 .contact-section {
     padding-bottom: 2rem;
+    scroll-margin-top: calc(var(--header-height) + 12px);
 }
 
 .contact-stage {
