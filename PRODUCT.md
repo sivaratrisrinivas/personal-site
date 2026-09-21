@@ -6,11 +6,11 @@ brand
 
 ## Users
 
-Engineering leaders, collaborators, open-source maintainers, and technically curious peers evaluating Srinivas's work. They need a short profile, eight shipped projects, and a direct contact path.
+Engineering leaders, collaborators, open-source maintainers, and technically curious peers evaluating Srinivas's work. They need a short profile, experience, upstream contributions, eight shipped projects, and a direct contact path.
 
 ## Product Purpose
 
-Present Srinivas Sivaratri as a self-directed engineer who builds practical AI systems, developer tools, and open-source contributions. Success means a visitor can read the positioning line, scan one project list (What / Why / How), and make contact without friction.
+Present Srinivas Sivaratri as a self-directed engineer who builds practical AI systems, developer tools, and open-source contributions. Success means a visitor can read the positioning line, scan experience and upstream writeups, read one project list (What / Why / How), and make contact without friction.
 
 ## Brand Personality
 
@@ -23,7 +23,7 @@ Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, d
 ## Design Principles
 
 - Lead with evidence: let shipped projects and measured one-liners carry the story.
-- Keep one path: hero, about, work, contact.
+- Keep one path: hero, about, experience, open source, work, contact.
 - Keep the interface as precise and legible as the engineering it represents.
 - Use a few memorable interactions with restraint.
 - Make every project and contact path work equally well with touch, mouse, or keyboard.

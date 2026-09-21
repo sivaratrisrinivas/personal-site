@@ -31,11 +31,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         moveCursor();
 
-        document.querySelectorAll("a, button, .project-card").forEach((element) => {
+        document.querySelectorAll("a, button, .project-card, .role-card, .contribution-card").forEach((element) => {
             element.addEventListener("mouseenter", () => cursor.classList.add("is-active"));
             element.addEventListener("mouseleave", () => cursor.classList.remove("is-active"));
         });
     }
+
+    const header = document.querySelector(".site-header");
+    const navLinks = [...document.querySelectorAll('.site-nav a[href^="#"]')];
+    const sectionById = new Map(
+        navLinks
+            .map((link) => {
+                const id = link.getAttribute("href");
+                const section = id ? document.querySelector(id) : null;
+                return section ? [id, { link, section }] : null;
+            })
+            .filter(Boolean)
+    );
+
+    const headerOffset = () => (header ? header.offsetHeight + 12 : 12);
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
         link.addEventListener("click", (event) => {
@@ -43,9 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!target) return;
 
             event.preventDefault();
-            const header = document.querySelector(".site-header");
-            const offset = header ? header.offsetHeight + 12 : 12;
-            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            const top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
 
             window.scrollTo({
                 top,
@@ -54,4 +66,35 @@ document.addEventListener("DOMContentLoaded", () => {
             history.replaceState(null, "", link.getAttribute("href"));
         });
     });
+
+    const setActiveNav = (id) => {
+        navLinks.forEach((link) => {
+            if (link.getAttribute("href") === id) {
+                link.setAttribute("aria-current", "page");
+            } else {
+                link.removeAttribute("aria-current");
+            }
+        });
+    };
+
+    const syncActiveNav = () => {
+        if (window.scrollY < 80) {
+            navLinks.forEach((link) => link.removeAttribute("aria-current"));
+            return;
+        }
+
+        const offset = headerOffset();
+        let activeId = null;
+
+        sectionById.forEach(({ section }, id) => {
+            const top = section.getBoundingClientRect().top - offset;
+            if (top <= 24) activeId = id;
+        });
+
+        if (activeId) setActiveNav(activeId);
+    };
+
+    syncActiveNav();
+    window.addEventListener("scroll", syncActiveNav, { passive: true });
+    window.addEventListener("resize", syncActiveNav);
 });
