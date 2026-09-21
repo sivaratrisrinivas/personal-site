@@ -30,13 +30,15 @@ Light is the default theme.
 ## Composition
 
 - The first viewport is name, one-line positioning, and profile links (GitHub, X, LinkedIn, email, résumé).
-- About is a short profile: independent engineering, Accenture, education, and two upstream one-liners.
+- About is a short bio and availability line. Job history and upstream writeups are not repeated here.
+- Experience is two roles (Independent engineering, Accenture) plus a short education block.
+- Open source is evidence-style writeups for better-auth, go-ethereum, and peft, with PR links — not a ticker, CLI, findings wall, or skills cluster.
 - Work is one numbered list. Each project is What / Why / How, plus GitHub and a live demo only when a real URL exists. Findings fold into How as one evidence line or one small table.
 - The contact section closes the page as a final frame with one direct email action.
 
 ## Interaction
 
-- In-page nav uses hash links with a sticky-header offset.
+- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Open source, Work, and Contact.
 - Motion is limited to the opening title reveal and intentional hover emphasis. `prefers-reduced-motion` disables continuous animation.
 
 ## Browser surfaces
