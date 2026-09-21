@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cursor = document.querySelector(".cursor-orb");
     const root = document.documentElement;
     const THEME_KEY = "theme";
-    const THEME_COLORS = { light: "#f7f1e6", dark: "#261c10" };
+    const THEME_COLORS = { light: "#f4f0e6", dark: "#1b2228" };
     const themeMeta = document.querySelector('meta[name="theme-color"]');
     const themeToggle = document.querySelector(".theme-toggle");
     const themeLabel = themeToggle ? themeToggle.querySelector(".theme-toggle-text") : null;

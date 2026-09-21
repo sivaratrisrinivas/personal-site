@@ -1,6 +1,6 @@
 # Personal Portfolio
 
-A daylight screening-room portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, no frameworks.
+A Soft daylight portfolio for Srinivas Sivaratri. Pure HTML/CSS/JS, no frameworks.
 
 ## Sections
 
