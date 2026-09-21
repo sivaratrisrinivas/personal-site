@@ -177,28 +177,6 @@
                         <a class="text-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer">PR #31351 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
-                <article class="contribution-card">
-                    <header class="contribution-card-head">
-                        <h3>peft — <code>target_parameters</code> docs</h3>
-                        <p class="contribution-meta">2026 <span>Docs</span></p>
-                    </header>
-                    <p>Fixes three <code>target_parameters</code> documentation defects: close the missing quote in the Llama 4 example, remove the false "or regex expression" claim from the field help, and ungarble "parameter names of the parameter names." Docs and docstring only — no runtime LoRA behavior change.</p>
-                    <p class="contribution-status"><span>Status</span> Open pull request.</p>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/huggingface/peft/pull/3773" target="_blank" rel="noopener noreferrer">PR #3773 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-                <article class="contribution-card">
-                    <header class="contribution-card-head">
-                        <h3>peft — weighted adapter combine</h3>
-                        <p class="contribution-meta">2026 <span>Correctness</span></p>
-                    </header>
-                    <p>Fixes a silent numerical bug in <code>add_weighted_adapter</code>: combine <code>lora_B</code> bias as <code>sum(w_i * scaling_i * bias_i)</code> when <code>lora_bias=True</code>, and raise for <code>use_dora</code> / <code>kasa_config</code> the same way <code>target_parameters</code> already does. Identity-combine tests cover <code>linear</code> and <code>cat</code> for <code>use_rslora</code> / <code>lora_bias</code>.</p>
-                    <p class="contribution-status"><span>Status</span> Open pull request.</p>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/huggingface/peft/pull/3775" target="_blank" rel="noopener noreferrer">PR #3775 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
             </div>
         </section>
 

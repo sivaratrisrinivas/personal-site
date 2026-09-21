@@ -36,7 +36,7 @@ The first visit follows `prefers-color-scheme`. After the header toggle is used,
 - The first viewport is name, one-line positioning, and profile links (GitHub, X, LinkedIn, email, résumé).
 - About is a short bio and availability line. Job history and upstream writeups are not repeated here.
 - Experience is two roles (Independent engineering, Accenture) plus a short education block.
-- Open source is evidence-style writeups for better-auth, go-ethereum, and peft, with PR links — not a ticker, CLI, findings wall, or skills cluster.
+- Open source is evidence-style writeups for better-auth and go-ethereum, with PR links — not a ticker, CLI, findings wall, or skills cluster.
 - Work is one numbered list. Each project is What / Why / How, plus GitHub and a live demo only when a real URL exists. Findings fold into How as one evidence line or one small table. Proof chips (Live demo / Measured / CI) sit under the title and appear only when they are true: a public demo URL, published numbers already on the card, or confirmed green GitHub Actions on that repo.
 - The contact section closes the page as a final frame with one direct email action.
 
