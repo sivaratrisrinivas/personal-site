@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "upstream",
             act: "02",
             title: "Close the upstream deal",
-            kicker: "Four folders on the table",
-            agent: "Close what’s real. Leave the rest open. We don’t claim a merge we didn’t get.",
+            kicker: "Two folders on the table",
+            agent: "Close what’s real. We don’t claim a merge we didn’t get.",
             unlocks: "opensource",
             beats: [
                 {
@@ -102,30 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     correct: 1,
                     hit: "They built their own version. That’s the honest end.",
                     miss: "PR #31351 was revised across three rounds. The core team built its own version of the command. Don’t say it merged as written.",
-                },
-                {
-                    type: "choice",
-                    prompt: "peft — target_parameters docs. Missing quote, false regex claim, garbled wording. Status?",
-                    options: [
-                        "Merged LoRA runtime change.",
-                        "Open pull request. Docs and docstring only — no runtime LoRA behavior change.",
-                        "Hugging Face hired him to own PEFT.",
-                    ],
-                    correct: 1,
-                    hit: "Open PR. Docs only. Don’t sell a runtime change.",
-                    miss: "PR #3773 is an open pull request. Docs and docstring only — no runtime LoRA behavior change.",
-                },
-                {
-                    type: "choice",
-                    prompt: "peft — add_weighted_adapter. Silent numerical bug. What’s true?",
-                    options: [
-                        "Open pull request. Combine lora_B bias as sum(w_i * scaling_i * bias_i) when lora_bias=True.",
-                        "Shipped in the last PEFT release as the project owner.",
-                        "Duplicate of the docs PR; no code change.",
-                    ],
-                    correct: 0,
-                    hit: "Open PR. Bias combine when lora_bias=True. That’s the bug.",
-                    miss: "PR #3775 is open. It fixes a silent numerical bug in add_weighted_adapter — not a shipped release, not the docs PR.",
                 },
             ],
         },
@@ -293,28 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     ],
                     links: [
                         { label: "PR #31351", href: "https://github.com/ethereum/go-ethereum/pull/31351" },
-                    ],
-                },
-                {
-                    title: "peft — target_parameters docs",
-                    meta: "2026 · Docs · open pull request",
-                    items: [
-                        "Fixes three target_parameters documentation defects. Docs and docstring only — no runtime LoRA behavior change.",
-                        "Status: Open pull request.",
-                    ],
-                    links: [
-                        { label: "PR #3773", href: "https://github.com/huggingface/peft/pull/3773" },
-                    ],
-                },
-                {
-                    title: "peft — weighted adapter combine",
-                    meta: "2026 · Correctness · open pull request",
-                    items: [
-                        "Fixes a silent numerical bug in add_weighted_adapter: combine lora_B bias as sum(w_i * scaling_i * bias_i) when lora_bias=True.",
-                        "Status: Open pull request.",
-                    ],
-                    links: [
-                        { label: "PR #3775", href: "https://github.com/huggingface/peft/pull/3775" },
                     ],
                 },
             ],
@@ -670,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
         agentLine.textContent = currentQuest.id === "meeting"
             ? "The meeting’s on the book. Roles, dates, schooling — as written."
             : currentQuest.id === "upstream"
-                ? "Upstream’s on the book. Shipped, rebuilt, or still open — no extra shine."
+                ? "Upstream’s on the book. better-auth shipped; geth’s core team built its own version. No extra shine."
                 : "Four clips, stamped honest. The rest of the reel is on the portfolio.";
         const wrap = document.createElement("div");
         wrap.className = "unlock-copy";

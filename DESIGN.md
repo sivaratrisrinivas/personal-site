@@ -53,6 +53,6 @@ The first visit follows `prefers-color-scheme`. After the header toggle is used,
 
 A separate route. The recruiter homepage does not change. `/game` inherits Soft daylight from `css/style.css` (`--color-*`, `--accent`, dark via `data-theme`) — no second palette. Syne / DM Mono, appearance toggle, and proof-chip language stay shared.
 
-The page is a three-act briefing — land the meeting, close the upstream deals, screen the reel — that unlocks copy already on the main site. Chips are Live demo / Measured / CI only when the matching project card already carries them. Motion is optional; `prefers-reduced-motion` holds the stage still.
+The page is a three-act briefing — land the meeting, close the upstream deals, screen the reel — that unlocks copy already on the main site. Upstream unlocks are better-auth and go-ethereum only. Chips are Live demo / Measured / CI only when the matching project card already carries them. Motion is optional; `prefers-reduced-motion` holds the stage still.
 
 Open Graph for `/game` uses `assets/og-game.png` and does not replace the main recruiter card. A quiet “The game” link sits in the homepage footer next to the copyright line.
