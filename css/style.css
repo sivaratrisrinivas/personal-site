@@ -746,7 +746,7 @@ h2 {
 }
 
 a.proof-chip-link {
-    min-height: 32px;
+    min-height: 44px;
     color: var(--amber-soft);
     border-color: color-mix(in srgb, var(--amber) 40%, var(--line));
     transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
