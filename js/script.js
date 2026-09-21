@@ -3,6 +3,59 @@ document.addEventListener("DOMContentLoaded", () => {
     const canUseCustomCursor = window.matchMedia("(hover: hover) and (pointer: fine)").matches && !prefersReducedMotion;
     const cursor = document.querySelector(".cursor-orb");
     const root = document.documentElement;
+    const THEME_KEY = "theme";
+    const THEME_COLORS = { light: "#f7f1e6", dark: "#261c10" };
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    const themeToggle = document.querySelector(".theme-toggle");
+    const themeLabel = themeToggle ? themeToggle.querySelector(".theme-toggle-text") : null;
+
+    const readStoredTheme = () => {
+        try {
+            const value = localStorage.getItem(THEME_KEY);
+            return value === "light" || value === "dark" ? value : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const systemTheme = () => (
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+    );
+
+    const applyTheme = (theme, persist) => {
+        root.setAttribute("data-theme", theme);
+        root.style.colorScheme = theme;
+        if (themeMeta) themeMeta.setAttribute("content", THEME_COLORS[theme]);
+        if (themeToggle) {
+            const next = theme === "dark" ? "light" : "dark";
+            themeToggle.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+            themeToggle.setAttribute("aria-label", `Switch to ${next} appearance`);
+            if (themeLabel) themeLabel.textContent = next.charAt(0).toUpperCase() + next.slice(1);
+        }
+        if (persist) {
+            try { localStorage.setItem(THEME_KEY, theme); } catch { /* ignore quota / private mode */ }
+        }
+    };
+
+    applyTheme(readStoredTheme() || systemTheme(), false);
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            applyTheme(next, true);
+        });
+    }
+
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+    const onSystemThemeChange = (event) => {
+        if (readStoredTheme()) return;
+        applyTheme(event.matches ? "dark" : "light", false);
+    };
+    if (typeof systemDark.addEventListener === "function") {
+        systemDark.addEventListener("change", onSystemThemeChange);
+    } else if (typeof systemDark.addListener === "function") {
+        systemDark.addListener(onSystemThemeChange);
+    }
 
     if (canUseCustomCursor && cursor) {
         document.body.classList.add("custom-cursor-enabled");
