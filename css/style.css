@@ -918,7 +918,7 @@ table.project-substance th {
 
 .footer-quiet:hover,
 .footer-quiet:focus-visible {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
 }
 
 @keyframes title-in {

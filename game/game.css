@@ -30,12 +30,12 @@
     height: 3px;
     flex: 1;
     max-width: 4.5rem;
-    background: var(--line);
+    background: var(--color-line);
 }
 
 .game-progress span.is-done,
 .game-progress span.is-now {
-    background: var(--amber);
+    background: var(--accent);
 }
 
 .game-progress span.is-now {
@@ -57,7 +57,7 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1.1rem;
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
 }
 
@@ -66,12 +66,12 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--amber);
+    background: var(--accent);
 }
 
 .game-stage h1 {
     max-width: 14ch;
-    color: var(--bone);
+    color: var(--color-text);
     font-size: clamp(2.4rem, 6vw, 5.4rem);
     font-weight: 500;
     letter-spacing: -0.04em;
@@ -82,7 +82,7 @@
 .agent-line {
     max-width: 46ch;
     margin-top: 1.25rem;
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: clamp(1rem, 1.5vw, 1.22rem);
     line-height: 1.55;
 }
@@ -90,7 +90,7 @@
 .scene-prompt {
     max-width: 58ch;
     margin: 1.75rem 0 1rem;
-    color: var(--bone);
+    color: var(--color-text);
     font-family: var(--font-mono);
     font-size: 0.86rem;
     line-height: 1.6;
@@ -113,9 +113,9 @@
     width: 100%;
     min-height: 48px;
     padding: 0.95rem 1.05rem;
-    border: 1px solid var(--line);
-    color: var(--bone);
-    background: color-mix(in srgb, var(--surface) 55%, transparent);
+    border: 1px solid var(--color-line);
+    color: var(--color-text);
+    background: color-mix(in srgb, var(--color-surface) 55%, transparent);
     text-align: left;
     transition: border-color 180ms var(--ease-out), background 180ms var(--ease-out), color 180ms var(--ease-out);
 }
@@ -123,7 +123,7 @@
 .choice-key {
     flex-shrink: 0;
     min-width: 1.4rem;
-    color: var(--amber);
+    color: var(--accent);
     font-size: 0.7rem;
     line-height: 1.5;
 }
@@ -142,19 +142,19 @@
 .scene-continue:focus-visible,
 .play-cta:hover,
 .play-cta:focus-visible {
-    border-color: var(--amber);
-    background: var(--amber-wash);
+    border-color: var(--accent);
+    background: var(--accent-wash);
 }
 
 .choice.is-correct,
 .chip-toggle[aria-pressed="true"] {
-    border-color: var(--amber);
-    background: var(--amber-wash);
+    border-color: var(--accent);
+    background: var(--accent-wash);
 }
 
 .choice.is-wrong {
-    border-color: var(--line-bright);
-    color: var(--faint);
+    border-color: var(--color-line-bright);
+    color: var(--color-faint);
 }
 
 .choice:disabled,
@@ -170,12 +170,12 @@
     align-items: center;
     justify-content: center;
     min-height: 48px;
-    color: var(--faint);
+    color: var(--color-faint);
     font-size: 0.7rem;
 }
 
 .chip-toggle[aria-pressed="true"] {
-    color: var(--amber-soft);
+    color: var(--accent-strong);
 }
 
 .scene-actions {
@@ -193,8 +193,8 @@
     gap: 1.1rem;
     min-height: 48px;
     padding: 0.85rem 1rem;
-    border-color: var(--amber);
-    color: var(--amber-soft);
+    border-color: var(--accent);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.08em;
@@ -205,15 +205,15 @@
 .play-cta:focus-visible,
 .scene-continue:hover,
 .scene-continue:focus-visible {
-    color: var(--bg);
-    background: var(--amber);
+    color: var(--color-bg);
+    background: var(--accent);
 }
 
 .locked-what {
     margin: 1.35rem 0 0.35rem;
     padding: 0.9rem 0;
-    border-top: 1px solid var(--line);
-    color: var(--faint);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.75rem;
     line-height: 1.6;
@@ -222,7 +222,7 @@
 .locked-what strong {
     display: block;
     margin-bottom: 0.35rem;
-    color: var(--amber);
+    color: var(--accent);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -232,26 +232,26 @@
 .game-feedback {
     min-height: 1.5em;
     margin-top: 1rem;
-    color: var(--amber-soft);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     line-height: 1.6;
 }
 
 .game-feedback.is-bad {
-    color: var(--muted);
+    color: var(--color-muted);
 }
 
 .game-keys {
     margin-top: 1.75rem;
-    color: var(--faint);
+    color: var(--color-faint);
     font-size: 0.7rem;
 }
 
 .dossier {
     min-width: 0;
     padding: 1.25rem 0 2rem;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--color-line);
     scroll-margin-top: calc(var(--header-offset, var(--header-height)) + 12px);
 }
 
@@ -266,7 +266,7 @@
 }
 
 .dossier-empty {
-    color: var(--faint);
+    color: var(--color-faint);
     font-family: var(--font-mono);
     font-size: 0.75rem;
     line-height: 1.6;
@@ -279,11 +279,11 @@
 
 .dossier-card {
     padding: 1rem 0 1.15rem;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--color-line);
 }
 
 .dossier-card h3 {
-    color: var(--bone);
+    color: var(--color-text);
     font-size: 1.15rem;
     font-weight: 500;
     letter-spacing: -0.03em;
@@ -292,14 +292,14 @@
 
 .dossier-card-meta {
     margin-top: 0.35rem;
-    color: var(--faint);
+    color: var(--color-faint);
     font-size: 0.7rem;
 }
 
 .dossier-card p strong {
     display: block;
     margin-bottom: 0.25rem;
-    color: var(--amber);
+    color: var(--accent);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 500;
@@ -309,7 +309,7 @@
 
 .dossier-card p,
 .dossier-card li {
-    color: var(--muted);
+    color: var(--color-muted);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1.65;
