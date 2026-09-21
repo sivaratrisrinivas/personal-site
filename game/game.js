@@ -710,14 +710,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (state.scene !== "beat" || state.locked) return;
 
-        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp" || event.key === "ArrowRight" || event.key === "ArrowLeft") {
             const pool = beat()?.type === "reel" && state.reelPhase === "chips"
                 ? [...body.querySelectorAll(".chip-toggle")]
                 : currentChoices();
             if (!pool.length) return;
             event.preventDefault();
             const current = pool.indexOf(document.activeElement);
-            const delta = event.key === "ArrowDown" ? 1 : -1;
+            const delta = (event.key === "ArrowDown" || event.key === "ArrowRight") ? 1 : -1;
             const next = (current + delta + pool.length) % pool.length;
             pool[next].focus();
             return;
