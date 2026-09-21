@@ -416,9 +416,10 @@
                             <dd>
                                 <p>Python, PyTorch, NumPy, and Flask. An 8×8 CNN board encoder plus a Transformer action denoiser, trained on BFS-derived solutions. It samples four 20-action candidates in 10 DDIM steps and replans for at most 20 iterations.</p>
                                 <ul class="project-evidence-list">
-                                    <li>GS-T5, 240 reverse-scrambled 8×8 boards: diffusion 20.8% (50/240) vs BFS 95.4% (229/240). 20.8% is not a scramble-hard rate.</li>
-                                    <li>43 of 50 diffusion successes are 1-box-off boards</li>
-                                    <li>By difficulty: easy 33.3% (20/60), medium 18.8% (15/80), hard 15.0% (15/100)</li>
+                                    <li>GS-T47 scramble-hard, 240 reverse-scrambled 8×8 boards (2026-09-21): diffusion 6.2% (15/240) vs BFS 94.2% (226/240)</li>
+                                    <li>By difficulty: easy 8.3% (5/60), medium 6.2% (5/80), hard 5.0% (5/100)</li>
+                                    <li>Historical GS-T5 20.8% (50/240) is not a scramble-hard rate</li>
+                                    <li>Microban OOD (separate): 2.6% (1/38)</li>
                                 </ul>
                             </dd>
                         </div>
