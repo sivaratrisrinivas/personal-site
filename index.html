@@ -498,6 +498,38 @@
                     </div>
                 </article>
 
+                <article class="project-card" id="rashomon">
+                    <header class="project-card-head">
+                        <span class="project-index">06</span>
+                        <div class="project-heading">
+                            <h3>Rashomon</h3>
+                        </div>
+                    </header>
+                    <dl class="project-beats">
+                        <div>
+                            <dt>What</dt>
+                            <dd>A reading app where people reading the same article at the same time can highlight a passage and chat about it live, in a 5-minute room.</dd>
+                        </div>
+                        <div>
+                            <dt>Why</dt>
+                            <dd>Comment sections are slow. You leave a reaction and hope someone answers days later. This puts the conversation next to the exact passage, while the other reader is still on it.</dd>
+                        </div>
+                        <div>
+                            <dt>How</dt>
+                            <dd>
+                                <p>Next.js, React, Tailwind, and shadcn/ui on the front end; a Bun and Elysia API on the back end. Supabase handles Google sign-in, Postgres with row-level security, and file storage. Paste a URL and the API pulls out the article text, or upload an image or PDF and Google Cloud Vision reads it. Supabase Realtime presence shows who is reading the same piece, broadcast channels carry the chat and a shared timer, and finished chats are saved so later readers can replay them from the highlighted passage.</p>
+                                <ul class="project-evidence-list">
+                                    <li>Bun unit tests for the API and chat components, plus Cypress end-to-end tests for highlighting, content, and replay</li>
+                                    <li>Not deployed yet</li>
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                    <div class="project-actions">
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    </div>
+                </article>
+
             </div>
         </section>
 
