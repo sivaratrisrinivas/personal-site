@@ -1,19 +1,36 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+# Source for assets/srinivas-sivaratri-resume.pdf.
+# Render: rendercv render resume/Srinivas_Sivaratri_Resume.yaml, then copy
+# resume/rendercv_output/Srinivas_Sivaratri_Resume.pdf to assets/srinivas-sivaratri-resume.pdf
 cv:
   name: Srinivas Sivaratri
-  headline: AI Engineer | LLM Evaluation, Agent Reliability, Developer Tools
-  location: Remote, India (IST, UTC+5:30)
+  headline: AI Engineer | LLM evaluation, model debugging, developer tools
   email: srinivassivaratri1122@gmail.com
-  website: https://srinivassivaratri.is-a.dev/
   social_networks:
     - network: LinkedIn
       username: srinivas-sivaratri-3a0a32162
     - network: GitHub
       username: sivaratrisrinivas
+  website: https://srinivassivaratri.is-a.dev/
+  location: Remote, India (IST, UTC+5:30)
+  custom_connections:
+    - fontawesome_icon: briefcase
+      placeholder: Open to full-time and contract
+      url:
 
   sections:
     summary:
-      - AI engineer with an MS in Computer Science. Builds LLM systems and the evaluations that check them, and publishes the numbers. Upstream work reviewed by better-auth and go-ethereum maintainers.
+      - AI engineer with an MS in Computer Science. Builds LLM systems and the evaluations that check them, and publishes the numbers, including the ones that lose to a baseline. Upstream work reviewed by better-auth and go-ethereum maintainers.
+
+    skills:
+      - label: AI and LLM
+        details: LLM evaluation, token-level tracing and replay, grounding checks, RAG, LoRA fine-tuning, diffusion models, speech-to-text and text-to-speech pipelines
+      - label: Machine Learning
+        details: PyTorch, Hugging Face Transformers, PEFT, sentence-transformers
+      - label: Languages
+        details: Python, TypeScript, Go, JavaScript, SQL, C
+      - label: Engineering
+        details: FastAPI, Flask, Next.js, React, Node.js, Bun, PostgreSQL, Redis, SQLite, Docker, GitHub Actions, pytest, Vitest
 
     experience:
       - company: Independent
@@ -22,54 +39,41 @@ cv:
         end_date: present
         location: Remote
         highlights:
-          - Built eight AI projects with public repos and published results, including losses to baselines.
-          - Traced an email-enumeration leak in better-auth to its Have I Been Pwned plugin and proposed a request-scoped skip flag with a regression test. Maintainers adopted the approach and shipped it (PR #5998).
-          - Designed "geth db truncate-freezer" for go-ethereum (PR #31351), revised across three core-maintainer review rounds to batch-process instead of holding about 15 GB in memory. The core team later built its own version.
+          - Traced an email-enumeration leak in better-auth to its Have I Been Pwned plugin and proposed a request-scoped skip flag with a regression test. Maintainers adopted the approach and shipped it (PR \#5998).
+          - Designed "geth db truncate-freezer" for go-ethereum (PR \#31351), revised across three core-maintainer review rounds to batch-process instead of holding about 15 GB in memory. The core team later built its own version.
       - company: Accenture
         position: Software Engineer
         start_date: 2021-07
         end_date: 2022-07
-        location: Bangalore, Karnataka, India
+        location: Bangalore, India
         highlights:
           - Wrote a Python ETL script that automated data processing, saved 50 labor hours per month, and cut errors.
           - Implemented a GitHub Actions CI/CD pipeline.
 
-    Projects:
-      - name: '[Bouncer](https://github.com/sivaratrisrinivas/bouncer-eval)'
-        date: 2025 · Evaluation
-        summary: Python, OpenTelemetry
+    projects:
+      - name: '[llmfr (LLM Flight Recorder)](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
+        date: '[github.com/sivaratrisrinivas/llm-flight-recorder](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
+        summary: Python, PyTorch, Transformers, SQLite
         highlights:
-          - Built an eval for when an AI agent with write access to a store may issue refunds. Each case has five possible actions (ACT, REPLY, ASK, ESCALATE, ABSTAIN), and grading is deterministic with no LLM judges.
-          - On 50 cases, a rules baseline had a 2.0% Unsafe Action Rate. gemma-4-31b and gpt-oss-120b both had 10.0%.
-      - name: '[llmfr — LLM Flight Recorder](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
-        date: 2025 · Tooling
-        summary: Python, Hugging Face, SQLite
+          - Built a CLI that records a local LLM generation token by token, replays it, and names the first step where two runs split, tagging every later difference as fallout. The OpenAI adapter refuses to record when logprobs are missing.
+          - On pinned Qwen2.5-0.5B demos, it labels a seed-only change as a sampling split at token 0 and a temperature-only change as a decoding split at token 8. Compare takes 0.151 s median on CPU.
+      - name: '[Fuzz](https://github.com/sivaratrisrinivas/fuzz)'
+        date: '[github.com/sivaratrisrinivas/fuzz](https://github.com/sivaratrisrinivas/fuzz)'
+        summary: TypeScript, Bun, FastAPI, Hugging Face, PEFT
         highlights:
-          - Built a CLI that records a local LLM generation token by token, replays it, and names the first step where two runs diverge, so later differences are tagged as fallout. The OpenAI adapter fails closed when logprobs are missing.
-          - On 30 Qwen2.5-0.5B-Instruct prompts, runs disagreed in 10 cases under sampling changes and 13 under decoding changes.
-      - name: '[POSTDATED](https://github.com/sivaratrisrinivas/postdated)'
-        date: 2026 · Flagship
-        summary: TypeScript, Next.js, Cerebras, Vitest
+          - Built a browser game where waves scramble a private paragraph, the player rewrites to save pieces, and Qwen2.5 rebuilds the rest. The original text never leaves the browser, and the server rejects any request that contains it.
+          - Fine-tuned a LoRA adapter on Qwen2.5-0.5B with 288 synthetic examples. On the locked eval, word F1 on intact text rose from 0.746 to 0.938 and failed outputs fell from 12/44 to 8/44. Heavily scrambled inputs did not improve.
+      - name: '[SunkeLo](https://github.com/sivaratrisrinivas/sunkelo)'
+        date: '[github.com/sivaratrisrinivas/sunkelo](https://github.com/sivaratrisrinivas/sunkelo)'
+        summary: Next.js, TypeScript, Postgres, Redis, Sarvam AI
         highlights:
-          - Selected as one of about 150 builders from 5,000+ applications for the five-hour Push to Prod hackathon in Bengaluru.
-          - Built an app that turns photos of hospital discharge paperwork into a predicted, itemized insurance rejection, with one document request or doctor question per fixable line. Kept multimodal extraction apart from deterministic policy arithmetic and a guard that blocks unsupported medical claims.
-          - Added 38 tests on the money and guard paths, a 40-case extraction eval harness, and offline CI gates.
-      - name: '[Bingo](https://github.com/sivaratrisrinivas/Bingo)'
-        date: 2025 · Retrieval
-        summary: Python, sentence-transformers, NLTK
-        highlights:
-          - Implemented BM25 from scratch and compared it with semantic search, Reciprocal Rank Fusion, and a cross-encoder reranker. On 10 queries over 5,000 movies, BM25 led at 0.38 Precision@5 (semantic 0.32, hybrid reranking 0.36).
+          - Built a voice-first product review app in 11 Indian languages. It transcribes speech, scrapes public reviews, has an LLM summarize them, then translates and reads the verdict aloud, streamed over SSE with a Redis cache.
+          - Built a 379-claim grounding eval showing the first word-overlap metric flagged all 13 supported real claims as unsupported. By hand labels, 6 of 19 real claims lack source support.
       - name: '[SokoFlow](https://github.com/sivaratrisrinivas/sokoflow)'
-        date: 2025 · Machine Learning
-        summary: Python, PyTorch
+        date: '[github.com/sivaratrisrinivas/sokoflow](https://github.com/sivaratrisrinivas/sokoflow)'
+        summary: Python, PyTorch, Flask
         highlights:
-          - Trained a conditional diffusion policy (CNN board encoder, Transformer denoiser) to generate Sokoban plans. Solved 15 of 240 scrambled 8x8 boards (6.2%) against 94.2% for a BFS baseline, and published the gap.
-      - name: '[Threadmark and context-CI](https://github.com/sivaratrisrinivas/threadmark)'
-        date: In progress
-        summary: SQLite, MCP, Inspect AI
-        highlights:
-          - Threadmark (in progress): a coding agent that logs to SQLite and, after a crash, reconciles with the live Git tree before it writes.
-          - context-CI (in progress): a CLI spec and proof testing whether one MCP tool change alters a coding agent's results (Inspect AI).
+          - Trained a diffusion model (CNN board encoder, Transformer denoiser) that generates Sokoban move plans. It solved 6.2% (15/240) of scrambled 8x8 boards against 94.2% for plain BFS search. Traced an earlier 20.8% figure to easy boards and published the correction.
 
     education:
       - institution: University of Alabama at Birmingham
@@ -77,27 +81,16 @@ cv:
         degree: MS
         start_date: 2023-08
         end_date: 2025-05
-        location: Birmingham, AL, USA
+        location: AL, USA
       - institution: BV Raju Institute of Technology
         area: Computer Science
         degree: BS
         start_date: 2017-08
         end_date: 2021-06
-        location: Medak, Telangana, India
-
-    skills:
-      - label: AI and LLM
-        details: LLM and agent evaluation, guardrails and abstention, RAG, hybrid retrieval (BM25, Reciprocal Rank Fusion, cross-encoder reranking), structured extraction, multimodal models, MCP, Inspect AI, OpenTelemetry
-      - label: Machine Learning
-        details: PyTorch, Hugging Face Transformers, PEFT and LoRA, diffusion models, sentence-transformers
-      - label: Languages
-        details: Python, TypeScript, Go, JavaScript, SQL, C
-      - label: Engineering
-        details: FastAPI, Flask, Next.js, React, PostgreSQL, Redis, SQLite, Docker, GitHub Actions, CI/CD, pytest, Vitest
-
-    Continuing Education:
-      - label: '[Boot.dev — selected completed coursework](https://www.boot.dev/u/shallowad54)'
-        details: HTTP Servers in Go, Retrieval Augmented Generation, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+        location: India
+      - institution: HTTP Servers in Go, RAG, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+        degree: '[Boot.dev](https://www.boot.dev/u/shallowad54)'
+        area: coursework
 
 design:
   theme: engineeringresumes
@@ -132,15 +125,27 @@ design:
     space_between_regular_entries: 0.25cm
     space_between_text_based_entries: 0.1cm
   entries:
-    date_and_location_width: 3.5cm
+    date_and_location_width: 7.3cm
     highlights:
       space_above: 0.04cm
       space_between_items: 0.035cm
+  templates:
+    date_range: START_DATE to END_DATE
+    experience_entry:
+      main_column: "**POSITION**, COMPANY | LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    normal_entry:
+      main_column: "**NAME** | SUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    education_entry:
+      main_column: "**DEGREE_WITH_AREA**, INSTITUTION, LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+      degree_column: null
 
 locale:
   language: english
   phrases:
-    degree_with_area: DEGREE in AREA
+    degree_with_area: DEGREE, AREA
 
 settings:
   current_date: today
