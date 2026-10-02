@@ -183,119 +183,44 @@
             <h2 id="projects-title">Projects</h2>
             <div class="project-list">
 
-                <article class="project-card" id="llmfr">
+                <article class="project-card" id="bingo">
                     <header class="project-card-head">
                         <span class="project-index">01</span>
                         <div class="project-heading">
-                            <h3>llmfr</h3>
+                            <h3>Bingo</h3>
                             <ul class="proof-chips" aria-label="Proof">
                                 <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
                             </ul>
                         </div>
                     </header>
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>A flight recorder for LLM runs. It saves every token a local model writes, so you can replay a run and compare two runs to see the exact step where they first split.</dd>
+                            <dd>A command-line movie search over 5,000 films that ranks results with keyword search, meaning-based search, or both, and can answer questions about the results with an LLM.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
-                            <dd>When two outputs differ, a plain text diff cannot tell you whether the cause was the seed, a sampler setting, or a cut-off context window. Everything after the first split is just fallout, and llmfr labels it that way.</dd>
+                            <dd>Keyword search misses movies described in different words, and meaning-based search misses exact names. Measuring both on the same queries shows which one actually helps.</dd>
                         </div>
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Python, Hugging Face Transformers, a local SQLite index, and JSON traces. Commands: record, replay, compare, inspect, batch, and study. Compare never calls a model. The OpenAI adapter refuses to record when the API leaves out per-token logprobs instead of making scores up. Traces stay on your machine.</p>
+                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), a local cross-encoder reranker, CLIP for image search, and Gemini 2.0 Flash for answers with citations. I built it while working through Boot.dev's RAG course: BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, and reranking. I then added an eval harness that scores every method on the same golden set, rebuilds the index each run so timings stay honest, and fails if the test data drifts.</p>
                                 <ul class="project-evidence-list">
-                                    <li>Pinned Qwen2.5-0.5B-Instruct demos: changing only the seed splits at token 0 (sampling); changing only temperature splits at token 8 (decoding config)</li>
-                                    <li>CPU timings over 11 runs: compare 0.151 s median, record 6.97 s median</li>
+                                    <li>10 queries, 5,000 movies, top 5: BM25 precision 0.38, semantic 0.32, RRF 0.38, RRF with reranking 0.36</li>
+                                    <li>Reranking did not beat plain BM25 on this set</li>
                                 </ul>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="fuzz">
-                    <header class="project-card-head">
-                        <span class="project-index">02</span>
-                        <div class="project-heading">
-                            <h3>Fuzz</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><a class="proof-chip proof-chip-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Live demo</a></li>
-                                <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/fuzz/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>A game where waves slowly scramble a paragraph you wrote, you type to save pieces of it, and then an AI model tries to rebuild the whole thing from what is left.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>It shows how diffusion models work, using words instead of pictures. Rebuilding from damage is a best guess, never an exact copy.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Bun and TypeScript in the browser, a FastAPI helper, and Qwen2.5 on Hugging Face. Your original text never leaves the browser. Only the scrambled version is sent, and the server rejects any request that includes the original. I also trained a LoRA adapter on Qwen2.5-0.5B with 288 synthetic examples, on CPU.</p>
-                                <ul class="project-evidence-list">
-                                    <li>LoRA vs base on the locked 4-paragraph eval: word F1 on intact text 0.746 to 0.938, failed outputs 12/44 to 8/44</li>
-                                    <li>Heavily scrambled text (fuzz 0.8 to 1.0) did not improve</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/fuzz" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://fuzz-srini5.vercel.app" target="_blank" rel="noopener noreferrer">Demo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="sunkelo">
-                    <header class="project-card-head">
-                        <span class="project-index">03</span>
-                        <div class="project-heading">
-                            <h3>SunkeLo</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><span class="proof-chip">Measured</span></li>
-                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/sunkelo/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>Ask about a product out loud in one of 11 Indian languages, and hear back one combined review built from public reviews and videos.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Most useful review writing is in English or Hindi. If you think in Odia, Tamil, or Bengali, researching a purchase takes longer than it should.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Next.js, TypeScript, Neon Postgres, Upstash Redis, Sarvam AI for speech, translation, and summaries, and Firecrawl for scraping. Progress streams to the screen over SSE, and repeat questions come from the Redis cache. An opt-in strict mode refuses to summarize when there is too little evidence.</p>
-                                <ul class="project-evidence-list">
-                                    <li>Grounding eval with 379 labeled claims showed the first word-overlap metric was wrong: it marked all 13 supported real claims as unsupported. By hand labels, 6 of 19 real claims lack source support.</li>
-                                    <li>5-product run: 5 of 10 repeat lookups hit the cache, about Rs 0.12 per query at list price</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/sunkelo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
                 <article class="project-card" id="sokoflow">
                     <header class="project-card-head">
-                        <span class="project-index">04</span>
+                        <span class="project-index">02</span>
                         <div class="project-heading">
                             <h3>SokoFlow</h3>
                             <ul class="proof-chips" aria-label="Proof">
@@ -332,70 +257,39 @@
                     </div>
                 </article>
 
-                <article class="project-card" id="blastradius">
+                <article class="project-card" id="llmfr">
                     <header class="project-card-head">
-                        <span class="project-index">05</span>
+                        <span class="project-index">03</span>
                         <div class="project-heading">
-                            <h3>Blast Radius</h3>
+                            <h3>llmfr</h3>
                             <ul class="proof-chips" aria-label="Proof">
                                 <li><span class="proof-chip">Measured</span></li>
+                                <li><a class="proof-chip proof-chip-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder/actions" target="_blank" rel="noopener noreferrer">CI</a></li>
                             </ul>
                         </div>
                     </header>
                     <dl class="project-beats">
                         <div>
                             <dt>What</dt>
-                            <dd>A command-line tool that finds the exact lines in your JavaScript or TypeScript code that use a vendor feature the vendor has announced it is shutting down, and shows the vendor's own notice next to each line.</dd>
+                            <dd>A flight recorder for LLM runs. It saves every token a local model writes, so you can replay a run and compare two runs to see the exact step where they first split.</dd>
                         </div>
                         <div>
                             <dt>Why</dt>
-                            <dd>Shutdown notices live in changelogs nobody reads, and the code that depends on them breaks on the vendor's date. A finding is only useful if you can check it, so the tool may miss things but never reports what it cannot prove.</dd>
+                            <dd>When two outputs differ, a plain text diff cannot tell you whether the cause was the seed, a sampler setting, or a cut-off context window. Everything after the first split is just fallout, and llmfr labels it that way.</dd>
                         </div>
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>TypeScript on Node.js. Vendor notices pass five fixed checks before they count, and the scanner reads the code's syntax tree, following imports and aliases to the real vendor client. Calls it cannot resolve, like <code>slack[method]()</code>, are reported as limits, not findings. It covers Slack, OpenAI, and Cloudflare shutdowns today.</p>
+                                <p>Python, Hugging Face Transformers, a local SQLite index, and JSON traces. Commands: record, replay, compare, inspect, batch, and study. Compare never calls a model. The OpenAI adapter refuses to record when the API leaves out per-token logprobs instead of making scores up. Traces stay on your machine.</p>
                                 <ul class="project-evidence-list">
-                                    <li>Call-site matches 14/14 correct, 0 false findings across 6 decoy fixtures</li>
-                                    <li>9/9 dynamic calls reported as limits; deadline parsing 6/6</li>
+                                    <li>Pinned Qwen2.5-0.5B-Instruct demos: changing only the seed splits at token 0 (sampling); changing only temperature splits at token 8 (decoding config)</li>
+                                    <li>CPU timings over 11 runs: compare 0.151 s median, record 6.97 s median</li>
                                 </ul>
                             </dd>
                         </div>
                     </dl>
                     <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/blastradius" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="rashomon">
-                    <header class="project-card-head">
-                        <span class="project-index">06</span>
-                        <div class="project-heading">
-                            <h3>Rashomon</h3>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>A reading app where people reading the same article at the same time can highlight a passage and chat about it live, in a 5-minute room.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Comment sections are slow. You leave a reaction and hope someone answers days later. This puts the conversation next to the exact passage, while the other reader is still on it.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Next.js, React, Tailwind, and shadcn/ui on the front end; a Bun and Elysia API on the back end. Supabase handles Google sign-in, Postgres with row-level security, and file storage. Paste a URL and the API pulls out the article text, or upload an image or PDF and Google Cloud Vision reads it. Supabase Realtime presence shows who is reading the same piece, broadcast channels carry the chat and a shared timer, and finished chats are saved so later readers can replay them from the highlighted passage.</p>
-                                <ul class="project-evidence-list">
-                                    <li>Bun unit tests for the API and chat components, plus Cypress end-to-end tests for highlighting, content, and replay</li>
-                                    <li>Not deployed yet</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Rashomon" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                        <a class="text-link" href="https://github.com/sivaratrisrinivas/llm-flight-recorder" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
 
