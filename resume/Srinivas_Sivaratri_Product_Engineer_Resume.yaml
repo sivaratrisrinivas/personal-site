@@ -1,0 +1,151 @@
+# Source for assets/srinivas-sivaratri-product-engineer-resume.pdf
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+cv:
+  name: Srinivas Sivaratri
+  headline: Product Engineer | Ships features, measures them, publishes the numbers
+  email: srinivassivaratri1122@gmail.com
+  social_networks:
+    - network: LinkedIn
+      username: srinivas-sivaratri-3a0a32162
+    - network: GitHub
+      username: sivaratrisrinivas
+  website: https://srinivassivaratri.is-a.dev/
+  location: Remote, India (IST, UTC+5:30)
+  custom_connections:
+    - fontawesome_icon: briefcase
+      placeholder: Open to full-time and contract
+      url:
+
+  sections:
+    summary:
+      - 'Product engineer with an MS in Computer Science. Finds what stops a feature from being used, builds the smallest thing that fixes it, and measures the result, including when the result loses to a baseline. Upstream work reviewed by better-auth and go-ethereum maintainers.'
+
+    skills:
+      - label: Product
+        details: activation and cold-start loops, invite and share flows, evaluation design, baselines, honest metrics
+      - label: AI
+        details: LLM agents and function calling, RAG, BM25, embeddings, Reciprocal Rank Fusion, cross-encoder reranking
+      - label: Engineering
+        details: TypeScript, Next.js, React, Python, Go, PostgreSQL, Supabase, Bun
+      - label: Delivery
+        details: pytest, Jest, bun test, GitHub Actions, Docker, gitleaks
+
+    experience:
+      - company: Independent
+        position: Software Engineer
+        start_date: 2025-05
+        end_date: present
+        location: Remote
+        highlights:
+          - 'Traced an email-enumeration leak in better-auth to its Have I Been Pwned plugin and proposed a request-scoped skip flag with a regression test. Maintainers adopted the approach and shipped it (PR \#5998).'
+          - 'Designed "geth db truncate-freezer" for go-ethereum (PR \#31351), revised across three core-maintainer review rounds to batch-process instead of holding about 15 GB in memory. The core team later built its own version.'
+      - company: Accenture
+        position: Software Engineer
+        start_date: 2021-07
+        end_date: 2022-07
+        location: Bangalore, India
+        highlights:
+          - 'Wrote a Python ETL script that automated data processing, saved 50 labor hours per month, and cut errors.'
+          - 'Implemented a GitHub Actions CI/CD pipeline.'
+
+    projects:
+      - name: '[Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        summary: Next.js, TypeScript, Bun, Supabase Realtime, PostgreSQL
+        highlights:
+          - 'Live reading rooms where two readers discuss the same passage for five minutes. A room is useless with one person in it, so I built the paths that bring in the second reader: an invite link to the exact text, a bookmarklet, and a /dashboard?url= deep link that imports on arrival. Login and onboarding return you to the shared page.'
+          - 'Before adding features, closed the holes that made launch unsafe: identity taken from a client-sent userId, wildcard CORS, SSRF in URL import, no row-level security. Covered the API with 34 tests at about 98% line coverage, and got CI green after failing on every push since October 2025.'
+      - name: '[Bingo](https://github.com/sivaratrisrinivas/Bingo)'
+        date: '[github.com/sivaratrisrinivas/Bingo](https://github.com/sivaratrisrinivas/Bingo)'
+        summary: Python, BM25, sentence-transformers, cross-encoders
+        highlights:
+          - 'Movie search over 5,000 films with keyword, semantic, hybrid (RRF) and cross-encoder-reranked retrieval, plus a side-by-side web view that shows all four rankings for one query next to their eval scores.'
+          - 'On 834 known-item queries (test split), reranked hybrid put the target movie in the top 10 91.6% of the time, BM25 86.3%, plain hybrid 83.7% (below BM25 alone) and semantic 62.6%. Cut BM25 p95 latency from 3.4 s to 5 ms.'
+      - name: '[Fixer](https://github.com/sivaratrisrinivas/Fixer)'
+        date: '[github.com/sivaratrisrinivas/Fixer](https://github.com/sivaratrisrinivas/Fixer)'
+        summary: Python, Gemini function calling, pytest
+        highlights:
+          - 'Terminal coding agent that reads the project, runs the tests, shows a diff and writes only after you approve it. Fixed a path sandbox that a sibling folder with the same prefix could bypass, and a loop that dropped every tool call after the first.'
+          - 'Built an offline eval of six seeded bugs that judges each run against pristine tests. A reference fix passes 6/6, a do-nothing agent 0/6, and an agent that rewrites the tests is caught 6/6. The eval runs as a CI gate.'
+
+    education:
+      - institution: University of Alabama at Birmingham
+        area: Computer Science
+        degree: MS
+        start_date: 2023-08
+        end_date: 2025-05
+        location: AL, USA
+      - institution: BV Raju Institute of Technology
+        area: Computer Science
+        degree: BS
+        start_date: 2017-08
+        end_date: 2021-06
+        location: India
+      - institution: HTTP Servers in Go, RAG, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+        degree: '[Boot.dev](https://www.boot.dev/u/shallowad54)'
+        area: coursework
+
+design:
+  theme: engineeringresumes
+  page:
+    size: us-letter
+    top_margin: 0.55in
+    bottom_margin: 0.55in
+    left_margin: 0.6in
+    right_margin: 0.6in
+    show_footer: false
+    show_top_note: false
+  typography:
+    alignment: left
+    font_size:
+      body: 9.5pt
+      name: 24pt
+      headline: 10pt
+      connections: 9pt
+      section_titles: 1.15em
+  header:
+    space_below_name: 0.2cm
+    space_below_headline: 0.25cm
+    space_below_connections: 0.35cm
+    connections:
+      display_urls_instead_of_usernames: true
+      separator: '|'
+      space_between_connections: 0.35cm
+  section_titles:
+    space_above: 0.34cm
+    space_below: 0.18cm
+  sections:
+    space_between_regular_entries: 0.25cm
+    space_between_text_based_entries: 0.1cm
+  entries:
+    date_and_location_width: 7.3cm
+    highlights:
+      space_above: 0.04cm
+      space_between_items: 0.035cm
+  templates:
+    date_range: START_DATE to END_DATE
+    experience_entry:
+      main_column: "**POSITION**, COMPANY | LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    normal_entry:
+      main_column: "**NAME** | SUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    education_entry:
+      main_column: "**DEGREE_WITH_AREA**, INSTITUTION, LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+      degree_column: null
+
+locale:
+  language: english
+  phrases:
+    degree_with_area: DEGREE, AREA
+
+settings:
+  current_date: today
+  render_command:
+    output_folder: rendercv_output
+    pdf_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Product_Engineer_Resume.pdf
+    typst_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Product_Engineer_Resume.typ
+    markdown_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Product_Engineer_Resume.md
+    html_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Product_Engineer_Resume.html
+    png_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Product_Engineer_Resume.png

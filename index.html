@@ -87,6 +87,9 @@
                     <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
                     <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+                    <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
+                    <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
+                    <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
                 </div>
             </div>
             <div class="hero-footer">
@@ -205,10 +208,11 @@
                         <div>
                             <dt>How</dt>
                             <dd>
-                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), a local cross-encoder reranker, CLIP for image search, and Gemini 2.0 Flash for answers with citations. I built it while working through Boot.dev's RAG course: BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, and reranking. I then added an eval harness that scores every method on the same golden set, rebuilds the index each run so timings stay honest, and fails if the test data drifts.</p>
+                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), a local cross-encoder reranker, CLIP for image search, and Gemini 2.0 Flash for answers with citations. I built it while working through Boot.dev's RAG course: BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, and reranking. I then built an 834-query known-item eval (each query aims at one movie; queries that leak the title are dropped), rewrote BM25 to score from precomputed term statistics, and added a side-by-side view that runs all four methods on one query next to their eval scores.</p>
                                 <ul class="project-evidence-list">
-                                    <li>10 queries, 5,000 movies, top 5: BM25 precision 0.38, semantic 0.32, RRF 0.38, RRF with reranking 0.36</li>
-                                    <li>Reranking did not beat plain BM25 on this set</li>
+                                    <li>834 known-item queries, test split, target in the top 10: RRF with cross-encoder reranking 0.916, BM25 0.863, plain RRF 0.837, semantic 0.626</li>
+                                    <li>Plain hybrid fusion scored below BM25 alone; only reranking beat it</li>
+                                    <li>BM25 p95 latency fell from 3.4 s to 5 ms</li>
                                 </ul>
                             </dd>
                         </div>
@@ -311,6 +315,9 @@
                 <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
                 <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+                <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
+                <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
+                <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
             </div>
             <footer class="site-footer"><span>© 2025-26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
         </section>

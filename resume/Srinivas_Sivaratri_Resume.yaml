@@ -56,7 +56,7 @@ cv:
         summary: Python, NLTK, sentence-transformers, CLIP, Gemini
         highlights:
           - Built a command-line movie search over 5,000 films during Boot.dev's RAG course, with BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, cross-encoder reranking, image search, and LLM answers with citations.
-          - Added an eval harness that scores every method on one golden set, rebuilds the index each run, and fails if test data drifts. On 10 queries, BM25 and RRF tied at 0.38 precision@5, semantic scored 0.32, and reranking 0.36.
+          - Built an 834-query known-item eval. On the test split, RRF with cross-encoder reranking put the target movie in the top 10 91.6% of the time against 86.3% for BM25, and plain RRF lost to BM25 alone. Rewrote BM25 to score from precomputed term statistics, cutting p95 latency from 3.4 s to 5 ms.
       - name: '[SokoFlow](https://github.com/sivaratrisrinivas/sokoflow)'
         date: '[github.com/sivaratrisrinivas/sokoflow](https://github.com/sivaratrisrinivas/sokoflow)'
         summary: Python, PyTorch, Flask

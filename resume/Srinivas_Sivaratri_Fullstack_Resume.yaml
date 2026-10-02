@@ -1,0 +1,152 @@
+# Source for assets/srinivas-sivaratri-fullstack-resume.pdf
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+cv:
+  name: Srinivas Sivaratri
+  headline: Full-Stack Engineer | TypeScript, Next.js, Go, Python, PostgreSQL
+  email: srinivassivaratri1122@gmail.com
+  social_networks:
+    - network: LinkedIn
+      username: srinivas-sivaratri-3a0a32162
+    - network: GitHub
+      username: sivaratrisrinivas
+  website: https://srinivassivaratri.is-a.dev/
+  location: Remote, India (IST, UTC+5:30)
+  custom_connections:
+    - fontawesome_icon: briefcase
+      placeholder: Open to full-time and contract
+      url:
+
+  sections:
+    summary:
+      - 'Full-stack engineer with an MS in Computer Science. Ships the browser, the API and the database together, and fixes the security and data bugs that sit between them. Upstream work reviewed by better-auth and go-ethereum maintainers.'
+
+    skills:
+      - label: Frontend
+        details: TypeScript, React, Next.js, Tailwind CSS, vanilla JS, streaming fetch, Jest
+      - label: Backend
+        details: Go (net/http), Bun and Elysia, Python (Flask, FastAPI), REST APIs, auth, rate limiting
+      - label: Data and realtime
+        details: PostgreSQL, Supabase (Auth, Realtime, Storage, row-level security), SQLite, sqlc, goose
+      - label: Delivery
+        details: Docker, GitHub Actions, Render, Railway, pytest, bun test, gitleaks
+
+    experience:
+      - company: Independent
+        position: Software Engineer
+        start_date: 2025-05
+        end_date: present
+        location: Remote
+        highlights:
+          - 'Traced an email-enumeration leak in better-auth to its Have I Been Pwned plugin and proposed a request-scoped skip flag with a regression test. Maintainers adopted the approach and shipped it (PR \#5998).'
+          - 'Designed "geth db truncate-freezer" for go-ethereum (PR \#31351), revised across three core-maintainer review rounds to batch-process instead of holding about 15 GB in memory. The core team later built its own version.'
+      - company: Accenture
+        position: Software Engineer
+        start_date: 2021-07
+        end_date: 2022-07
+        location: Bangalore, India
+        highlights:
+          - 'Wrote a Python ETL script that automated data processing, saved 50 labor hours per month, and cut errors.'
+          - 'Implemented a GitHub Actions CI/CD pipeline.'
+
+    projects:
+      - name: '[Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        summary: Next.js, TypeScript, Bun, Supabase Realtime, PostgreSQL
+        highlights:
+          - 'Live reading rooms: two people highlight the same passage, get matched over Supabase Realtime, and talk for five minutes; the transcript replays for later readers.'
+          - 'Closed an impersonation hole (the API trusted a client-sent userId with the service-role key), wildcard CORS and SSRF in URL import; added a row-level-security schema and atomic chat appends. 34 API tests at about 98% line coverage, plus lint, Jest and a production build in CI, which had been red since October 2025.'
+          - 'Fixed onboarding, which called a route that did not exist, and kept the post-login destination with a same-site-only redirect.'
+      - name: '[DreamWeave](https://github.com/sivaratrisrinivas/dreamweave)'
+        date: '[github.com/sivaratrisrinivas/dreamweave](https://github.com/sivaratrisrinivas/dreamweave)'
+        summary: Python, Flask, SQLite, xAI, ElevenLabs, vanilla JS
+        highlights:
+          - 'Interactive bedtime stories with narration. Every user wrote to one shared audio file, so concurrent listeners heard each other''s stories; replaced it with per-story audio, an owner-token cookie and owner-only 404s.'
+          - 'Streamed chapters to the browser, turned upstream failures into clean 502s without saving partial stories, rendered model output as text only (closing an XSS path), and added a no-key demo mode. 24 tests at 91% coverage.'
+      - name: '[Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
+        date: '[github.com/sivaratrisrinivas/Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
+        summary: Go, PostgreSQL, sqlc, vanilla JS, Docker
+        highlights:
+          - 'Go API with a small browser client: keyset pagination, hashed refresh tokens, per-IP login rate limits and security headers. Closed a file server that exposed .env.'
+          - 'Integration tests against real PostgreSQL (64.2% of the server package); CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks.'
+
+    education:
+      - institution: University of Alabama at Birmingham
+        area: Computer Science
+        degree: MS
+        start_date: 2023-08
+        end_date: 2025-05
+        location: AL, USA
+      - institution: BV Raju Institute of Technology
+        area: Computer Science
+        degree: BS
+        start_date: 2017-08
+        end_date: 2021-06
+        location: India
+      - institution: HTTP Servers in Go, RAG, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+        degree: '[Boot.dev](https://www.boot.dev/u/shallowad54)'
+        area: coursework
+
+design:
+  theme: engineeringresumes
+  page:
+    size: us-letter
+    top_margin: 0.55in
+    bottom_margin: 0.55in
+    left_margin: 0.6in
+    right_margin: 0.6in
+    show_footer: false
+    show_top_note: false
+  typography:
+    alignment: left
+    font_size:
+      body: 9.5pt
+      name: 24pt
+      headline: 10pt
+      connections: 9pt
+      section_titles: 1.15em
+  header:
+    space_below_name: 0.2cm
+    space_below_headline: 0.25cm
+    space_below_connections: 0.35cm
+    connections:
+      display_urls_instead_of_usernames: true
+      separator: '|'
+      space_between_connections: 0.35cm
+  section_titles:
+    space_above: 0.34cm
+    space_below: 0.18cm
+  sections:
+    space_between_regular_entries: 0.25cm
+    space_between_text_based_entries: 0.1cm
+  entries:
+    date_and_location_width: 7.3cm
+    highlights:
+      space_above: 0.04cm
+      space_between_items: 0.035cm
+  templates:
+    date_range: START_DATE to END_DATE
+    experience_entry:
+      main_column: "**POSITION**, COMPANY | LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    normal_entry:
+      main_column: "**NAME** | SUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    education_entry:
+      main_column: "**DEGREE_WITH_AREA**, INSTITUTION, LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+      degree_column: null
+
+locale:
+  language: english
+  phrases:
+    degree_with_area: DEGREE, AREA
+
+settings:
+  current_date: today
+  render_command:
+    output_folder: rendercv_output
+    pdf_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Fullstack_Resume.pdf
+    typst_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Fullstack_Resume.typ
+    markdown_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Fullstack_Resume.md
+    html_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Fullstack_Resume.html
+    png_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Fullstack_Resume.png
