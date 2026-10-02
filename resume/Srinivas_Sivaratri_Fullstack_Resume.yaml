@@ -28,7 +28,7 @@ cv:
       - label: Data and realtime
         details: PostgreSQL, Supabase (Auth, Realtime, Storage, row-level security), SQLite, sqlc, goose
       - label: Delivery
-        details: Docker, GitHub Actions, Render, Railway, pytest, bun test, gitleaks
+        details: Docker, GitHub Actions, Render, pytest, bun test, gitleaks
 
     experience:
       - company: Independent
@@ -50,24 +50,24 @@ cv:
 
     projects:
       - name: '[Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
-        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
-        summary: Next.js, TypeScript, Bun, Supabase Realtime, PostgreSQL
+        date: '[rashomon-ii0a.onrender.com](https://rashomon-ii0a.onrender.com) | [repo](https://github.com/sivaratrisrinivas/Rashomon)'
+        summary: Next.js, TypeScript, Bun, Supabase Realtime, Gemini
         highlights:
-          - 'Live reading rooms: two people highlight the same passage, get matched over Supabase Realtime, and talk for five minutes; the transcript replays for later readers.'
-          - 'Closed an impersonation hole (the API trusted a client-sent userId with the service-role key), wildcard CORS and SSRF in URL import; added a row-level-security schema and atomic chat appends. 34 API tests at about 98% line coverage, plus lint, Jest and a production build in CI, which had been red since October 2025.'
-          - 'Fixed onboarding, which called a route that did not exist, and kept the post-login destination with a same-site-only redirect.'
+          - 'Live reading rooms: two people highlight the same passage, get matched over Supabase Realtime, and talk for five minutes; the transcript replays for later readers. Live on Render and Supabase free tiers.'
+          - 'Closed an impersonation hole (the API trusted a client-sent userId with the service-role key), wildcard CORS and SSRF in URL import; added row-level security and atomic chat appends; replaced billed Google Vision with free Gemini OCR. 41 API tests (about 98% line coverage) and 32 Jest tests; CI had been red since October 2025.'
+          - 'Added an invite link to the exact text and a bookmarklet; fixed onboarding, which called a route that did not exist, and kept the post-login destination with a same-site-only redirect.'
       - name: '[DreamWeave](https://github.com/sivaratrisrinivas/dreamweave)'
-        date: '[github.com/sivaratrisrinivas/dreamweave](https://github.com/sivaratrisrinivas/dreamweave)'
+        date: '[dreamweave-v2.onrender.com](https://dreamweave-v2.onrender.com) | [repo](https://github.com/sivaratrisrinivas/dreamweave)'
         summary: Python, Flask, SQLite, xAI, ElevenLabs, vanilla JS
         highlights:
           - 'Interactive bedtime stories with narration. Every user wrote to one shared audio file, so concurrent listeners heard each other''s stories; replaced it with per-story audio, an owner-token cookie and owner-only 404s.'
-          - 'Streamed chapters to the browser, turned upstream failures into clean 502s without saving partial stories, rendered model output as text only (closing an XSS path), and added a no-key demo mode. 24 tests at 91% coverage.'
+          - 'Streamed chapters to the browser, turned upstream failures into clean 502s without saving partial stories, rendered model output as text only (closing an XSS path), and added the no-key demo mode the live site runs. 24 tests at 91% coverage.'
       - name: '[Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
-        date: '[github.com/sivaratrisrinivas/Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
-        summary: Go, PostgreSQL, sqlc, vanilla JS, Docker
+        date: '[chirpy-slpq.onrender.com/app](https://chirpy-slpq.onrender.com/app/) | [repo](https://github.com/sivaratrisrinivas/Chirpy)'
+        summary: Go, PostgreSQL, sqlc, vanilla JS, Docker, Render
         highlights:
           - 'Go API with a small browser client: keyset pagination, hashed refresh tokens, per-IP login rate limits and security headers. Closed a file server that exposed .env.'
-          - 'Integration tests against real PostgreSQL (64.2% of the server package); CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks.'
+          - 'Integration tests against real PostgreSQL (64.2% of the server package); CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks. Hosted on Render, database on Supabase.'
 
     education:
       - institution: University of Alabama at Birmingham
