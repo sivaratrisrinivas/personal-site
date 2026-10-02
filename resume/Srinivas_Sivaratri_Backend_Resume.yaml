@@ -1,0 +1,151 @@
+# Source for assets/srinivas-sivaratri-backend-resume.pdf
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+cv:
+  name: Srinivas Sivaratri
+  headline: Backend Engineer | Go, Python, PostgreSQL, HTTP APIs
+  email: srinivassivaratri1122@gmail.com
+  social_networks:
+    - network: LinkedIn
+      username: srinivas-sivaratri-3a0a32162
+    - network: GitHub
+      username: sivaratrisrinivas
+  website: https://srinivassivaratri.is-a.dev/
+  location: Remote, India (IST, UTC+5:30)
+  custom_connections:
+    - fontawesome_icon: briefcase
+      placeholder: Open to full-time and contract
+      url:
+
+  sections:
+    summary:
+      - 'Backend engineer with an MS in Computer Science. Builds Go and Python services on PostgreSQL, tests them against a real database, and reports measured numbers. Upstream work reviewed by better-auth and go-ethereum maintainers.'
+
+    skills:
+      - label: Languages
+        details: Go, Python, TypeScript, SQL, JavaScript, C
+      - label: Data
+        details: PostgreSQL (sqlc, goose, keyset pagination, SKIP LOCKED work queues, row-level security), SQLite, Redis
+      - label: Services
+        details: net/http, REST APIs, JWT and refresh tokens, rate limiting, SSRF defenses, Bun, Elysia, Flask, FastAPI
+      - label: Delivery
+        details: Docker (distroless), GitHub Actions, race-detector and integration tests, gitleaks, Linux
+
+    experience:
+      - company: Independent
+        position: Software Engineer
+        start_date: 2025-05
+        end_date: present
+        location: Remote
+        highlights:
+          - 'Traced an email-enumeration leak in better-auth to its Have I Been Pwned plugin and proposed a request-scoped skip flag with a regression test. Maintainers adopted the approach and shipped it (PR \#5998).'
+          - 'Designed "geth db truncate-freezer" for go-ethereum (PR \#31351), revised across three core-maintainer review rounds to batch-process instead of holding about 15 GB in memory. The core team later built its own version.'
+      - company: Accenture
+        position: Software Engineer
+        start_date: 2021-07
+        end_date: 2022-07
+        location: Bangalore, India
+        highlights:
+          - 'Wrote a Python ETL script that automated data processing, saved 50 labor hours per month, and cut errors.'
+          - 'Implemented a GitHub Actions CI/CD pipeline.'
+
+    projects:
+      - name: '[Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
+        date: '[github.com/sivaratrisrinivas/Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
+        summary: Go, PostgreSQL, sqlc, goose, Docker
+        highlights:
+          - 'Hardened a Go social-feed API: SQL keyset pagination with a cursor header, owner-scoped deletes, SHA-256-hashed refresh tokens, constant-time webhook key checks, per-IP login rate limits, a 1 MB body cap, server timeouts and graceful shutdown.'
+          - 'Closed a static file server that exposed the whole repository, .env included. Integration tests against real PostgreSQL cover 64.2% of the server package; CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks.'
+      - name: '[Gator](https://github.com/sivaratrisrinivas/Gator)'
+        date: '[github.com/sivaratrisrinivas/Gator](https://github.com/sivaratrisrinivas/Gator)'
+        summary: Go, PostgreSQL, sqlc
+        highlights:
+          - 'Rebuilt a one-feed-per-tick RSS aggregator as a worker pool that claims due feeds with FOR UPDATE SKIP LOCKED. In tests, 4 aggregators racing over 20 feeds never claimed the same feed twice.'
+          - 'Added conditional GET (ETag, Last-Modified), Atom and 13 date formats (the Go blog had been saving 0 posts), exponential backoff computed in SQL, and idempotent inserts. 40 feeds at 200 ms each: 8.26 s with 1 worker, 1.11 s with 8. Parser coverage 91.1%.'
+      - name: '[Rashomon API](https://github.com/sivaratrisrinivas/Rashomon)'
+        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        summary: TypeScript, Bun, Elysia, Supabase, PostgreSQL
+        highlights:
+          - 'Found that the API trusted a client-sent userId while holding the service-role key, so anyone could write as anyone. Moved identity to the verified session token, replaced wildcard CORS with an allowlist, and closed SSRF in URL import (DNS checks, private and metadata ranges, redirect re-checks, size and type caps).'
+          - 'Wrote the missing schema with row-level security and an atomic chat-append function. 34 API tests at about 98% line coverage replaced 16 tests that only exercised mock apps; CI had been red since October 2025 and is now green.'
+
+    education:
+      - institution: University of Alabama at Birmingham
+        area: Computer Science
+        degree: MS
+        start_date: 2023-08
+        end_date: 2025-05
+        location: AL, USA
+      - institution: BV Raju Institute of Technology
+        area: Computer Science
+        degree: BS
+        start_date: 2017-08
+        end_date: 2021-06
+        location: India
+      - institution: HTTP Servers in Go, RAG, CI/CD with GitHub Actions and Docker, Memory Management in C, SQL
+        degree: '[Boot.dev](https://www.boot.dev/u/shallowad54)'
+        area: coursework
+
+design:
+  theme: engineeringresumes
+  page:
+    size: us-letter
+    top_margin: 0.55in
+    bottom_margin: 0.55in
+    left_margin: 0.6in
+    right_margin: 0.6in
+    show_footer: false
+    show_top_note: false
+  typography:
+    alignment: left
+    font_size:
+      body: 9.5pt
+      name: 24pt
+      headline: 10pt
+      connections: 9pt
+      section_titles: 1.15em
+  header:
+    space_below_name: 0.2cm
+    space_below_headline: 0.25cm
+    space_below_connections: 0.35cm
+    connections:
+      display_urls_instead_of_usernames: true
+      separator: '|'
+      space_between_connections: 0.35cm
+  section_titles:
+    space_above: 0.34cm
+    space_below: 0.18cm
+  sections:
+    space_between_regular_entries: 0.25cm
+    space_between_text_based_entries: 0.1cm
+  entries:
+    date_and_location_width: 7.3cm
+    highlights:
+      space_above: 0.04cm
+      space_between_items: 0.035cm
+  templates:
+    date_range: START_DATE to END_DATE
+    experience_entry:
+      main_column: "**POSITION**, COMPANY | LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    normal_entry:
+      main_column: "**NAME** | SUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+    education_entry:
+      main_column: "**DEGREE_WITH_AREA**, INSTITUTION, LOCATION\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: DATE
+      degree_column: null
+
+locale:
+  language: english
+  phrases:
+    degree_with_area: DEGREE, AREA
+
+settings:
+  current_date: today
+  render_command:
+    output_folder: rendercv_output
+    pdf_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Backend_Resume.pdf
+    typst_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Backend_Resume.typ
+    markdown_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Backend_Resume.md
+    html_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Backend_Resume.html
+    png_path: OUTPUT_FOLDER/Srinivas_Sivaratri_Backend_Resume.png
