@@ -24,7 +24,7 @@ cv:
 
     skills:
       - label: AI and LLM
-        details: LLM evaluation, token-level tracing and replay, grounding checks, RAG, LoRA fine-tuning, diffusion models, speech-to-text and text-to-speech pipelines
+        details: LLM evaluation, RAG, hybrid retrieval (BM25, Reciprocal Rank Fusion, cross-encoder reranking), token-level tracing and replay, LoRA fine-tuning, diffusion models
       - label: Machine Learning
         details: PyTorch, Hugging Face Transformers, PEFT, sentence-transformers
       - label: Languages
@@ -51,29 +51,24 @@ cv:
           - Implemented a GitHub Actions CI/CD pipeline.
 
     projects:
+      - name: '[Bingo](https://github.com/sivaratrisrinivas/Bingo)'
+        date: '[github.com/sivaratrisrinivas/Bingo](https://github.com/sivaratrisrinivas/Bingo)'
+        summary: Python, NLTK, sentence-transformers, CLIP, Gemini
+        highlights:
+          - Built a command-line movie search over 5,000 films during Boot.dev's RAG course, with BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, cross-encoder reranking, image search, and LLM answers with citations.
+          - Added an eval harness that scores every method on one golden set, rebuilds the index each run, and fails if test data drifts. On 10 queries, BM25 and RRF tied at 0.38 precision@5, semantic scored 0.32, and reranking 0.36.
+      - name: '[SokoFlow](https://github.com/sivaratrisrinivas/sokoflow)'
+        date: '[github.com/sivaratrisrinivas/sokoflow](https://github.com/sivaratrisrinivas/sokoflow)'
+        summary: Python, PyTorch, Flask
+        highlights:
+          - Trained a diffusion model (CNN board encoder, Transformer denoiser) that turns random moves into Sokoban plans, served on CPU through Flask and a Hugging Face Space.
+          - Solved 6.2% (15/240) of scrambled 8x8 boards against 94.2% for plain BFS search. Traced an earlier 20.8% figure to easy boards and published the correction.
       - name: '[llmfr (LLM Flight Recorder)](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
         date: '[github.com/sivaratrisrinivas/llm-flight-recorder](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
         summary: Python, PyTorch, Transformers, SQLite
         highlights:
           - Built a CLI that records a local LLM generation token by token, replays it, and names the first step where two runs split, tagging every later difference as fallout. The OpenAI adapter refuses to record when logprobs are missing.
           - On pinned Qwen2.5-0.5B demos, it labels a seed-only change as a sampling split at token 0 and a temperature-only change as a decoding split at token 8. Compare takes 0.151 s median on CPU.
-      - name: '[Fuzz](https://github.com/sivaratrisrinivas/fuzz)'
-        date: '[github.com/sivaratrisrinivas/fuzz](https://github.com/sivaratrisrinivas/fuzz)'
-        summary: TypeScript, Bun, FastAPI, Hugging Face, PEFT
-        highlights:
-          - Built a browser game where waves scramble a private paragraph, the player rewrites to save pieces, and Qwen2.5 rebuilds the rest. The original text never leaves the browser, and the server rejects any request that contains it.
-          - Fine-tuned a LoRA adapter on Qwen2.5-0.5B with 288 synthetic examples. On the locked eval, word F1 on intact text rose from 0.746 to 0.938 and failed outputs fell from 12/44 to 8/44. Heavily scrambled inputs did not improve.
-      - name: '[SunkeLo](https://github.com/sivaratrisrinivas/sunkelo)'
-        date: '[github.com/sivaratrisrinivas/sunkelo](https://github.com/sivaratrisrinivas/sunkelo)'
-        summary: Next.js, TypeScript, Postgres, Redis, Sarvam AI
-        highlights:
-          - Built a voice-first product review app in 11 Indian languages. It transcribes speech, scrapes public reviews, has an LLM summarize them, then translates and reads the verdict aloud, streamed over SSE with a Redis cache.
-          - Built a 379-claim grounding eval showing the first word-overlap metric flagged all 13 supported real claims as unsupported. By hand labels, 6 of 19 real claims lack source support.
-      - name: '[SokoFlow](https://github.com/sivaratrisrinivas/sokoflow)'
-        date: '[github.com/sivaratrisrinivas/sokoflow](https://github.com/sivaratrisrinivas/sokoflow)'
-        summary: Python, PyTorch, Flask
-        highlights:
-          - Trained a diffusion model (CNN board encoder, Transformer denoiser) that generates Sokoban move plans. It solved 6.2% (15/240) of scrambled 8x8 boards against 94.2% for plain BFS search. Traced an earlier 20.8% figure to easy boards and published the correction.
 
     education:
       - institution: University of Alabama at Birmingham
