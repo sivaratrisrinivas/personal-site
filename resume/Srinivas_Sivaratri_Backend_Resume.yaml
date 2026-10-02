@@ -50,11 +50,11 @@ cv:
 
     projects:
       - name: '[Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
-        date: '[github.com/sivaratrisrinivas/Chirpy](https://github.com/sivaratrisrinivas/Chirpy)'
-        summary: Go, PostgreSQL, sqlc, goose, Docker
+        date: '[chirpy-slpq.onrender.com/app](https://chirpy-slpq.onrender.com/app/) | [repo](https://github.com/sivaratrisrinivas/Chirpy)'
+        summary: Go, PostgreSQL, sqlc, goose, Docker, Render
         highlights:
           - 'Hardened a Go social-feed API: SQL keyset pagination with a cursor header, owner-scoped deletes, SHA-256-hashed refresh tokens, constant-time webhook key checks, per-IP login rate limits, a 1 MB body cap, server timeouts and graceful shutdown.'
-          - 'Closed a static file server that exposed the whole repository, .env included. Integration tests against real PostgreSQL cover 64.2% of the server package; CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks.'
+          - 'Closed a static file server that exposed the whole repository, .env included. Integration tests against real PostgreSQL cover 64.2% of the server package; CI runs race tests, an sqlc drift check, a distroless Docker build and gitleaks. Live on Render with Postgres on Supabase, both free tier.'
       - name: '[Gator](https://github.com/sivaratrisrinivas/Gator)'
         date: '[github.com/sivaratrisrinivas/Gator](https://github.com/sivaratrisrinivas/Gator)'
         summary: Go, PostgreSQL, sqlc
@@ -62,11 +62,11 @@ cv:
           - 'Rebuilt a one-feed-per-tick RSS aggregator as a worker pool that claims due feeds with FOR UPDATE SKIP LOCKED. In tests, 4 aggregators racing over 20 feeds never claimed the same feed twice.'
           - 'Added conditional GET (ETag, Last-Modified), Atom and 13 date formats (the Go blog had been saving 0 posts), exponential backoff computed in SQL, and idempotent inserts. 40 feeds at 200 ms each: 8.26 s with 1 worker, 1.11 s with 8. Parser coverage 91.1%.'
       - name: '[Rashomon API](https://github.com/sivaratrisrinivas/Rashomon)'
-        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
-        summary: TypeScript, Bun, Elysia, Supabase, PostgreSQL
+        date: '[rashomon-ii0a.onrender.com](https://rashomon-ii0a.onrender.com) | [repo](https://github.com/sivaratrisrinivas/Rashomon)'
+        summary: TypeScript, Bun, Elysia, Supabase, PostgreSQL, Gemini
         highlights:
           - 'Found that the API trusted a client-sent userId while holding the service-role key, so anyone could write as anyone. Moved identity to the verified session token, replaced wildcard CORS with an allowlist, and closed SSRF in URL import (DNS checks, private and metadata ranges, redirect re-checks, size and type caps).'
-          - 'Wrote the missing schema with row-level security and an atomic chat-append function. 34 API tests at about 98% line coverage replaced 16 tests that only exercised mock apps; CI had been red since October 2025 and is now green.'
+          - 'Wrote the missing schema with row-level security and an atomic chat-append function. Replaced Google Vision with Gemini free-tier OCR for images and PDFs: file type checked by magic bytes, retries on 429 and 5xx, key kept out of URLs. 41 API tests at about 98% line coverage replaced 16 tests that only exercised mock apps; CI, red since October 2025, is green. API runs in Docker on Render.'
 
     education:
       - institution: University of Alabama at Birmingham

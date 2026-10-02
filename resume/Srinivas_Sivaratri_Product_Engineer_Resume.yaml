@@ -50,11 +50,11 @@ cv:
 
     projects:
       - name: '[Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
-        date: '[github.com/sivaratrisrinivas/Rashomon](https://github.com/sivaratrisrinivas/Rashomon)'
+        date: '[rashomon-ii0a.onrender.com](https://rashomon-ii0a.onrender.com) | [repo](https://github.com/sivaratrisrinivas/Rashomon)'
         summary: Next.js, TypeScript, Bun, Supabase Realtime, PostgreSQL
         highlights:
           - 'Live reading rooms where two readers discuss the same passage for five minutes. A room is useless with one person in it, so I built the paths that bring in the second reader: an invite link to the exact text, a bookmarklet, and a /dashboard?url= deep link that imports on arrival. Login and onboarding return you to the shared page.'
-          - 'Before adding features, closed the holes that made launch unsafe: identity taken from a client-sent userId, wildcard CORS, SSRF in URL import, no row-level security. Covered the API with 34 tests at about 98% line coverage, and got CI green after failing on every push since October 2025.'
+          - 'Before launch, closed the holes that made it unsafe: identity taken from a client-sent userId, wildcard CORS, SSRF in URL import, no row-level security. Then shipped it on free tiers (Render, Supabase, Gemini OCR in place of billed Google Vision). 41 API tests at about 98% line coverage and 32 frontend tests; CI is green after failing on every push since October 2025.'
       - name: '[Bingo](https://github.com/sivaratrisrinivas/Bingo)'
         date: '[github.com/sivaratrisrinivas/Bingo](https://github.com/sivaratrisrinivas/Bingo)'
         summary: Python, BM25, sentence-transformers, cross-encoders
