@@ -1,0 +1,626 @@
+/*
+ * Hedge-maze game layer. The plain portfolio in style.css is untouched underneath:
+ * html[data-mode="game"] shows the maze, anything else shows the plain page.
+ */
+:root {
+    --game-hedge: #3b5a47;
+    --game-hedge-hi: #567a62;
+    --game-hedge-lo: #2b4636;
+    --game-snow: #fbfaf6;
+    --game-lantern: #e9a23b;
+    --game-route: #b9442f;
+    --game-ghost: #fffdf8;
+    --game-ghost-ink: rgba(44, 42, 38, 0.78);
+}
+
+html[data-theme="dark"] {
+    --game-hedge: #25463a;
+    --game-hedge-hi: #356650;
+    --game-hedge-lo: #1a3229;
+    --game-snow: #d6e3e8;
+    --game-lantern: #f2b04a;
+    --game-route: #e2705a;
+    --game-ghost: #f4f1e8;
+    --game-ghost-ink: rgba(8, 10, 14, 0.72);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---- which layer is showing ---- */
+
+html:not([data-mode="game"]) .game,
+html:not([data-mode="game"]) .game-nav,
+html:not([data-mode="game"]) .skip-game,
+html:not([data-mode]) .mode-toggle {
+    display: none;
+}
+
+html[data-mode="game"] main,
+html[data-mode="game"] .site-nav,
+html[data-mode="game"] .skip-plain-page,
+html[data-mode="game"] .cursor-orb,
+html[data-mode="game"] .ambient-light {
+    display: none;
+}
+
+html[data-mode="game"],
+html[data-mode="game"] body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html[data-mode="game"] body.custom-cursor-enabled * {
+    cursor: auto;
+}
+
+html[data-mode="game"] body.custom-cursor-enabled button,
+html[data-mode="game"] body.custom-cursor-enabled a {
+    cursor: pointer;
+}
+
+/* ---- header controls ---- */
+
+.game-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 0.8rem;
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.game-btn:hover,
+.game-btn:focus-visible {
+    color: var(--accent-strong);
+    border-color: var(--accent);
+    background: var(--accent-wash);
+}
+
+.game-btn[aria-pressed="true"],
+.game-btn-primary {
+    color: var(--color-bg);
+    border-color: var(--accent);
+    background: var(--accent);
+}
+
+.game-btn[aria-pressed="true"]:hover,
+.game-btn-primary:hover,
+.game-btn-primary:focus-visible {
+    color: var(--color-bg);
+    background: var(--accent-strong);
+}
+
+.mode-toggle {
+    display: inline-flex;
+}
+
+/* ---- the stage ---- */
+
+.game {
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-offset) + 0.6rem) clamp(0.5rem, 2vw, 2rem) 0.6rem;
+}
+
+.game-stage {
+    display: grid;
+    flex: none;
+    min-width: 0;
+    place-items: center;
+}
+
+#maze {
+    display: block;
+    border: 1px solid var(--color-line-bright);
+    background: var(--color-bg);
+    box-shadow: 0 24px 60px -28px var(--color-shadow);
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#maze:focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 5px;
+}
+
+.game-hud {
+    min-height: 3.6rem;
+    padding-top: 0.7rem;
+    text-align: center;
+    font-family: var(--font-mono);
+}
+
+.game-status {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.game-whisper {
+    min-height: 1.4em;
+    color: var(--color-faint);
+    font-size: 0.7rem;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.model-note {
+    max-width: 62ch;
+    margin: 0.35rem auto 0;
+    color: var(--color-faint);
+    font-size: 0.7rem;
+    line-height: 1.6;
+}
+
+.model-note a {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.dpad {
+    display: none;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-areas:
+        ". up ."
+        "left down right";
+    gap: 6px;
+    justify-content: center;
+    padding: 0.35rem 0 0.15rem;
+}
+
+.dpad button {
+    display: grid;
+    width: 56px;
+    height: 52px;
+    place-items: center;
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-muted);
+    background: var(--color-surface);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dpad button:active {
+    color: var(--color-bg);
+    border-color: var(--accent);
+    background: var(--accent);
+}
+
+.dpad button[data-dir="up"] { grid-area: up; }
+.dpad button[data-dir="left"] { grid-area: left; }
+.dpad button[data-dir="down"] { grid-area: down; }
+.dpad button[data-dir="right"] { grid-area: right; }
+
+.dpad svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: square;
+    stroke-width: 2;
+}
+
+@media (hover: none), (pointer: coarse) {
+    html[data-mode="game"] .dpad {
+        display: grid;
+    }
+}
+
+/* ---- dialogs: intro, rooms, card ---- */
+
+.hedge-dialog {
+    width: min(680px, calc(100vw - 1.5rem));
+    max-height: calc(100svh - 1.5rem);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-text);
+    background: var(--color-bg);
+    box-shadow: 0 30px 80px var(--color-shadow);
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+.hedge-dialog[open] {
+    animation: dlg-in 260ms var(--ease-out) both;
+}
+
+.hedge-dialog::backdrop {
+    background: rgba(8, 12, 16, 0.62);
+    backdrop-filter: blur(3px);
+}
+
+.dlg-inner {
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+
+.dlg-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.dlg-kicker {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hedge-dialog h2 {
+    max-width: none;
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+}
+
+.hedge-dialog h2 span {
+    color: var(--accent);
+}
+
+.intro h2 {
+    margin-top: 0.9rem;
+    font-size: clamp(2.8rem, 11vw, 5rem);
+    font-weight: 600;
+    line-height: 0.88;
+}
+
+.intro h2 span {
+    display: block;
+}
+
+.intro-statement {
+    max-width: 38ch;
+    margin-top: 1.1rem;
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.intro-rules {
+    margin: 1.5rem 0;
+    padding-left: 1.1rem;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+.intro-rules li + li {
+    margin-top: 0.65rem;
+}
+
+.intro-rules b {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+kbd {
+    padding: 0 0.35em;
+    border: 1px solid var(--color-line-bright);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+}
+
+.dlg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+    margin-top: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.intro-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-muted);
+}
+
+.intro-links a:hover,
+.intro-links a:focus-visible {
+    color: var(--accent-strong);
+}
+
+/* Rooms reuse the plain page's own markup, resized for a dialog. */
+.room-body > * + * {
+    margin-top: 1.5rem;
+}
+
+.room-body .role-card,
+.room-body .contribution-card,
+.room-body .project-card {
+    padding: 0;
+    border: 0;
+}
+
+.room-body .role-card h3,
+.room-body .contribution-card h3,
+.room-body .project-card h3 {
+    font-size: clamp(1.6rem, 5.5vw, 2.4rem);
+}
+
+.room-body .about-copy {
+    padding-top: 0;
+    font-size: 1.1rem;
+}
+
+.room-body .education-block {
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--color-line);
+}
+
+.room-body .hero-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+    gap: 0 1.5rem;
+    margin: 0;
+    animation: none;
+}
+
+.room-body .contact-stage {
+    display: block;
+    min-height: 0;
+    padding-bottom: 1.5rem;
+    border: 0;
+}
+
+.room-body .contact-stage h2 {
+    max-width: 14ch;
+    font-size: clamp(2rem, 7vw, 3.2rem);
+}
+
+.room-body .contact-cta {
+    margin-top: 1.5rem;
+}
+
+.room-body .contact-links {
+    gap: 0 1.5rem;
+    padding: 0.75rem 0 0;
+    border-top: 1px solid var(--color-line);
+}
+
+.room-body .project-index {
+    display: none;
+}
+
+.room-foot {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.7;
+}
+
+.room-foot strong {
+    color: var(--game-lantern);
+    font-weight: 500;
+}
+
+/* Verdict: the strict judge, after unmaze. */
+.verdict {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+.verdict-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 0.4rem;
+}
+
+.verdict-label {
+    color: var(--color-faint);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.verdict-result {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.verdict.is-lost .verdict-result {
+    color: var(--game-route);
+}
+
+.verdict.is-solved .verdict-result {
+    color: var(--accent-strong);
+}
+
+.verdict p + p {
+    margin-top: 0.5rem;
+}
+
+/* Card */
+.card-help {
+    max-width: 56ch;
+    margin-top: 0.9rem;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin: 1.25rem 0;
+}
+
+.card-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.6rem;
+    min-height: 6.6rem;
+    padding: 0.75rem;
+    border: 1px solid var(--color-line-bright);
+    color: var(--color-text);
+    background: var(--color-surface);
+    text-align: left;
+    transition: border-color 180ms ease, background 180ms ease;
+}
+
+.card-cell:hover,
+.card-cell:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+}
+
+.card-cell-label {
+    font-size: clamp(0.95rem, 3.4vw, 1.25rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.card-cell-teaser {
+    color: var(--color-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+.card-cell-state {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.card-cell.is-stamped {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+}
+
+.card-cell.is-stamped .card-cell-state {
+    color: var(--accent-strong);
+}
+
+.card-cell.is-line {
+    box-shadow: inset 0 0 0 2px var(--game-lantern);
+}
+
+.card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    margin-top: 1.1rem;
+}
+
+.card-tools-note {
+    color: var(--color-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+}
+
+/* ---- small screens ---- */
+
+@media (max-width: 780px) {
+    html[data-mode] .site-header {
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        grid-template-areas:
+            "brand mode toggle"
+            "nav nav nav";
+    }
+
+    html[data-mode] .mode-toggle { grid-area: mode; }
+    html[data-mode] .game-nav { grid-area: nav; justify-content: flex-start; }
+    html[data-mode] .site-nav { grid-area: nav; }
+    html[data-mode] .theme-toggle { grid-area: toggle; }
+}
+
+@media (max-width: 520px) {
+    .dpad {
+        grid-template-columns: repeat(3, 64px);
+        gap: 8px;
+        padding-top: 0.6rem;
+    }
+
+    .dpad button {
+        width: 64px;
+        height: 56px;
+    }
+
+    .card-cell {
+        min-height: 5.8rem;
+        padding: 0.6rem;
+    }
+
+    .card-cell-teaser {
+        display: none;
+    }
+
+    .game-btn {
+        padding: 0 0.65rem;
+    }
+}
+
+@keyframes dlg-in {
+    from { opacity: 0; transform: translateY(14px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hedge-dialog[open] { animation: none; }
+    .game-btn,
+    .card-cell { transition: none; }
+}
