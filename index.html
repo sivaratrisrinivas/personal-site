@@ -34,6 +34,19 @@
         })();
     </script>
 
+    <script>
+        /* The site opens as a hedge-maze game. Deep links, ?plain, and a saved choice keep the plain page. */
+        (function () {
+            var mode = "game";
+            var stored = null;
+            try { stored = localStorage.getItem("mode"); } catch (e) {}
+            if (stored === "plain"
+                || /(^|[?&])plain(=|&|$)/.test(location.search)
+                || /^#(top|about|experience|open-source|work|contact)$/.test(location.hash)) mode = "plain";
+            document.documentElement.setAttribute("data-mode", mode);
+        })();
+    </script>
+
     <link rel="icon" type="image/png" href="assets/screening-mark.png" />
     <link rel="apple-touch-icon" href="assets/screening-mark.png" />
 
@@ -42,10 +55,12 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/game.css" />
 </head>
 
 <body>
-    <a class="skip-link" href="#work">Skip to projects</a>
+    <a class="skip-link skip-plain-page" href="#work">Skip to projects</a>
+    <button type="button" class="skip-link skip-game" id="skip-game">Skip the game: read the plain page</button>
     <div class="cursor-orb" aria-hidden="true"></div>
     <div class="ambient-light" aria-hidden="true"></div>
 
@@ -63,6 +78,12 @@
                 <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
                 <a href="#contact">Contact</a>
             </nav>
+            <div class="game-nav" role="group" aria-label="Game controls">
+                <button type="button" class="game-btn" id="btn-card" aria-haspopup="dialog">Card <span id="card-count">0/9</span></button>
+                <button type="button" class="game-btn" id="btn-model" aria-pressed="false" aria-label="Ask the model to solve this maze">Model</button>
+                <button type="button" class="game-btn" id="btn-new" aria-label="Start a new maze">New maze</button>
+            </div>
+            <button type="button" class="game-btn mode-toggle" id="btn-mode">Plain page</button>
             <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark appearance">
                 <svg class="icon-sun" viewBox="0 0 20 20" aria-hidden="true">
                     <circle cx="10" cy="10" r="3.25" />
@@ -76,12 +97,82 @@
         </div>
     </header>
 
+    <section class="game" id="game" aria-label="Hedge maze game">
+        <h1 class="sr-only">Srinivas Sivaratri: a hedge maze with a website inside. A plain version of this page is one button away.</h1>
+        <div class="game-stage" id="game-stage">
+            <canvas id="maze" tabindex="0" role="application" aria-label="Hedge maze. Walk with the arrow keys or WASD. Eight rooms hide in the dead ends; the heart is in the middle. Press C for your card, or choose Plain page in the header to read everything without playing."></canvas>
+        </div>
+        <div class="game-hud">
+            <p class="game-status" id="game-status" role="status" aria-live="polite"></p>
+            <p class="game-whisper" id="game-whisper" aria-hidden="true"></p>
+            <p class="model-note" id="model-note" hidden>The model's guess. A stand-in: breadth-first search hidden under a made-up noise schedule. The real model, a 2.7M-parameter U-Net, solved 4,990 of 5,000 held-out mazes (<a href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">repo</a>).</p>
+        </div>
+        <div class="dpad" aria-label="Walk controls">
+            <button type="button" data-dir="up" aria-label="Walk up"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 13l6-6 6 6" /></svg></button>
+            <button type="button" data-dir="left" aria-label="Walk left"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" /></svg></button>
+            <button type="button" data-dir="right" aria-label="Walk right"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" /></svg></button>
+            <button type="button" data-dir="down" aria-label="Walk down"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" /></svg></button>
+        </div>
+    </section>
+
+    <dialog class="hedge-dialog intro" id="dlg-intro" aria-labelledby="intro-title">
+        <div class="dlg-inner">
+            <p class="dlg-kicker">A hedge maze with a website inside</p>
+            <h2 id="intro-title">Srinivas <span>Sivaratri</span></h2>
+            <p class="intro-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
+            <ul class="intro-rules">
+                <li><b>Walk</b> with arrow keys, WASD, swipes, or by tapping a footprint. <kbd>C</kbd> opens your card, <kbd>M</kbd> asks the model.</li>
+                <li><b>Eight rooms</b> hide in the dead ends: the work, the roles, the pull requests. The <b>heart</b> in the middle is where you can reach me.</li>
+                <li><b>A strict judge</b> grades your route. One clean path counts; reading everything counts as getting lost.</li>
+            </ul>
+            <div class="dlg-actions">
+                <button type="button" class="game-btn game-btn-primary" id="btn-start">Enter the maze</button>
+                <button type="button" class="game-btn" id="btn-intro-plain">Plain page instead</button>
+            </div>
+            <p class="intro-links">
+                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </p>
+        </div>
+    </dialog>
+
+    <dialog class="hedge-dialog room" id="dlg-room" aria-labelledby="room-title">
+        <div class="dlg-inner">
+            <div class="dlg-top">
+                <p class="dlg-kicker" id="room-kicker"></p>
+                <button type="button" class="game-btn" id="room-close">Back to the maze</button>
+            </div>
+            <h2 class="sr-only" id="room-title"></h2>
+            <div class="room-body" id="room-body"></div>
+            <p class="room-foot" id="room-foot"></p>
+        </div>
+    </dialog>
+
+    <dialog class="hedge-dialog card" id="dlg-card" aria-labelledby="card-title">
+        <div class="dlg-inner">
+            <div class="dlg-top">
+                <p class="dlg-kicker">Your card</p>
+                <button type="button" class="game-btn" id="card-close">Back to the maze</button>
+            </div>
+            <h2 id="card-title">Bingo, <span id="card-summary">0 of 9</span></h2>
+            <p class="card-help">Nine squares: eight rooms and the heart. Choose one and the ghost will walk you there. Any line of three is a bingo.</p>
+            <div class="card-grid" id="card-grid"></div>
+            <div id="card-verdict"></div>
+            <div class="card-tools">
+                <button type="button" class="game-btn" id="card-share">Copy link to this maze</button>
+                <button type="button" class="game-btn" id="card-reset">Clear my card</button>
+                <span class="card-tools-note" id="card-tools-note" role="status"></span>
+            </div>
+        </div>
+    </dialog>
+
     <main id="top">
         <section class="hero" aria-labelledby="hero-title">
             <div class="hero-content">
                 <h1 id="hero-title">Srinivas <span>Sivaratri</span></h1>
                 <p class="hero-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
-                <div class="hero-links" aria-label="Profiles">
+                <div class="hero-links" data-room="resumes" aria-label="Profiles">
                     <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
                     <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
                     <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -104,7 +195,7 @@
             <div class="section-label">About</div>
             <div class="about-grid">
                 <h2 id="about-title">Profile</h2>
-                <div class="about-copy">
+                <div class="about-copy" data-room="profile">
                     <p>Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript.</p>
                     <p class="availability-line"><strong>Available</strong>: remote full-time or contract · UTC+5:30 (IST)</p>
                 </div>
@@ -115,7 +206,7 @@
             <div class="section-label">Experience</div>
             <h2 id="experience-title">Roles</h2>
             <div class="role-list">
-                <article class="role-card">
+                <article class="role-card" data-room="independent">
                     <header class="role-card-head">
                         <div class="role-identity">
                             <h3>Independent engineering</h3>
@@ -128,7 +219,7 @@
                         <li>Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.</li>
                     </ul>
                 </article>
-                <article class="role-card">
+                <article class="role-card" data-room="accenture">
                     <header class="role-card-head">
                         <div class="role-identity">
                             <h3>Accenture</h3>
@@ -141,7 +232,7 @@
                         <li>Implemented a GitHub Actions CI/CD pipeline.</li>
                     </ul>
                 </article>
-                <div class="education-block">
+                <div class="education-block" data-room="profile">
                     <h3>Education</h3>
                     <ul>
                         <li><span>MS Computer Science</span> University of Alabama at Birmingham · 2023–25</li>
@@ -155,7 +246,7 @@
             <div class="section-label">Open source</div>
             <h2 id="open-source-title">Upstream</h2>
             <div class="contribution-list">
-                <article class="contribution-card">
+                <article class="contribution-card" data-room="better-auth">
                     <header class="contribution-card-head">
                         <h3>better-auth: email enumeration at sign-in</h3>
                         <p class="contribution-meta">2025 <span>Security</span></p>
@@ -167,7 +258,7 @@
                         <a class="text-link" href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">Shipped #5998 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
                     </div>
                 </article>
-                <article class="contribution-card">
+                <article class="contribution-card" data-room="go-ethereum">
                     <header class="contribution-card-head">
                         <h3>go-ethereum: <code>geth db truncate-freezer</code></h3>
                         <p class="contribution-meta">2025 <span>Systems</span></p>
@@ -186,7 +277,7 @@
             <h2 id="projects-title">Projects</h2>
             <div class="project-list">
 
-                <article class="project-card" id="unmaze">
+                <article class="project-card" id="unmaze" data-room="unmaze">
                     <header class="project-card-head">
                         <span class="project-index">01</span>
                         <div class="project-heading">
@@ -222,7 +313,7 @@
                     </div>
                 </article>
 
-                <article class="project-card" id="bingo">
+                <article class="project-card" id="bingo" data-room="bingo">
                     <header class="project-card-head">
                         <span class="project-index">02</span>
                         <div class="project-heading">
@@ -263,14 +354,14 @@
 
         <section id="contact" class="contact-section section-shell" aria-labelledby="contact-title">
             <div class="section-label">Contact</div>
-            <div class="contact-stage">
+            <div class="contact-stage" data-room="heart">
                 <h2 id="contact-title">Let’s make the next useful thing.</h2>
                 <a class="contact-cta" href="mailto:srinivassivaratri1122@gmail.com">
                     <span>Start a conversation</span>
                     <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
                 </a>
             </div>
-            <div class="contact-links" aria-label="Contact links">
+            <div class="contact-links" data-room="heart" aria-label="Contact links">
                 <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
                 <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
@@ -285,6 +376,8 @@
     </main>
 
     <script src="js/script.js"></script>
+    <script src="js/maze.js"></script>
+    <script src="js/game.js"></script>
 </body>
 
 </html>
