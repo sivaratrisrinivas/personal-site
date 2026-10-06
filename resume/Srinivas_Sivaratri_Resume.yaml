@@ -51,24 +51,18 @@ cv:
           - Implemented a GitHub Actions CI/CD pipeline.
 
     projects:
+      - name: '[unmaze](https://github.com/sivaratrisrinivas/unmaze)'
+        date: '[github.com/sivaratrisrinivas/unmaze](https://github.com/sivaratrisrinivas/unmaze)'
+        summary: Python, PyTorch, NumPy
+        highlights:
+          - Built a small diffusion model that solves hedge mazes by denoising random noise into the path from entrance to centre. A 2.7M-parameter U-Net with self-attention and a 50-step DDIM sampler trained in about 50 minutes on 3 CPU threads. A strict judge accepts only one exact simple path and runs no repair step.
+          - Solved 4,990 of 5,000 fresh 11x11 mazes it had never seen (99.8%), then audited the number. On depth-first-search mazes it never trained on it solves 66%, all 10 failures were in the longest quarter of routes, and the 300 longest routes of 30,000 score 93%.
       - name: '[Bingo](https://github.com/sivaratrisrinivas/Bingo)'
         date: '[github.com/sivaratrisrinivas/Bingo](https://github.com/sivaratrisrinivas/Bingo)'
         summary: Python, NLTK, sentence-transformers, CLIP, Gemini
         highlights:
           - Built a command-line movie search over 5,000 films during Boot.dev's RAG course, with BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, cross-encoder reranking, image search, and LLM answers with citations.
           - Built an 834-query known-item eval. On the test split, RRF with cross-encoder reranking put the target movie in the top 10 91.6% of the time against 86.3% for BM25, and plain RRF lost to BM25 alone. Rewrote BM25 to score from precomputed term statistics, cutting p95 latency from 3.4 s to 5 ms.
-      - name: '[SokoFlow](https://github.com/sivaratrisrinivas/sokoflow)'
-        date: '[github.com/sivaratrisrinivas/sokoflow](https://github.com/sivaratrisrinivas/sokoflow)'
-        summary: Python, PyTorch, Flask
-        highlights:
-          - Trained a diffusion model (CNN board encoder, Transformer denoiser) that turns random moves into Sokoban plans, served on CPU through Flask and a Hugging Face Space.
-          - Solved 6.2% (15/240) of scrambled 8x8 boards against 94.2% for plain BFS search. Traced an earlier 20.8% figure to easy boards and published the correction.
-      - name: '[llmfr (LLM Flight Recorder)](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
-        date: '[github.com/sivaratrisrinivas/llm-flight-recorder](https://github.com/sivaratrisrinivas/llm-flight-recorder)'
-        summary: Python, PyTorch, Transformers, SQLite
-        highlights:
-          - Built a CLI that records a local LLM generation token by token, replays it, and names the first step where two runs split, tagging every later difference as fallout. The OpenAI adapter refuses to record when logprobs are missing.
-          - On pinned Qwen2.5-0.5B demos, it labels a seed-only change as a sampling split at token 0 and a temperature-only change as a decoding split at token 8. Compare takes 0.151 s median on CPU.
 
     education:
       - institution: University of Alabama at Birmingham
