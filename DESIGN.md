@@ -2,62 +2,47 @@
 
 ## Direction
 
-The site opens as a game: a hedge maze with a website inside (see "The maze" below). The plain portfolio described in the rest of this file is still there, one button away, and is the single source of truth for every word on the site.
-
-The portfolio is Soft daylight: a cream surface with a quiet sky accent, where shipped work is the evidence. The page uses labeled sections and editorial type to make a short archive feel intentional without turning the work into a card wall or a findings wall.
-
-## Brand mark
-
-`assets/screening-mark.png` is the project emblem: a sky geometric aperture framed by four crop marks, with interlocking negative space that quietly suggests the SS initials. It is used in the header, favicon, and Apple touch icon, and is designed to remain legible at small sizes.
+The whole site is one small game: a bright pixel-art island you walk around, with the work in its buildings and smaller details buried in the dirt. It should feel like a toy someone made with care: colourful, a little weird, instantly readable, and honest about the work it holds. The island is the interface; there is no second, plainer site behind it (the Index dialog and the no-JavaScript codex are accessibility paths, not alternatives).
 
 ## Palette
 
-Soft daylight. Light is the default theme. Dark inverts the same family carefully: cream-ish text on a deep warm charcoal/navy-adjacent ground, with a readable sky accent — not pure black and neon.
+Two moods from one set of accents. Colour does the wayfinding: each building has its own roof colour, and that colour is reused on its dialog header, its Index row and its minimap marker.
 
-- `--color-bg` / cream: `#f4f0e6` (dark: `#1b2228`)
-- `--color-surface`: `#ebe6da` (dark: `#242c34`)
-- `--color-text` / warm charcoal: `#2c2a26` (dark: cream-ish `#ede8dc`)
-- `--color-muted`: `#565248` (dark: `#b8b2a6`)
-- `--color-faint`: `#6f6a61` (dark: `#9a9488`)
-- `--accent` / soft sky: `#2e6584` (dark: `#7aadc2`)
-- `--accent-strong`: `#24536e` (dark: `#8fbfcf`)
-- Lines are warm, transparent separators rather than hard rules.
-
-The first visit follows `prefers-color-scheme`. After the header toggle is used, the choice is stored in `localStorage` and `theme-color` updates with the active background.
+- Day: sky water `#3a86e8`, grass `#5ec24c`, sand `#f6dfa8`, dirt road `#dba869`, cream UI panels `#fff6e0`, ink `#1d1b3a`.
+- Night (theme toggle, or the system setting on first visit): the same scene multiplied by indigo `rgb(70,80,150)`, with lights cut back in: lamp posts, lit windows, the lantern the player carries, the cinema marquee, the lab monitor, and a rotating lighthouse beam. UI panels become `#292561`.
+- Accents shared by both: pink `#ff4d8d`, cyan `#27d3cc`, lemon `#ffd23f`, violet `#8e63ff`, coral `#ff5d6c`, lime `#5ec24c`.
+- Roof colours: coral lighthouse, teal workshop, blue tower, pink post office, ice-white ice house, violet lab, yellow cinema, brick school, green library, wood dock.
 
 ## Typography
 
-- Syne is the display voice: wide, slightly eccentric, and used for the hero and section titles.
-- DM Mono is reserved for production marks, metadata, What/Why/How labels, and project copy.
-- Display text uses tight negative tracking (floor −0.04em); functional labels stay at or above the 11px legibility floor. Body copy is measured and kept near 65 characters per line.
+- Silkscreen (pixel) for labels, buttons, titles and kickers: uppercase for small labels and buttons, mixed case for big titles.
+- DM Mono for body copy, at 13 to 16px, measured to about 65 characters.
+- Monospace fallbacks keep the layout intact if the web fonts do not load.
 
-## The maze
+## The world
 
-- A snowy hedge maze, entered from a gap in the outer ring, with the heart at the centre. It follows the unmaze project: an 11×11-cell maze (a 23×23 tile grid) built with Wilson's algorithm, so every visit is a different maze. `?maze=<number>` shares one.
-- Eight rooms sit in the maze's dead ends and the heart holds Contact. A room is a dialog that clones the plain-page block tagged `data-room="<id>"`, so content is edited once, in `index.html`.
-- A lantern lights a small circle; the rest is snow-fog. Rooms glow amber through the fog, stamped rooms turn sky blue, the heart glows red. Footprints stay behind and the fog stays thin where you have been. Hedges watch (a few pairs of glowing eyes).
-- The card is a 3×3 bingo of the eight rooms and the heart. It doubles as a table of contents: choose a square and the ghost walks you there.
-- A strict judge grades the route at the heart, after unmaze: SOLVED only if the visited tiles are exactly the one simple path, otherwise LOST with the stray blobs counted. Rooms live in dead ends, so reading everything reads as "lost" by design.
-- "Model" replays a stand-in for the unmaze model: the true path hidden under a made-up noise schedule, labelled as a stand-in on screen. It is never presented as the trained model.
-- Palette additions: hedge `#3b5a47` (dark `#25463a`), lantern `#e9a23b`, route red `#b9442f` (dark `#e2705a`). They sit on the existing cream and navy grounds; fog is the page background colour.
-- Escape hatches: the Plain page button, `?plain`, deep links to `#about` and the other plain anchors, a remembered choice, and the no-JavaScript default all show the plain page.
-- Touch: swipe runs down a corridor, tap a footprint to walk back to it, and an on-screen d-pad appears on coarse pointers.
+- 48 × 36 tiles of 16px, drawn at an integer scale (2 on phones, 3 on laptops, up to 5), camera rounded to whole pixels so nothing shimmers.
+- Everything is drawn in code on small canvases (`js/art.js`): no image files. Trees come in green, teal and cherry-blossom pink; the giant mushrooms in red, cyan and violet.
+- Buildings are cached sprites with live overlays: workshop chimney smoke, letters drifting out of the post office window (it leaks), mist at the ice house, the lab's monitor denoising noise into a path, the cinema's chasing marquee bulbs, the school flag, the tower's blinking antenna.
+- Sorting is by baseline, so you walk behind trees and buildings. Collision is a small feet box against solid tiles, with corner assist.
+- The hedge garden is the unmaze maze, stamped into the map tile for tile. The owl is the strict judge.
+- A minimap (desktop) shows the island, buildings by colour, and a green mark on visited ones.
 
-## Composition (plain page)
+## UI frame
 
-- The first viewport is name, one-line positioning, and profile links (GitHub, X, LinkedIn, email, résumé).
-- About is a short bio and availability line. Job history and upstream writeups are not repeated here.
-- Experience is two roles (Independent engineering, Accenture) plus a short education block.
-- Open source is evidence-style writeups for better-auth and go-ethereum, with PR links — not a ticker, CLI, findings wall, or skills cluster.
-- Work is one numbered list, ordered as chosen by the owner (unmaze, Bingo). Only public repos appear. Each project is What / Why / How, plus a Repo link and a Demo link only when a real URL exists. Findings fold into How as one evidence line or one small table. Proof chips (Live demo / Measured / CI) sit under the title and appear only when they are true: a public demo URL, published numbers already on the card, or confirmed green GitHub Actions on that repo.
-- The contact section closes the page as a final frame with one direct email action.
+- Panels are hard-edged and outlined (3px ink border, offset ink shadow) like game UI, never rounded or blurred. Buttons press down into their shadow.
+- The top bar is always dark indigo with a pink underline, so the world is the brightest thing on screen. It holds the brand, progress (Places x/10, Details x/17), the Index, Résumé, Say hi, and Night controls.
+- A prompt chip appears at the bottom whenever something can be used: key cap, then the verb ("Enter the lab", "Dig here"). On touch it also becomes the `A` button beside the d-pad.
+- Dialogs use native `<dialog>`. A building's dialog has a header in its roof colour, the real content below, and a footer saying how many details are buried nearby.
+- Real content (roles, pull requests, project cards) is cloned from the codex and restyled with the same pixel panels, chips and buttons.
 
-## Interaction
+## Motion
 
-- In-page nav uses hash links with a sticky-header offset and a scroll spy on About, Experience, Open source, Work, and Contact. The appearance toggle lives in that same header so offset measurement still tracks wrap height.
-- Plain page: motion is limited to the opening title reveal and intentional hover emphasis.
-- Maze: lantern flicker, falling snow, blinking eyes and the model's denoising are the motion. `prefers-reduced-motion` turns all of it off, makes steps instant, and shows the model's answer immediately.
+Water ripples, drifting cloud shadows, butterflies, falling dig dust, confetti on the last detail, lantern flicker, and a cat who wanders. `prefers-reduced-motion` turns all of it off: no ripples, no clouds, no butterflies, no particles, no beam rotation, and the day/night switch snaps. Walking itself is the game and still works.
 
-## Browser surfaces
+## Accessibility
 
-- Selection, focus rings, and scrollbars are themed from the palette; `color-scheme` follows the active light or dark appearance.
+- Keyboard play (arrows/WASD, `E`/`Space`/`Enter`, `I`), a focusable canvas with a descriptive label, and a live region for speech and status.
+- Index dialog: every place and every buried detail as text, with *Read* (open directly) and *Walk there*. Nothing requires playing to read.
+- 44px minimum targets, visible focus rings, native dialog focus handling, contrast of at least 4.5:1 for every text and background pair in both themes (lowest measured 4.74).
+- No-JavaScript visitors and crawlers get the codex as a normal styled page.

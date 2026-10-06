@@ -153,74 +153,6 @@
     }
 
     /*
-     * Choose dead ends for the rooms: spread out by farthest-point sampling (with a little
-     * seeded jitter so mazes differ), the first id nearest the entrance, the rest shuffled.
-     */
-    function placeRooms(maze, ids, seed) {
-        var rng = mulberry32(((seed === undefined ? maze.seed : seed) ^ 0x5bd1e995) >>> 0);
-        var size = maze.size;
-        var onPath = new Set(maze.solution);
-        var pool = maze.deadEnds.slice();
-        if (pool.length < ids.length) {
-            for (var y = 1; y < size; y += 2) {
-                for (var x = 1; x < size; x += 2) {
-                    var i = y * size + x;
-                    if (i !== maze.heart && i !== maze.entranceCell && !onPath.has(i) && pool.indexOf(i) === -1) pool.push(i);
-                }
-            }
-        }
-        var at = function (i) { return [i % size, (i / size) | 0]; };
-        var taken = [at(maze.entrance), at(maze.heart)];
-        var chosen = [];
-        while (chosen.length < ids.length) {
-            var best = -1, bestScore = -1;
-            for (var p = 0; p < pool.length; p++) {
-                var c = pool[p];
-                if (chosen.indexOf(c) !== -1) continue;
-                var cp = at(c), nearest = Infinity;
-                for (var t = 0; t < taken.length; t++) {
-                    nearest = Math.min(nearest, Math.hypot(cp[0] - taken[t][0], cp[1] - taken[t][1]));
-                }
-                var score = nearest + rng() * 1.5;
-                if (score > bestScore) { bestScore = score; best = c; }
-            }
-            chosen.push(best);
-            taken.push(at(best));
-        }
-
-        var dist = bfs(maze.walls, size, maze.entrance).dist;
-        chosen.sort(function (a, b) { return dist[a] - dist[b]; });
-        var rest = chosen.slice(1);
-        for (var s = rest.length - 1; s > 0; s--) {
-            var r = (rng() * (s + 1)) | 0;
-            var tmp = rest[s]; rest[s] = rest[r]; rest[r] = tmp;
-        }
-        var order = [chosen[0]].concat(rest);
-        return ids.map(function (id, k) { return { id: id, idx: order[k] }; });
-    }
-
-    /* Hedge tiles that watch you: interior walls with a corridor beside them, kept apart. */
-    function placeEyes(maze, count, seed) {
-        var rng = mulberry32(((seed === undefined ? maze.seed : seed) ^ 0x2545f491) >>> 0);
-        var size = maze.size, out = [];
-        var candidates = [];
-        for (var y = 1; y < size - 1; y++) {
-            for (var x = 1; x < size - 1; x++) {
-                var i = y * size + x;
-                if (maze.walls[i] && openNeighbors(maze.walls, size, i).length >= 1) candidates.push(i);
-            }
-        }
-        for (var tries = 0; tries < 400 && out.length < count && candidates.length; tries++) {
-            var c = candidates[(rng() * candidates.length) | 0];
-            var far = out.every(function (o) {
-                return Math.hypot((o % size) - (c % size), ((o / size) | 0) - ((c / size) | 0)) >= 5;
-            });
-            if (far) out.push(c);
-        }
-        return out;
-    }
-
-    /*
      * The strict judge, after unmaze: a route is SOLVED only if the visited tiles are exactly
      * the one simple path from entrance to heart. Anything else is stray, and nothing repairs it.
      */
@@ -282,19 +214,6 @@
         return out;
     }
 
-    /* +1 on the solution path, -1 everywhere else, at `grain` samples per tile side. */
-    function pathMask(maze, grain) {
-        var side = maze.size * grain;
-        var mask = new Float32Array(side * side).fill(-1);
-        for (var p = 0; p < maze.solution.length; p++) {
-            var tx = (maze.solution[p] % maze.size) * grain, ty = ((maze.solution[p] / maze.size) | 0) * grain;
-            for (var dy = 0; dy < grain; dy++) {
-                for (var dx = 0; dx < grain; dx++) mask[(ty + dy) * side + tx + dx] = 1;
-            }
-        }
-        return mask;
-    }
-
     function denoiseFrame(mask, eps, k, steps, out) {
         var ab = alphaBar(k, steps), a = Math.sqrt(ab), b = Math.sqrt(Math.max(0, 1 - ab));
         out = out || new Float32Array(mask.length);
@@ -309,12 +228,9 @@
         bfs: bfs,
         pathTo: pathTo,
         shortestPath: shortestPath,
-        placeRooms: placeRooms,
-        placeEyes: placeEyes,
         judge: judge,
         alphaBar: alphaBar,
         gaussianField: gaussianField,
-        pathMask: pathMask,
         denoiseFrame: denoiseFrame
     };
 });

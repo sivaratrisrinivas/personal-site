@@ -1,1087 +1,950 @@
 /*
- * The hedge-maze game. The plain portfolio stays in the page as the single source of truth:
- * each room clones the section tagged data-room="<id>" into a dialog, so content is edited once.
- * Pure maze logic lives in maze.js; this file is canvas, input, dialogs and state.
+ * The island game: loop, input, camera, interaction, digging, dialogs, progress.
+ * World geometry is in world.js, words in lore.js, pixel art in art.js. Every word of real content
+ * lives once in the page's codex and is cloned into a dialog when you open its building.
  */
 (function () {
     "use strict";
 
-    const M = window.HedgeMaze;
-    const root = document.documentElement;
-    const canvas = document.getElementById("maze");
-    if (!M || !canvas || !canvas.getContext) {
-        root.setAttribute("data-mode", "plain");
+    var IW = window.IslandWorld, A = window.IslandArt, L = window.IslandLore, M = window.HedgeMaze;
+    var root = document.documentElement;
+    var canvas = document.getElementById("world");
+    if (!IW || !A || !L || !M || !canvas || !canvas.getContext) {
+        root.classList.remove("js"); // fall back to the plain codex
         return;
     }
 
-    const N = 11;
-    const STEPS = 40;
-    const GRAIN = 3;
-    const STEP_MS = 105;
-    const LIGHT_TILES = 3.6;
-    const FOG_ALPHA = 1;
-    const STORE_KEY = "hedge-card-v1";
-    const PLAIN_HASH = /^#(top|about|experience|open-source|work|contact)$/;
-
-    const ROOMS = {
-        profile: { label: "Profile", kicker: "Who", teaser: "the short version" },
-        independent: { label: "Independent", kicker: "Roles", teaser: "two upstream pull requests, two very different endings" },
-        accenture: { label: "Accenture", kicker: "Roles", teaser: "an ETL script and 50 hours a month" },
-        "better-auth": { label: "better-auth", kicker: "Open source", teaser: "a sign-in error that gave away who has an account" },
-        "go-ethereum": { label: "go-ethereum", kicker: "Open source", teaser: "binary-searching the merge block" },
-        unmaze: { label: "unmaze", kicker: "Projects", teaser: "noise in, path out" },
-        bingo: { label: "Bingo", kicker: "Projects", teaser: "5,000 films, four ways to search them" },
-        resumes: { label: "Résumés & links", kicker: "Elsewhere", teaser: "four PDFs and the usual profiles" },
-        heart: { label: "The heart", kicker: "The end of the maze", teaser: "say hello" }
+    var T = IW.T;
+    var SPEED = 62;
+    var STORE = "island-v1";
+    var DEBUG = /(^|[?&])debug(=|&|$)/.test(location.search);
+    var HUES = {
+        coral: "#ff5d6c", teal: "#2dc4b6", blue: "#6a9bff", pink: "#ff7ac8", ice: "#9fdcf5", violet: "#a98bff",
+        yellow: "#ffcb3d", brick: "#f08a6e", green: "#4fd18a", wood: "#e2b274"
     };
-    const ROOM_IDS = ["profile", "independent", "accenture", "better-auth", "go-ethereum", "unmaze", "bingo", "resumes"];
-    const CARD_ORDER = ["profile", "independent", "accenture", "better-auth", "heart", "go-ethereum", "unmaze", "bingo", "resumes"];
-    const LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-
-    const DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
-    const KEYS = {
-        ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right",
-        w: "up", s: "down", a: "left", d: "right", W: "up", S: "down", A: "left", D: "right"
-    };
-    const WHISPERS = [
-        "Rooms glow through the snow. Follow the amber.",
-        "The model solved this in about three seconds. Take your time.",
-        "Dead ends are where the good stuff is.",
-        "Press C. The card will walk you anywhere.",
-        "Something in the hedge is watching. It is probably fine."
-    ];
-
-    const $ = (id) => document.getElementById(id);
-    const els = {
-        stage: $("game-stage"), status: $("game-status"), whisper: $("game-whisper"), modelNote: $("model-note"),
-        intro: $("dlg-intro"), room: $("dlg-room"), card: $("dlg-card"),
-        roomBody: $("room-body"), roomKicker: $("room-kicker"), roomTitle: $("room-title"), roomFoot: $("room-foot"),
-        cardGrid: $("card-grid"), cardSummary: $("card-summary"), cardVerdict: $("card-verdict"), cardNote: $("card-tools-note"),
-        count: $("card-count"), btnModel: $("btn-model"), btnMode: $("btn-mode")
+    var HINTS = {
+        "egg-wilson": "a quiet corner east of the lighthouse",
+        "egg-chest": "the heart of the hedge maze",
+        "egg-button": "a red button inside the fence"
     };
 
-    const mq = (q) => (window.matchMedia ? window.matchMedia(q) : { matches: false });
-    const reducedQuery = mq("(prefers-reduced-motion: reduce)");
-    let reduced = reducedQuery.matches;
-    if (typeof reducedQuery.addEventListener === "function") {
-        reducedQuery.addEventListener("change", (e) => { reduced = e.matches; dirty = true; });
-    }
+    var $ = function (id) { return document.getElementById(id); };
+    var ctx = canvas.getContext("2d");
+    var el = {
+        stage: $("stage"), prompt: $("prompt"), bubble: $("bubble"), act: $("btn-act"),
+        chipPlaces: $("chip-places"), chipDetails: $("chip-details"), theme: $("btn-theme"),
+        intro: $("dlg-intro"), spot: $("dlg-spot"), detail: $("dlg-detail"), index: $("dlg-index")
+    };
 
-    /* ---------- persistence ---------- */
+    var mq = function (q) { return window.matchMedia ? window.matchMedia(q) : { matches: false }; };
+    var reducedQ = mq("(prefers-reduced-motion: reduce)");
+    var reduced = reducedQ.matches;
+    if (reducedQ.addEventListener) reducedQ.addEventListener("change", function (e) { reduced = e.matches; });
+    var coarse = mq("(pointer: coarse)").matches;
 
-    const opened = new Set(loadOpened());
+    var world = IW.build();
+    var art = A.create(world);
+    var TOTAL_DETAILS = L.DETAILS.length;
+    var TOTAL_PLACES = Object.keys(L.SPOTS).length;
 
-    function loadOpened() {
-        try {
-            const list = JSON.parse(localStorage.getItem(STORE_KEY));
-            return Array.isArray(list) ? list.filter((id) => CARD_ORDER.includes(id)) : [];
-        } catch {
-            return [];
+    /* ---------- progress ---------- */
+
+    var found = new Set(), places = new Set(), pressed = 0;
+    try {
+        var saved = JSON.parse(localStorage.getItem(STORE));
+        if (saved) {
+            (saved.found || []).forEach(function (id) { if (L.DETAILS.some(function (d) { return d.id === id; })) found.add(id); });
+            (saved.places || []).forEach(function (id) { if (L.SPOTS[id]) places.add(id); });
+            pressed = saved.pressed | 0;
         }
+    } catch (e) { /* private mode or bad data */ }
+
+    function save() {
+        try { localStorage.setItem(STORE, JSON.stringify({ found: Array.from(found), places: Array.from(places), pressed: pressed })); } catch (e) { /* ignore */ }
     }
 
-    function saveOpened() {
-        try { localStorage.setItem(STORE_KEY, JSON.stringify([...opened])); } catch { /* private mode */ }
+    function updateHud() {
+        el.chipPlaces.querySelector("b").textContent = places.size + "/" + TOTAL_PLACES;
+        el.chipDetails.querySelector("b").textContent = found.size + "/" + TOTAL_DETAILS;
+        el.chipPlaces.classList.toggle("is-done", places.size === TOTAL_PLACES);
+        el.chipDetails.classList.toggle("is-done", found.size === TOTAL_DETAILS);
     }
 
     /* ---------- state ---------- */
 
-    let seed, maze, size, mask, eps;
-    let roomAt = new Map();
-    let roomIdx = {};
-    let eyes = [];
-    let eyeSeen = new Set();
-    let visited = new Set();
-    let runRooms = new Set();
-    let gx = 0, gy = 0, rx = 0, ry = 0, facing = "right";
-    let moving = null;
-    let queue = [];
-    let held = null;
-    let pendingDir = null;
-    const keys = [];
-    const model = { state: "off", k: 0, last: 0 };
-    let particles = [];
-    let flakes = [];
-    let idleSince = 0;
-    let whisperAt = 0;
-    let whisperN = 0;
-    let dirty = true;
-    let running = false;
-    let tNow = 0;
+    var player = { x: (world.spawn.x + 0.5) * T, y: (world.spawn.y + 0.5) * T + 3, dir: "down", ft: 0, moving: false };
+    var cam = { x: 0, y: 0 };
+    var view = { w: 320, h: 180, scale: 3, dpr: 1, cssW: 0, cssH: 0 };
+    var dk = A.canvas(320, 180);
+    var keys = [];
+    var pad = {};
+    var path = null, dest = null, digging = null;
+    var near = null;
+    var particles = [];
+    var night = root.getAttribute("data-theme") === "dark" ? 1 : 0, nightTarget = night;
+    var pressAnim = 0, catLine = 0, owlLine = 0, bubbleTimer = 0;
+    var trail = new Set();
+    var running = false, last = 0;
 
-    let tile = 16, cssW = 0, dpr = 1;
-    let col = {};
-    const ctx = canvas.getContext("2d");
-    const mazeLayer = document.createElement("canvas");
-    const memLayer = document.createElement("canvas");
-    const fogLayer = document.createElement("canvas");
-    const modelLayer = document.createElement("canvas");
-    const mazeCtx = mazeLayer.getContext("2d");
-    const memCtx = memLayer.getContext("2d");
-    const fogCtx = fogLayer.getContext("2d");
-    const modelCtx = modelLayer.getContext("2d");
-    let frameBuf = null;
-
-    /* ---------- colors ---------- */
-
-    function hexToRgb(hex) {
-        let h = hex.replace("#", "").trim();
-        if (h.length === 3) h = h.split("").map((c) => c + c).join("");
-        const n = parseInt(h, 16);
-        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    var cat = { x: (world.plaza.tx + 3.5) * T, y: (world.plaza.ty + 3.8) * T, dir: "right", ft: 0, sit: true, timer: 2000, path: null };
+    var butterflies = [];
+    for (var b = 0; b < 7; b++) {
+        var fl = world.flowers[(b * 37) % world.flowers.length] || { tx: 20, ty: 20 };
+        butterflies.push({ x: (fl.tx + 0.5) * T, y: (fl.ty + 0.5) * T, a: b * 1.7, seed: b, home: [(fl.tx + 0.5) * T, (fl.ty + 0.5) * T] });
+    }
+    var fireflies = [];
+    for (var f = 0; f < 36; f++) {
+        var tr = world.decor.filter(function (d) { return d.kind === "tree"; });
+        var base = tr.length ? tr[(f * 7) % tr.length] : { tx: 20, ty: 20 };
+        fireflies.push({ x: (base.tx + 0.5) * T, y: base.ty * T, a: f * 2.3, r: 10 + (f % 5) * 4, home: [(base.tx + 0.5) * T, base.ty * T] });
     }
 
-    const rgba = (rgb, a) => `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${a})`;
+    function tileOf(x, y) { return [Math.floor(x / T), Math.floor((y - 1) / T)]; }
+    function dialogOpen() { return !!document.querySelector("dialog[open]"); }
+    function interactableById(id) { return world.interactables.find(function (i) { return i.id === id; }); }
+    var chestSpot = interactableById("egg-chest");
 
-    function readColors() {
-        const cs = getComputedStyle(root);
-        const g = (name) => cs.getPropertyValue(name).trim();
-        col = {
-            bg: g("--color-bg"), accent: g("--accent"), accentStrong: g("--accent-strong"), text: g("--color-text"),
-            hedge: g("--game-hedge"), hedgeHi: g("--game-hedge-hi"), hedgeLo: g("--game-hedge-lo"), snow: g("--game-snow"),
-            lantern: g("--game-lantern"), route: g("--game-route"), ghost: g("--game-ghost"), ghostInk: g("--game-ghost-ink"),
-            dark: root.getAttribute("data-theme") === "dark"
-        };
-        col.bgRGB = hexToRgb(col.bg);
-        col.routeRGB = hexToRgb(col.route);
-        col.lanternRGB = hexToRgb(col.lantern);
-        col.accentRGB = hexToRgb(col.accent);
+    /* ---------- drawing list ---------- */
+
+    var statics = [];
+    function put(g, spr, bx, by) { g.drawImage(spr.c, Math.round(bx - spr.ax), Math.round(by - spr.ay)); }
+
+    world.decor.forEach(function (d) {
+        var set = art.spr[d.kind];
+        var spr = set[d.variant % set.length];
+        var bx = d.kind === "fence" ? d.tx * T : (d.tx + 0.5) * T, by = (d.ty + 1) * T;
+        statics.push({ by: by, x0: bx - spr.ax, x1: bx - spr.ax + spr.c.width, y0: by - spr.ay, draw: function (g) { put(g, spr, bx, by); } });
+    });
+    world.buildings.forEach(function (b) {
+        var s = art.buildingSprites[b.id];
+        var x0 = b.x * T - s.ax, y0 = b.y * T - s.ay;
+        statics.push({ by: (b.y + b.h) * T, x0: x0, x1: x0 + s.c.width, y0: y0, draw: function (g, now) { g.drawImage(s.c, x0, y0); buildingFX(g, b, now); } });
+    });
+    world.interactables.forEach(function (i) {
+        var bx = (i.tx + 0.5) * T, by = (i.ty + 1) * T;
+        if (i.kind === "sign") statics.push({ by: by, x0: bx - 12, x1: bx + 12, y0: by - 28, draw: function (g) { put(g, art.spr.sign[i.signIndex], bx, by); } });
+        if (i.kind === "owl") statics.push({ by: by, x0: bx - 12, x1: bx + 12, y0: by - 32, draw: function (g, now) { put(g, art.spr.owl[Math.floor(now / 200) % 17 === 0 && !reduced ? 1 : 0], bx, by); } });
+        if (i.kind === "chest") statics.push({ by: by, x0: bx - 12, x1: bx + 12, y0: by - 20, draw: function (g) { put(g, art.spr.chest[found.has("egg-chest") ? 1 : 0], bx, by); } });
+        if (i.kind === "button") statics.push({ by: by, x0: bx - 12, x1: bx + 12, y0: by - 28, draw: function (g) { put(g, art.spr.pedestal[pressAnim > 0 ? 1 : 0], bx, by); } });
+    });
+    var dockX = world.dock.x, dockEnd = world.dock.endY;
+    statics.push({
+        by: dockEnd * T + 4, x0: dockX * T - 4, x1: (dockX + 5) * T, y0: (dockEnd - 3) * T,
+        draw: function (g, now) {
+            var bob = reduced ? 0 : Math.round(Math.sin(now / 600));
+            put(g, art.spr.boat[0], (dockX + 3.4) * T, (dockEnd - 1) * T + 6 + bob);
+            put(g, art.spr.bottle[0], (dockX + 1) * T, (dockEnd + 0.8) * T + bob);
+            if (places.has("dock")) star(g, (dockX + 1) * T, (dockEnd - 0.4) * T, now);
+        }
+    });
+    statics.sort(function (a, b) { return a.by - b.by; });
+
+    function star(g, x, y, now) {
+        var bob = reduced ? 0 : Math.round(Math.sin(now / 300));
+        x = Math.round(x); y = Math.round(y) + bob;
+        A.rect(g, x - 1, y - 3, 3, 7, A.C.ink); A.rect(g, x - 3, y - 1, 7, 3, A.C.ink);
+        A.rect(g, x, y - 2, 1, 5, A.C.gold); A.rect(g, x - 2, y, 5, 1, A.C.gold);
+        A.dot(g, x, y, "#fff");
     }
 
-    /* ---------- maze lifecycle ---------- */
-
-    function randomSeed() {
-        return 1 + Math.floor(Math.random() * 999999);
+    function buildingFX(g, b, now) {
+        var bx = b.x * T, by = b.y * T;
+        var t = reduced ? 0 : now;
+        if (places.has(b.id) && b.id !== "dock") star(g, bx + b.w * T / 2, by - (b.kind === "lighthouse" ? 26 : b.kind === "tower" ? 24 : 10), now);
+        if (b.kind === "workshop") {
+            for (var i = 0; i < 3; i++) {
+                var p = ((t / 1400) + i / 3) % 1;
+                A.disc(g, Math.round(bx + 56 + Math.sin(p * 6 + i) * 3), Math.round(by - 10 - p * 22), 1 + Math.round(p * 3), "rgba(240,240,250," + (0.85 * (1 - p)).toFixed(2) + ")");
+            }
+        } else if (b.kind === "post") {
+            for (var e = 0; e < 2; e++) {
+                var q = ((t / 2600) + e / 2) % 1;
+                var ex = Math.round(bx + 8 - q * 18), ey = Math.round(by + 26 - q * 26);
+                g.globalAlpha = 1 - q;
+                A.rect(g, ex, ey, 6, 4, "#ffffff"); A.rect(g, ex, ey, 6, 1, A.C.ink); A.rect(g, ex, ey + 3, 6, 1, A.C.ink);
+                A.dot(g, ex + 2, ey + 1, A.C.coral); A.dot(g, ex + 3, ey + 1, A.C.coral);
+                g.globalAlpha = 1;
+            }
+        } else if (b.kind === "ice") {
+            for (var m = 0; m < 3; m++) {
+                var r = ((t / 2200) + m / 3) % 1;
+                A.disc(g, Math.round(bx + 24 + Math.sin(r * 5 + m * 2) * 5), Math.round(by + b.h * T - 6 - r * 20), 2 + Math.round(r * 2), "rgba(220,245,255," + (0.7 * (1 - r)).toFixed(2) + ")");
+            }
+        } else if (b.kind === "lab") {
+            labScreen(g, bx + 37, by + 23, now);
+        } else if (b.kind === "cinema") {
+            var phase = reduced ? 0 : Math.floor(now / 240) % 2;
+            for (var k = 0; k < 12; k++) {
+                var col = (k + phase) % 2 ? "#ffffff" : A.C.coral;
+                A.rect(g, bx + 8 + k * 5, by + 24, 2, 2, col);
+                A.rect(g, bx + 8 + k * 5, by + 39, 2, 2, (k + phase + 1) % 2 ? "#ffffff" : A.C.coral);
+            }
+        } else if (b.kind === "school") {
+            for (var c = 0; c < 8; c++) {
+                var wave = reduced ? 0 : Math.round(Math.sin(now / 220 + c * 0.7));
+                A.rect(g, bx + 63 + c, by - 10 + wave, 1, 5, c % 3 === 0 ? A.C.blueDark : A.C.blue);
+            }
+        } else if (b.kind === "tower") {
+            if (reduced || Math.floor(now / 700) % 2 === 0) A.rect(g, bx + 25, by - 17, 4, 3, "#ff9aa4");
+        } else if (b.kind === "lighthouse") {
+            if (!reduced && Math.floor(now / 180) % 6 === 0) { A.rect(g, bx + 20, by - 6, 2, 2, "#ffffff"); }
+        }
     }
 
-    function seedFromUrl() {
-        const n = parseInt(new URLSearchParams(location.search).get("maze"), 10);
-        return Number.isFinite(n) && n > 0 && n < 2147483647 ? n : null;
-    }
-
-    function writeUrl() {
-        try {
-            const params = new URLSearchParams(location.search);
-            params.delete("plain");
-            params.set("maze", String(seed));
-            history.replaceState(null, "", `${location.pathname}?${params}`);
-        } catch { /* file:// and sandboxes */ }
-    }
-
-    function startMaze(nextSeed) {
-        seed = nextSeed;
-        maze = M.generate(seed, N);
-        size = maze.size;
-        const placed = M.placeRooms(maze, ROOM_IDS, seed);
-        roomAt = new Map(placed.map((r) => [r.idx, r.id]));
-        roomIdx = {};
-        placed.forEach((r) => { roomIdx[r.id] = r.idx; });
-        eyes = M.placeEyes(maze, 5, seed);
-        eyeSeen = new Set();
-        mask = M.pathMask(maze, GRAIN);
-        eps = M.gaussianField(mask.length, seed ^ 0x9e3779b9);
-        frameBuf = new Float32Array(mask.length);
-        modelLayer.width = modelLayer.height = size * GRAIN;
-
-        gx = maze.entrance % size;
-        gy = (maze.entrance / size) | 0;
-        rx = gx;
-        ry = gy;
-        facing = "right";
-        moving = null;
-        queue = [];
-        held = pendingDir = null;
-        keys.length = 0;
-        visited = new Set([maze.entrance]);
-        runRooms = new Set();
-        particles = [];
-        setModel(false);
-        writeUrl();
-        updateCount();
-        setStatus("You are at the entrance. The heart is in the middle.");
-        els.whisper.textContent = "";
-        idleSince = performance.now();
-        if (layout()) dirty = true;
-    }
-
-    function curIdx() {
-        return moving ? moving.toIdx : gy * size + gx;
-    }
-
-    /* ---------- layout & layers ---------- */
-
-    function layout() {
-        // The board, status line and d-pad are one cluster; the board gets what the others leave.
-        const game = els.stage.parentElement, cs = getComputedStyle(game);
-        const hud = game.querySelector(".game-hud"), pad = game.querySelector(".dpad");
-        const padH = getComputedStyle(pad).display === "none" ? 0 : pad.offsetHeight;
-        const w = els.stage.clientWidth;
-        const h = game.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - hud.offsetHeight - padH;
-        if (w < 60 || h < 60 || !maze) return false;
-        tile = Math.max(8, Math.floor(Math.min(w, h) / size));
-        cssW = tile * size;
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const px = Math.round(cssW * dpr);
-        canvas.style.width = canvas.style.height = `${cssW}px`;
-        [canvas, mazeLayer, memLayer, fogLayer].forEach((c) => { c.width = c.height = px; });
-        readColors();
-        buildStatic();
-        rebuildMemory();
-        flakes = Array.from({ length: Math.round(cssW / 9) }, () => newFlake(true));
-        dirty = true;
-        return true;
-    }
-
-    function buildStatic() {
-        const c = mazeCtx;
-        c.setTransform(dpr, 0, 0, dpr, 0, 0);
-        c.fillStyle = col.bg;
-        c.fillRect(0, 0, cssW, cssW);
-        const rng = M.mulberry32(seed * 7 + 13);
-        for (let y = 0; y < size; y++) {
-            for (let x = 0; x < size; x++) {
-                const wall = maze.walls[y * size + x];
-                if (wall) drawHedge(c, x, y, rng);
-                else if (rng() < 0.35) {
-                    c.fillStyle = rgba(hexToRgb(col.snow), col.dark ? 0.1 : 0.9);
-                    c.beginPath();
-                    c.arc((x + rng()) * tile, (y + rng()) * tile, tile * 0.05, 0, Math.PI * 2);
-                    c.fill();
-                }
+    // a tiny monitor in the lab's window: noise resolving into a path, over and over
+    var labMask = new Float32Array(35).fill(-1);
+    [0, 1, 2, 9, 16, 17, 18, 25, 26, 27, 34].forEach(function (i) { labMask[i] = 1; });
+    var labEps = M.gaussianField(35, 11), labBuf = new Float32Array(35);
+    function labScreen(g, x, y, now) {
+        var cycle = reduced ? 1 : (now / 4200) % 1;
+        var k = Math.min(30, Math.floor(cycle * 40));
+        M.denoiseFrame(labMask, labEps, k, 30, labBuf);
+        var ab = M.alphaBar(k, 30);
+        for (var cy = 0; cy < 5; cy++) {
+            for (var cx = 0; cx < 7; cx++) {
+                var v = labBuf[cy * 7 + cx];
+                var red = Math.max(0, Math.min(1, v)) * ab;
+                var gray = Math.round(70 + Math.max(0, Math.min(1, 0.5 + 0.5 * v)) * 150);
+                A.rect(g, x + 3 + cx * 2, y + 2 + cy * 2, 2, 2, red > 0.55 ? A.C.coral : "rgb(" + gray + "," + gray + "," + Math.min(255, gray + 30) + ")");
             }
         }
     }
 
-    function drawHedge(c, x, y, rng) {
-        const px = x * tile, py = y * tile;
-        c.save();
-        c.beginPath();
-        c.rect(px, py, tile, tile);
-        c.clip();
-        c.fillStyle = col.hedge;
-        c.fillRect(px, py, tile, tile);
-        for (let k = 0; k < 4; k++) {
-            c.fillStyle = rng() < 0.5 ? col.hedgeHi : col.hedgeLo;
-            c.beginPath();
-            c.arc(px + rng() * tile, py + rng() * tile, tile * (0.14 + rng() * 0.16), 0, Math.PI * 2);
-            c.fill();
-        }
-        const open = (xx, yy) => xx >= 0 && yy >= 0 && xx < size && yy < size && !maze.walls[yy * size + xx];
-        if (y === 0 || open(x, y - 1)) {
-            c.fillStyle = col.snow;
-            c.beginPath();
-            c.ellipse(px + tile / 2, py + tile * 0.1, tile * 0.58, tile * 0.2, 0, 0, Math.PI * 2);
-            c.fill();
-        }
-        c.restore();
+    /* ---------- layout ---------- */
+
+    function resize() {
+        var w = el.stage.clientWidth, h = el.stage.clientHeight;
+        if (w < 50 || h < 50) return;
+        var scale = Math.max(2, Math.min(5, Math.round(Math.min(w / 420, h / 250))));
+        var dprI = Math.max(1, Math.round(window.devicePixelRatio || 1));
+        view.cssW = w; view.cssH = h; view.scale = scale; view.dpr = dprI;
+        view.w = Math.ceil(w / scale); view.h = Math.ceil(h / scale);
+        canvas.width = w * dprI;
+        canvas.height = h * dprI;
+        dk = A.canvas(view.w, view.h);
+        cam.x = clampCam(player.x - view.w / 2, world.W * T, view.w);
+        cam.y = clampCam(player.y - view.h / 2, world.H * T, view.h);
     }
 
-    function rebuildMemory() {
-        const m = memCtx;
-        m.setTransform(1, 0, 0, 1, 0, 0);
-        m.globalCompositeOperation = "source-over";
-        m.clearRect(0, 0, memLayer.width, memLayer.height);
-        m.fillStyle = rgba(col.bgRGB, FOG_ALPHA);
-        m.fillRect(0, 0, memLayer.width, memLayer.height);
-        visited.forEach((i) => punch(i % size, (i / size) | 0));
-    }
-
-    function punch(x, y) {
-        const s = tile * dpr, cx = (x + 0.5) * s, cy = (y + 0.5) * s, r = s * 2;
-        const g = memCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0, "rgba(0,0,0,0.85)");
-        g.addColorStop(1, "rgba(0,0,0,0)");
-        memCtx.globalCompositeOperation = "destination-out";
-        memCtx.fillStyle = g;
-        memCtx.fillRect(cx - r, cy - r, r * 2, r * 2);
-        memCtx.globalCompositeOperation = "source-over";
-    }
-
-    /* ---------- drawing ---------- */
-
-    function newFlake(anywhere) {
-        return {
-            x: Math.random() * cssW, y: anywhere ? Math.random() * cssW : -4,
-            r: 0.6 + Math.random() * 1.4, vy: 10 + Math.random() * 18, ph: Math.random() * 6.28
-        };
-    }
-
-    function draw(now, dt) {
-        if (!cssW) return;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.globalAlpha = 1;
-        ctx.drawImage(mazeLayer, 0, 0, cssW, cssW);
-        drawFootprints();
-        drawEyes(now);
-        drawDoors(now);
-        drawFog(now);
-        drawBeacons(now);
-        drawPlayer(now);
-        drawParticles(dt);
-        if (model.state !== "off") {
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(modelLayer, 0, 0, cssW, cssW);
-            ctx.imageSmoothingEnabled = true;
-        }
-        if (!reduced) drawSnow(dt);
-    }
-
-    function drawFootprints() {
-        ctx.fillStyle = rgba(col.accentRGB, 0.5);
-        visited.forEach((i) => {
-            ctx.beginPath();
-            ctx.arc(((i % size) + 0.5) * tile, (((i / size) | 0) + 0.5) * tile, tile * 0.11, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-
-    function drawEyes(now) {
-        const pcx = rx + 0.5, pcy = ry + 0.5;
-        eyes.forEach((idx, n) => {
-            const x = (idx % size) + 0.5, y = ((idx / size) | 0) + 0.5;
-            const blink = !reduced && ((now / 1000 + n * 1.7) % 5) < 0.14;
-            const ang = Math.atan2(pcy - y, pcx - x);
-            [-0.2, 0.2].forEach((dx) => {
-                const ex = (x + dx) * tile, ey = y * tile;
-                ctx.fillStyle = col.lantern;
-                ctx.beginPath();
-                ctx.ellipse(ex, ey, tile * 0.11, blink ? tile * 0.015 : tile * 0.11, 0, 0, Math.PI * 2);
-                ctx.fill();
-                if (!blink) {
-                    ctx.fillStyle = "#1a1612";
-                    ctx.beginPath();
-                    ctx.arc(ex + Math.cos(ang) * tile * 0.04, ey + Math.sin(ang) * tile * 0.04, tile * 0.05, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            });
-        });
-    }
-
-    function drawDoors(now) {
-        // entrance chevron
-        const ex = maze.entrance % size, ey = (maze.entrance / size) | 0;
-        const ix = (maze.entranceCell % size) - ex, iy = ((maze.entranceCell / size) | 0) - ey;
-        ctx.save();
-        ctx.translate((ex + 0.5) * tile, (ey + 0.5) * tile);
-        ctx.rotate(Math.atan2(iy, ix));
-        ctx.fillStyle = col.lantern;
-        ctx.beginPath();
-        ctx.moveTo(tile * 0.28, 0);
-        ctx.lineTo(-tile * 0.18, -tile * 0.26);
-        ctx.lineTo(-tile * 0.18, tile * 0.26);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-
-        // heart
-        const hx = ((maze.heart % size) + 0.5) * tile, hy = (((maze.heart / size) | 0) + 0.5) * tile;
-        ctx.strokeStyle = col.route;
-        ctx.lineWidth = Math.max(1.5, tile * 0.1);
-        ctx.beginPath();
-        ctx.arc(hx, hy, tile * 0.33, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.lineWidth = Math.max(1, tile * 0.07);
-        [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(([sx, sy]) => {
-            const cx = hx + sx * tile * 0.44, cy = hy + sy * tile * 0.44;
-            ctx.beginPath();
-            ctx.moveTo(cx - sx * tile * 0.18, cy);
-            ctx.lineTo(cx, cy);
-            ctx.lineTo(cx, cy - sy * tile * 0.18);
-            ctx.stroke();
-        });
-        ctx.fillStyle = opened.has("heart") ? col.accent : col.lantern;
-        ctx.beginPath();
-        ctx.arc(hx, hy, tile * 0.15, 0, Math.PI * 2);
-        ctx.fill();
-
-        // rooms: little arched doors, stamped blue once read
-        roomAt.forEach((id, idx) => {
-            const x = idx % size, y = (idx / size) | 0;
-            const px = x * tile, py = y * tile, w = tile * 0.62, x0 = px + (tile - w) / 2;
-            const done = opened.has(id);
-            ctx.fillStyle = done ? col.accent : col.lantern;
-            ctx.beginPath();
-            ctx.moveTo(x0, py + tile * 0.9);
-            ctx.lineTo(x0, py + tile * 0.48);
-            ctx.arc(px + tile / 2, py + tile * 0.48, w / 2, Math.PI, 0);
-            ctx.lineTo(x0 + w, py + tile * 0.9);
-            ctx.closePath();
-            ctx.fill();
-            ctx.strokeStyle = done ? col.bg : "#1a1612";
-            ctx.lineWidth = Math.max(1, tile * 0.07);
-            ctx.beginPath();
-            if (done) {
-                ctx.moveTo(px + tile * 0.36, py + tile * 0.6);
-                ctx.lineTo(px + tile * 0.47, py + tile * 0.72);
-                ctx.lineTo(px + tile * 0.66, py + tile * 0.45);
-            } else {
-                ctx.arc(px + tile * 0.6, py + tile * 0.68, tile * 0.035, 0, Math.PI * 2);
-            }
-            ctx.stroke();
-        });
-    }
-
-    function drawFog(now) {
-        const f = fogCtx;
-        f.setTransform(1, 0, 0, 1, 0, 0);
-        f.globalCompositeOperation = "copy";
-        f.drawImage(memLayer, 0, 0);
-        f.globalCompositeOperation = "destination-out";
-        const s = tile * dpr;
-        const flicker = reduced ? 1 : 1 + 0.03 * Math.sin(now / 130) + 0.02 * Math.sin(now / 47);
-        const cx = (rx + 0.5) * s, cy = (ry + 0.5) * s, r = s * LIGHT_TILES * flicker;
-        const g = f.createRadialGradient(cx, cy, r * 0.1, cx, cy, r);
-        g.addColorStop(0, "rgba(0,0,0,1)");
-        g.addColorStop(0.55, "rgba(0,0,0,0.9)");
-        g.addColorStop(1, "rgba(0,0,0,0)");
-        f.fillStyle = g;
-        f.fillRect(cx - r, cy - r, r * 2, r * 2);
-        f.globalCompositeOperation = "source-over";
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.drawImage(fogLayer, 0, 0);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        const lx = (rx + 0.5) * tile, ly = (ry + 0.5) * tile, lr = tile * LIGHT_TILES * flicker;
-        const warm = ctx.createRadialGradient(lx, ly, 0, lx, ly, lr);
-        warm.addColorStop(0, rgba(col.lanternRGB, col.dark ? 0.22 : 0.16));
-        warm.addColorStop(1, rgba(col.lanternRGB, 0));
-        ctx.fillStyle = warm;
-        ctx.fillRect(lx - lr, ly - lr, lr * 2, lr * 2);
-    }
-
-    function drawBeacons(now) {
-        const glow = (idx, rgb, a, n) => {
-            const x = ((idx % size) + 0.5) * tile, y = (((idx / size) | 0) + 0.5) * tile;
-            const pulse = reduced ? 1 : 1 + 0.18 * Math.sin(now / 520 + n);
-            const r = tile * 1.25 * pulse;
-            const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-            g.addColorStop(0, rgba(rgb, a));
-            g.addColorStop(1, rgba(rgb, 0));
-            ctx.fillStyle = g;
-            ctx.fillRect(x - r, y - r, r * 2, r * 2);
-        };
-        let n = 0;
-        roomAt.forEach((id, idx) => {
-            glow(idx, opened.has(id) ? col.accentRGB : col.lanternRGB, opened.has(id) ? 0.3 : 0.55, n++);
-        });
-        glow(maze.heart, col.routeRGB, 0.4, n);
-    }
-
-    function drawPlayer(now) {
-        const bob = reduced ? 0 : Math.sin(now / 220) * tile * 0.04;
-        const cx = (rx + 0.5) * tile, cy = (ry + 0.5) * tile + bob;
-        const r = tile * 0.4;
-        const side = facing === "left" ? -1 : 1;
-        // lantern
-        const lx = cx + side * r * 1.05, ly = cy + r * 0.35;
-        const halo = ctx.createRadialGradient(lx, ly, 0, lx, ly, r * 1.4);
-        halo.addColorStop(0, rgba(col.lanternRGB, 0.65));
-        halo.addColorStop(1, rgba(col.lanternRGB, 0));
-        ctx.fillStyle = halo;
-        ctx.fillRect(lx - r * 1.4, ly - r * 1.4, r * 2.8, r * 2.8);
-        ctx.fillStyle = col.lantern;
-        ctx.beginPath();
-        ctx.arc(lx, ly, r * 0.3, 0, Math.PI * 2);
-        ctx.fill();
-        // ghost
-        const hem = cy + r * 0.95;
-        ctx.beginPath();
-        ctx.moveTo(cx - r, hem);
-        ctx.lineTo(cx - r, cy - r * 0.1);
-        ctx.arc(cx, cy - r * 0.1, r, Math.PI, 0);
-        ctx.lineTo(cx + r, hem);
-        const sc = (r * 2) / 3;
-        for (let k = 0; k < 3; k++) {
-            const x1 = cx + r - sc * k, x2 = x1 - sc;
-            ctx.quadraticCurveTo((x1 + x2) / 2, hem + (k % 2 ? -1 : 1) * r * 0.3, x2, hem);
-        }
-        ctx.closePath();
-        ctx.fillStyle = col.ghost;
-        ctx.fill();
-        ctx.strokeStyle = col.ghostInk;
-        ctx.lineWidth = Math.max(1, tile * 0.06);
-        ctx.stroke();
-        // eyes follow the way you are heading
-        const d = DIRS[facing];
-        ctx.fillStyle = "#1a1612";
-        [-0.36, 0.36].forEach((dx) => {
-            ctx.beginPath();
-            ctx.arc(cx + dx * r + d[0] * r * 0.16, cy - r * 0.22 + d[1] * r * 0.12, r * 0.13, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-
-    function drawParticles(dt) {
-        if (!particles.length) return;
-        particles = particles.filter((p) => (p.life -= dt) > 0);
-        particles.forEach((p) => {
-            p.x += p.vx * dt / 1000;
-            p.y += p.vy * dt / 1000;
-            p.vy += 60 * dt / 1000;
-            ctx.fillStyle = rgba(col.lanternRGB, Math.max(0, p.life / 900));
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, tile * 0.07, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-
-    function burst() {
-        if (reduced) return;
-        const x = (rx + 0.5) * tile, y = (ry + 0.5) * tile;
-        for (let i = 0; i < 48; i++) {
-            const a = Math.random() * Math.PI * 2, v = 30 + Math.random() * 110;
-            particles.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 40, life: 500 + Math.random() * 500 });
-        }
-    }
-
-    function drawSnow(dt) {
-        ctx.fillStyle = col.dark ? "rgba(237, 232, 220, 0.5)" : "rgba(46, 101, 132, 0.28)";
-        flakes.forEach((f, n) => {
-            f.y += f.vy * dt / 1000;
-            f.ph += dt / 900;
-            f.x += Math.sin(f.ph) * 8 * dt / 1000;
-            if (f.y > cssW + 4) flakes[n] = newFlake(false);
-            ctx.beginPath();
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-
-    /* ---------- the stand-in model ---------- */
-
-    function renderModelFrame() {
-        const side = size * GRAIN;
-        M.denoiseFrame(mask, eps, model.k, STEPS, frameBuf);
-        const ab = M.alphaBar(model.k, STEPS);
-        const staticA = Math.min(0.95, 1.6 * (1 - ab));
-        const img = modelCtx.createImageData(side, side);
-        const d = img.data, red = col.routeRGB;
-        for (let i = 0, o = 0; i < frameBuf.length; i++, o += 4) {
-            const v = frameBuf[i];
-            const level = Math.max(0, Math.min(1, 0.5 + 0.5 * v));
-            const gray = 60 + level * 185;
-            const redA = Math.max(0, Math.min(1, v)) * ab * 0.95;
-            const sA = staticA * (1 - redA);
-            const A = redA + sA;
-            if (A < 0.002) continue;
-            d[o] = (red[0] * redA + gray * sA) / A;
-            d[o + 1] = (red[1] * redA + gray * sA) / A;
-            d[o + 2] = (red[2] * redA + gray * sA) / A;
-            d[o + 3] = A * 255;
-        }
-        modelCtx.putImageData(img, 0, 0);
-    }
-
-    function setModel(on) {
-        if (on) {
-            model.state = reduced ? "shown" : "running";
-            model.k = reduced ? STEPS : 0;
-            model.last = performance.now();
-            if (col.routeRGB) renderModelFrame();
-            setStatus(reduced ? "The model's answer is the red thread." : "The model is denoising…");
-        } else {
-            model.state = "off";
-        }
-        els.btnModel.setAttribute("aria-pressed", on ? "true" : "false");
-        els.modelNote.hidden = !on;
-        dirty = true;
+    function clampCam(v, total, vw) {
+        if (vw >= total) return (total - vw) / 2;
+        return Math.max(0, Math.min(total - vw, v));
     }
 
     /* ---------- movement ---------- */
 
-    const isOpen = (x, y) => x >= 0 && y >= 0 && x < size && y < size && !maze.walls[y * size + x];
-    const dialogOpen = () => !!document.querySelector("dialog[open]");
-    const inGame = () => root.getAttribute("data-mode") === "game";
-    const playing = () => inGame() && !dialogOpen();
-
-    function startMove(toIdx) {
-        const tx = toIdx % size, ty = (toIdx / size) | 0;
-        const dx = tx - gx, dy = ty - gy;
-        if (Math.abs(dx) + Math.abs(dy) !== 1) { queue = []; return; }
-        facing = dx > 0 ? "right" : dx < 0 ? "left" : dy > 0 ? "down" : "up";
-        moving = { fx: gx, fy: gy, tx, ty, toIdx, t0: tNow };
+    function tryMove(dx, dy) {
+        var nx = player.x + dx;
+        if (!IW.collides(world, nx, player.y)) player.x = nx;
+        else if (dx) assist(dx, 0);
+        var ny = player.y + dy;
+        if (!IW.collides(world, player.x, ny)) player.y = ny;
+        else if (dy) assist(0, dy);
     }
 
-    function tryDir(dir) {
-        const d = DIRS[dir];
-        facing = dir;
-        dirty = true;
-        if (isOpen(gx + d[0], gy + d[1])) startMove((gy + d[1]) * size + gx + d[0]);
-    }
-
-    function finishStep() {
-        gx = moving.tx;
-        gy = moving.ty;
-        rx = gx;
-        ry = gy;
-        const idx = moving.toIdx;
-        moving = null;
-        if (!visited.has(idx)) {
-            visited.add(idx);
-            punch(gx, gy);
-        }
-        onArrive(idx);
-    }
-
-    function onArrive(idx) {
-        if (queue.length || dialogOpen()) return;
-        if (roomAt.has(idx)) { openRoom(roomAt.get(idx)); return; }
-        if (idx === maze.heart) { openRoom("heart"); return; }
-        eyes.forEach((e) => {
-            const ex = e % size, ey = (e / size) | 0;
-            if (!eyeSeen.has(e) && Math.abs(ex - gx) + Math.abs(ey - gy) <= 1) {
-                eyeSeen.add(e);
-                setStatus("The hedge blinked.");
+    // slide round corners: when blocked, try a nudge sideways of up to 4px
+    function assist(dx, dy) {
+        for (var s = 1; s <= 4; s++) {
+            for (var sign = -1; sign <= 1; sign += 2) {
+                var nx = player.x + (dy ? sign * s : 0), ny = player.y + (dx ? sign * s : 0);
+                if (!IW.collides(world, nx + Math.sign(dx) * 0.5, ny + Math.sign(dy) * 0.5)) {
+                    if (dy) player.x += sign * 0.6; else player.y += sign * 0.6;
+                    return;
+                }
             }
+        }
+    }
+
+    function inputVec() {
+        var x = 0, y = 0;
+        if (keys.indexOf("left") !== -1 || pad.left) x -= 1;
+        if (keys.indexOf("right") !== -1 || pad.right) x += 1;
+        if (keys.indexOf("up") !== -1 || pad.up) y -= 1;
+        if (keys.indexOf("down") !== -1 || pad.down) y += 1;
+        return [x, y];
+    }
+
+    function updatePlayer(dt) {
+        var v = inputVec();
+        player.moving = false;
+        if (digging) return;
+        if (v[0] || v[1]) {
+            path = null; dest = null;
+            var len = Math.hypot(v[0], v[1]);
+            var sp = SPEED * dt / 1000;
+            tryMove(v[0] / len * sp, v[1] / len * sp);
+            var last = keys[keys.length - 1];
+            if (last && !pad.up && !pad.down && !pad.left && !pad.right) player.dir = last;
+            else player.dir = Math.abs(v[0]) >= Math.abs(v[1]) ? (v[0] < 0 ? "left" : "right") : (v[1] < 0 ? "up" : "down");
+            if (v[0] && v[1]) player.dir = Math.abs(v[0]) >= Math.abs(v[1]) ? (v[0] < 0 ? "left" : "right") : (v[1] < 0 ? "up" : "down");
+            player.moving = true;
+        } else if (path) {
+            var step = path.steps[path.i];
+            var tx = (step[0] + 0.5) * T, ty = (step[1] + 0.5) * T + 3;
+            var dx = tx - player.x, dy = ty - player.y, dist = Math.hypot(dx, dy), sp2 = SPEED * 1.15 * dt / 1000;
+            if (dist <= sp2) { player.x = tx; player.y = ty; path.i++; }
+            else { player.x += dx / dist * sp2; player.y += dy / dist * sp2; }
+            player.dir = Math.abs(dx) >= Math.abs(dy) ? (dx < 0 ? "left" : "right") : (dy < 0 ? "up" : "down");
+            player.moving = dist > 0.01;
+            if (path.i >= path.steps.length) {
+                var then = path.then;
+                path = null; dest = null;
+                if (then) activate(then);
+            }
+        }
+        if (player.moving) player.ft += dt; else player.ft = 0;
+    }
+
+    function goTo(tx, ty, then) {
+        var from = tileOf(player.x, player.y);
+        var steps = IW.findPath(world, from[0], from[1], tx, ty);
+        if (!steps) return false;
+        if (!steps.length) { path = null; if (then) activate(then); return true; }
+        path = { steps: steps, i: 0, then: then || null };
+        dest = { x: (tx + 0.5) * T, y: (ty + 0.5) * T + 3, t: 0 };
+        return true;
+    }
+
+    function goToTarget(t) {
+        var cands = t.kind === "spot" || t.kind === "dig" ? [[t.tx, t.ty]] : [[t.tx, t.ty + 1], [t.tx - 1, t.ty], [t.tx + 1, t.ty], [t.tx, t.ty - 1]];
+        if (t.kind === "cat") { var ct = tileOf(cat.x, cat.y); cands = [[ct[0], ct[1] + 1], [ct[0] + 1, ct[1]], [ct[0] - 1, ct[1]], [ct[0], ct[1] - 1]]; }
+        for (var i = 0; i < cands.length; i++) {
+            if (IW.walkable(world, cands[i][0], cands[i][1]) && goTo(cands[i][0], cands[i][1], t)) return true;
+        }
+        return false;
+    }
+
+    /* ---------- the cat ---------- */
+
+    function updateCat(dt) {
+        if (reduced) return;
+        cat.timer -= dt;
+        if (cat.sit) {
+            if (cat.timer <= 0) {
+                var home = world.plaza, tries = 0, steps = null;
+                var from = tileOf(cat.x, cat.y);
+                while (!steps && tries++ < 12) {
+                    var tx = home.tx + Math.round((Math.random() - 0.5) * 12), ty = home.ty + Math.round((Math.random() - 0.5) * 10);
+                    if (IW.walkable(world, tx, ty)) steps = IW.findPath(world, from[0], from[1], tx, ty);
+                    if (steps && steps.length > 14) steps = null;
+                }
+                if (steps && steps.length) { cat.path = { steps: steps, i: 0 }; cat.sit = false; }
+                else cat.timer = 1500;
+            }
+        } else if (cat.path) {
+            var st = cat.path.steps[cat.path.i];
+            var tx2 = (st[0] + 0.5) * T, ty2 = (st[1] + 0.9) * T;
+            var dx = tx2 - cat.x, dy = ty2 - cat.y, dist = Math.hypot(dx, dy), sp = 20 * dt / 1000;
+            if (dist <= sp) { cat.x = tx2; cat.y = ty2; cat.path.i++; } else { cat.x += dx / dist * sp; cat.y += dy / dist * sp; }
+            if (Math.abs(dx) > 0.5) cat.dir = dx < 0 ? "left" : "right";
+            cat.ft += dt;
+            if (cat.path.i >= cat.path.steps.length) { cat.path = null; cat.sit = true; cat.timer = 2500 + Math.random() * 4500; }
+        }
+    }
+
+    /* ---------- interaction ---------- */
+
+    function labelOf(t) {
+        switch (t.kind) {
+            case "spot": return t.id === "dock" ? "Open the bottle" : "Enter the " + L.SPOTS[t.id].building;
+            case "dig": return "Dig here";
+            case "sign": return "Read the sign";
+            case "cat": return "Pet the cat";
+            case "owl": return "Talk to the owl";
+            case "button": return "Press the button";
+            case "chest": return "Open the chest";
+        }
+        return "Look";
+    }
+
+    function findNear() {
+        var best = null, bestD = Infinity;
+        var consider = function (t) {
+            var d = Math.hypot(player.x - t.x, player.y - t.y);
+            if (d <= t.reach && d < bestD) { best = t; bestD = d; }
+        };
+        world.interactables.forEach(function (t) {
+            if (t.kind === "dig" && found.has(t.detail)) return;
+            consider(t);
+        });
+        consider({ kind: "cat", id: "cat", x: cat.x, y: cat.y, reach: 22 });
+        return best;
+    }
+
+    function updatePrompt() {
+        if (dialogOpen() || digging) { el.prompt.hidden = true; el.act.disabled = true; return; }
+        if (!near) { el.prompt.hidden = true; el.act.disabled = true; return; }
+        var label = labelOf(near);
+        if (el.prompt.dataset.label !== label) {
+            el.prompt.dataset.label = label;
+            el.prompt.innerHTML = "";
+            var k = document.createElement("kbd");
+            k.textContent = coarse ? "A" : "E";
+            el.prompt.append(k, document.createTextNode(label));
+            el.act.setAttribute("aria-label", label);
+        }
+        el.prompt.hidden = false;
+        el.act.disabled = false;
+    }
+
+    function say(speaker, text) {
+        el.bubble.innerHTML = "";
+        var b = document.createElement("b");
+        b.textContent = speaker;
+        el.bubble.append(b, document.createTextNode(text));
+        el.bubble.hidden = false;
+        clearTimeout(bubbleTimer);
+        bubbleTimer = setTimeout(function () { el.bubble.hidden = true; }, 5200);
+    }
+
+    function activate(t) {
+        if (!t || dialogOpen()) return;
+        var face = function () {
+            var dx = t.x - player.x, dy = t.y - player.y;
+            player.dir = Math.abs(dx) > Math.abs(dy) + 2 ? (dx < 0 ? "left" : "right") : (dy < 0 ? "up" : "down");
+        };
+        switch (t.kind) {
+            case "spot": player.dir = "up"; openSpot(t.id); break;
+            case "dig": startDig(t); break;
+            case "sign": face(); say(L.SIGNS[t.signIndex].speaker, L.SIGNS[t.signIndex].text); break;
+            case "cat": face(); say("Cat", L.CAT_LINES[catLine++ % L.CAT_LINES.length]); burst(cat.x, cat.y - 10, ["#ff7ac8"], 4); break;
+            case "owl": face(); say("Owl, the judge", L.OWL_LINES[owlLine++ % L.OWL_LINES.length]); break;
+            case "button": face(); pressButton(); break;
+            case "chest": face(); openChest(); break;
+        }
+    }
+
+    function interactNow() { if (near) activate(near); }
+
+    /* ---------- digging ---------- */
+
+    function startDig(t) {
+        if (found.has(t.detail)) return;
+        digging = { t: 0, target: t };
+        player.dir = "down";
+        player.x = t.x; player.y = Math.max(player.y, t.y - 4);
+        if (IW.collides(world, player.x, player.y)) { player.x = (t.tx + 0.5) * T; player.y = (t.ty + 1) * T - 3; }
+    }
+
+    function updateDig(dt) {
+        if (!digging) return;
+        var prev = digging.t;
+        digging.t += dt;
+        var cross = function (ms) { return prev < ms && digging.t >= ms; };
+        var t = digging.target;
+        if (cross(180) || cross(380)) burst(t.x, t.y - 4, ["#c68f52", "#dba869", "#8c5b34"], 8);
+        if (digging.t >= 620) {
+            digging = null;
+            burst(t.x, t.y - 6, ["#ffd23f", "#ffffff", "#ff4d8d", "#27d3cc"], 18);
+            reveal(t.detail);
+        }
+    }
+
+    function burst(x, y, colors, n) {
+        if (reduced) return;
+        for (var i = 0; i < n; i++) {
+            var a = Math.random() * Math.PI * 2, v = 20 + Math.random() * 50;
+            particles.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 35, life: 450 + Math.random() * 400, max: 850, color: colors[i % colors.length], size: Math.random() < 0.3 ? 2 : 1 });
+        }
+    }
+
+    function confetti() {
+        if (reduced) return;
+        var colors = ["#ffd23f", "#ff4d8d", "#27d3cc", "#8e63ff", "#5ec24c", "#ff5d6c"];
+        for (var i = 0; i < 120; i++) {
+            particles.push({ x: cam.x + Math.random() * view.w, y: cam.y - 6 - Math.random() * 40, vx: (Math.random() - 0.5) * 30, vy: 30 + Math.random() * 50, life: 2200 + Math.random() * 1500, max: 3700, color: colors[i % colors.length], size: 2, grav: 0 });
+        }
+    }
+
+    function updateParticles(dt) {
+        particles = particles.filter(function (p) { return (p.life -= dt) > 0; });
+        particles.forEach(function (p) {
+            p.x += p.vx * dt / 1000;
+            p.y += p.vy * dt / 1000;
+            p.vy += (p.grav === undefined ? 90 : p.grav) * dt / 1000;
         });
     }
 
-    function update(now, dt) {
-        tNow = now;
-        if (moving) {
-            const t = reduced ? 1 : Math.min(1, (now - moving.t0) / STEP_MS);
-            rx = moving.fx + (moving.tx - moving.fx) * t;
-            ry = moving.fy + (moving.ty - moving.fy) * t;
-            dirty = true;
-            if (t >= 1) finishStep();
-        }
-        if (!moving && !dialogOpen()) {
-            if (queue.length) startMove(queue.shift());
-            else if (held || pendingDir) {
-                const dir = held || pendingDir;
-                pendingDir = null;
-                tryDir(dir);
-            }
-        }
-        if (model.state === "running" && now - model.last >= 70) {
-            model.last = now;
-            model.k += 1;
-            renderModelFrame();
-            if (model.k >= STEPS) {
-                model.state = "shown";
-                setStatus("The model's answer is the red thread. It does not walk it; it just knows.");
-            }
-            dirty = true;
-        }
-        if (!reduced && now - idleSince > 22000 && now - whisperAt > 14000 && !dialogOpen()) {
-            whisperAt = now;
-            els.whisper.textContent = WHISPERS[whisperN++ % WHISPERS.length];
-        }
+    /* ---------- details, places, dialogs ---------- */
+
+    function nearName(d) {
+        if (d.near && L.SPOTS[d.near]) return "near the " + L.SPOTS[d.near].building.toLowerCase();
+        return HINTS[d.id] || "somewhere on the island";
     }
 
-    let lastFrame = 0;
-    function frame(now) {
-        if (!running) return;
-        requestAnimationFrame(frame);
-        const dt = Math.min(64, now - (lastFrame || now));
-        lastFrame = now;
-        update(now, dt);
-        if (dirty || !reduced) {
-            draw(now, dt);
-            dirty = false;
-        }
-    }
-
-    function startLoop() {
-        if (running) return;
-        running = true;
-        lastFrame = 0;
-        requestAnimationFrame(frame);
-    }
-
-    function stopLoop() {
-        running = false;
-    }
-
-    function userActive() {
-        idleSince = performance.now();
-        if (els.whisper.textContent) els.whisper.textContent = "";
-    }
-
-    /* ---------- walking helpers ---------- */
-
-    function walkTo(id) {
-        const target = id === "heart" ? maze.heart : roomIdx[id];
-        if (target === undefined) return;
-        const from = curIdx();
-        const path = M.shortestPath(maze.walls, size, from, target);
-        queue = [];
-        held = pendingDir = null;
-        if (!path || path.length < 2) {
-            if (!moving) openRoom(id);
-            return;
-        }
-        queue = path.slice(1);
-        setStatus(`Walking to ${ROOMS[id].label}…`);
-        userActive();
-    }
-
-    function tapAt(clientX, clientY) {
-        const rect = canvas.getBoundingClientRect();
-        const x = Math.floor(((clientX - rect.left) / rect.width) * size);
-        const y = Math.floor(((clientY - rect.top) / rect.height) * size);
-        if (x < 0 || y < 0 || x >= size || y >= size) return;
-        const idx = y * size + x;
-        if (idx === curIdx()) { openHere(); return; }
-        if (!visited.has(idx)) {
-            setStatus("Walk there first. You can tap any footprint to go back to it.");
-            return;
-        }
-        const path = M.shortestPath(maze.walls, size, curIdx(), idx, visited);
-        if (path && path.length > 1) {
-            queue = path.slice(1);
-            held = pendingDir = null;
-        }
-    }
-
-    // A swipe runs down the corridor until it reaches a junction, a room, or a wall.
-    function runDir(dir) {
-        const d = DIRS[dir];
-        const start = curIdx();
-        let x = start % size, y = (start / size) | 0, came = start;
-        const path = [];
-        for (let guard = 0; guard < size * size; guard++) {
-            if (!isOpen(x + d[0], y + d[1])) break;
-            x += d[0];
-            y += d[1];
-            const idx = y * size + x;
-            path.push(idx);
-            const exits = M.openNeighbors(maze.walls, size, idx).filter((j) => j !== came);
-            came = idx;
-            if (exits.length !== 1 || roomAt.has(idx) || idx === maze.heart) break;
-        }
-        if (path.length) {
-            queue = path;
-            held = pendingDir = null;
+    function verdictBox() {
+        var g = world.garden;
+        trail.add((g.heart[1] - g.y) * g.size + (g.heart[0] - g.x));
+        var j = M.judge(g.maze, trail);
+        var box = document.createElement("div");
+        box.className = "verdict " + (j.solved ? "is-solved" : "is-lost");
+        var big = document.createElement("span");
+        big.className = "verdict-result";
+        big.textContent = j.solved ? "Solved" : "Lost";
+        var p1 = document.createElement("p"), p2 = document.createElement("p");
+        if (j.solved) {
+            p1.textContent = "One clean path from the gate to the heart, " + j.pathTiles + " tiles, nothing stray.";
+            p2.textContent = "The owl nods once. This is the same judge unmaze uses: exactly one simple path, no repair step.";
         } else {
-            tryDir(dir);
+            var blobs = j.strayBlobs + " stray blob" + (j.strayBlobs === 1 ? "" : "s"), tiles = j.strayTiles + " stray tile" + (j.strayTiles === 1 ? "" : "s");
+            p1.textContent = "Reason: " + (j.strayTiles ? blobs + ", " + tiles + " off the path." : "the trail does not cover the whole path.") + " The judge runs no repair step.";
+            p2.textContent = "You took the scenic route. The owl respects it, and does not forgive it.";
         }
-    }
-
-    function openHere() {
-        const idx = curIdx();
-        if (roomAt.has(idx)) openRoom(roomAt.get(idx));
-        else if (idx === maze.heart) openRoom("heart");
-    }
-
-    /* ---------- card, rooms, verdict ---------- */
-
-    function setStatus(text) {
-        els.status.textContent = text;
-    }
-
-    function updateCount() {
-        els.count.textContent = `${opened.size}/9`;
-    }
-
-    function completeLines(set) {
-        return LINES.filter((line) => line.every((i) => set.has(CARD_ORDER[i])));
-    }
-
-    function markOpened(id) {
-        const before = completeLines(opened).length;
-        const hadAll = opened.size === CARD_ORDER.length;
-        if (id !== "heart") runRooms.add(id);
-        if (!opened.has(id)) {
-            opened.add(id);
-            saveOpened();
-        }
-        updateCount();
-        if (opened.size === CARD_ORDER.length && !hadAll) return "blackout";
-        return completeLines(opened).length > before ? "bingo" : "";
-    }
-
-    function cloneClean(node) {
-        const copy = node.cloneNode(true);
-        copy.removeAttribute("id");
-        copy.removeAttribute("data-room");
-        copy.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
-        return copy;
-    }
-
-    function openRoom(id) {
-        const def = ROOMS[id];
-        if (!def || els.room.open) return;
-        const nodes = [...document.querySelectorAll(`[data-room="${id}"]`)].map(cloneClean);
-        els.roomBody.replaceChildren(...nodes);
-        if (id === "heart") els.roomBody.append(buildVerdict());
-        els.roomTitle.textContent = def.label;
-        const n = ROOM_IDS.indexOf(id) + 1;
-        els.roomKicker.textContent = id === "heart" ? def.kicker : `${def.kicker} · room ${n} of ${ROOM_IDS.length}`;
-
-        const note = markOpened(id);
-        const foot = els.roomFoot;
-        foot.replaceChildren();
-        foot.append(`Stamped. ${opened.size} of ${CARD_ORDER.length} squares on your card.`);
-        if (note) {
-            const strong = document.createElement("strong");
-            strong.textContent = note === "blackout" ? " BLACKOUT." : " BINGO.";
-            foot.append(strong, note === "blackout" ? " You read everything. The maze has nothing left to hide." : " A full line on your card.");
-            setStatus(note === "blackout" ? "Blackout. Every square stamped." : "Bingo. A full line on your card.");
-            burst();
-        } else {
-            setStatus(`${def.label}. ${opened.size} of ${CARD_ORDER.length} stamped.`);
-        }
-        dirty = true;
-        els.room.showModal();
-        els.room.scrollTop = 0;
-    }
-
-    function plural(n, word) {
-        return `${n} ${word}${n === 1 ? "" : "s"}`;
-    }
-
-    function buildVerdict() {
-        const j = M.judge(maze, visited);
-        const rooms = runRooms.size;
-        const box = document.createElement("div");
-        box.className = "verdict";
-        const head = document.createElement("div");
-        head.className = "verdict-head";
-        const label = document.createElement("span");
-        label.className = "verdict-label";
-        label.textContent = "Verdict on your route";
-        const result = document.createElement("span");
-        result.className = "verdict-result";
-        head.append(label, result);
-        const lines = [];
-        if (!j.reachedHeart) {
-            box.classList.add("is-waiting");
-            result.textContent = "Waiting";
-            lines.push("The judge sits at the heart. It grades your route when you arrive: exactly one simple path, no stray blobs, no repair step.");
-        } else if (j.solved) {
-            box.classList.add("is-solved");
-            result.textContent = "Solved";
-            lines.push(`One clean path, ${j.pathTiles} tiles, nothing stray.`);
-            lines.push(`You opened ${rooms} of ${ROOM_IDS.length} rooms on this walk. They are in the dead ends you skipped.`);
-        } else {
-            box.classList.add("is-lost");
-            result.textContent = "Lost";
-            lines.push(`Reason: ${plural(j.strayBlobs, "stray blob")}, ${plural(j.strayTiles, "stray tile")} off the path. The judge runs no repair step.`);
-            lines.push(rooms
-                ? `You also opened ${rooms} of ${ROOM_IDS.length} rooms on this walk, which is the better score.`
-                : "You wandered and opened no rooms. They are in the dead ends.");
-        }
-        box.append(head);
-        lines.forEach((text) => {
-            const p = document.createElement("p");
-            p.textContent = text;
-            box.append(p);
-        });
+        box.append(big, p1, p2);
         return box;
     }
 
-    function renderCard() {
-        const lit = new Set();
-        completeLines(opened).forEach((line) => line.forEach((i) => lit.add(i)));
-        els.cardGrid.replaceChildren(...CARD_ORDER.map((id, i) => {
-            const def = ROOMS[id];
-            const stamped = opened.has(id);
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "card-cell" + (stamped ? " is-stamped" : "") + (lit.has(i) ? " is-line" : "");
-            btn.dataset.id = id;
-            btn.setAttribute("aria-label", `${def.label}: ${def.teaser}. ${stamped ? "Stamped." : "Not visited yet."} Walk me there.`);
-            const label = document.createElement("span");
-            label.className = "card-cell-label";
-            label.textContent = def.label;
-            const teaser = document.createElement("span");
-            teaser.className = "card-cell-teaser";
-            teaser.textContent = def.teaser;
-            const state = document.createElement("span");
-            state.className = "card-cell-state";
-            state.textContent = stamped ? "Stamped" : "Walk me there";
-            btn.append(label, teaser, state);
-            return btn;
-        }));
-        els.cardSummary.textContent = `${opened.size} of ${CARD_ORDER.length}`;
-        els.cardVerdict.replaceChildren(buildVerdict());
-        els.card.querySelector(".dlg-kicker").textContent = `Your card · maze #${seed}`;
-        els.cardNote.textContent = "";
-    }
-
-    function openCard() {
-        if (dialogOpen()) return;
-        renderCard();
-        els.card.showModal();
-        els.card.scrollTop = 0;
-    }
-
-    /* ---------- modes & wiring ---------- */
-
-    function closeDialogs() {
-        document.querySelectorAll("dialog[open]").forEach((d) => d.close());
-    }
-
-    function resetInput() {
-        keys.length = 0;
-        held = pendingDir = null;
-    }
-
-    function setMode(mode, persist) {
-        closeDialogs();
-        root.setAttribute("data-mode", mode);
-        if (persist) {
-            try { localStorage.setItem("mode", mode); } catch { /* ignore */ }
-        }
-        const game = mode === "game";
-        els.btnMode.textContent = game ? "Plain page" : "Play the maze";
-        els.btnMode.setAttribute("aria-label", game ? "Switch to the plain page" : "Switch to the maze game");
-        if (game) {
-            if (PLAIN_HASH.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
-            requestAnimationFrame(() => {
-                layout();
-                startLoop();
-                dirty = true;
-                canvas.focus({ preventScroll: true });
-            });
+    function reveal(id) {
+        var d = L.DETAILS.find(function (x) { return x.id === id; });
+        var fresh = !found.has(id);
+        if (fresh) { found.add(id); save(); updateHud(); }
+        var done = found.size === TOTAL_DETAILS && fresh;
+        var n = found.size;
+        $("detail-kicker").textContent = (fresh ? "Detail " + n + " of " + TOTAL_DETAILS : "Already found") + " · " + nearName(d);
+        $("detail-title").textContent = d.title;
+        var extra = $("detail-extra");
+        extra.replaceChildren();
+        if (d.special === "chest") {
+            $("detail-text").textContent = "Inside the chest: the strict judge's verdict on your walk through the hedge.";
+            extra.append(verdictBox());
         } else {
-            stopLoop();
-            window.scrollTo(0, 0);
+            $("detail-text").textContent = d.text;
+        }
+        var cta = $("detail-cta");
+        cta.hidden = !done;
+        $("detail-ok").textContent = done ? "Keep wandering" : "Keep digging";
+        if (done) {
+            $("detail-kicker").textContent = "Every detail found · " + n + " of " + TOTAL_DETAILS;
+            var fin = document.createElement("p");
+            fin.className = "detail-text";
+            fin.textContent = "That was the last one. You dug up everything on this island. The rest is a conversation.";
+            extra.append(fin);
+            confetti();
+        }
+        el.detail.showModal();
+        $("detail-ok").focus();
+    }
+
+    function pressButton() {
+        pressed++;
+        pressAnim = 260;
+        save();
+        var line = pressed >= 4 ? "The button has said everything it will say." : L.BUTTON_LINES[Math.min(pressed, 3) - 1];
+        if (pressed === 3 && !found.has("egg-button")) {
+            say("Button", L.BUTTON_LINES[2]);
+            setTimeout(function () { reveal("egg-button"); }, 700);
+        } else say("Button", line);
+    }
+
+    function openChest() { reveal("egg-chest"); }
+
+    function openSpot(id) {
+        var meta = L.SPOTS[id];
+        var head = $("spot-head");
+        head.style.setProperty("--hue", HUES[meta.roof] || "#ff7ac8");
+        $("spot-kicker").textContent = meta.kicker;
+        $("spot-title").textContent = meta.title;
+        var body = $("spot-body");
+        body.replaceChildren();
+        var section = document.querySelector('#codex [data-spot="' + id + '"]');
+        if (section) {
+            Array.prototype.forEach.call(section.children, function (child) {
+                if (child.classList.contains("codex-h")) return;
+                var copy = child.cloneNode(true);
+                copy.querySelectorAll("[id]").forEach(function (n) { n.removeAttribute("id"); });
+                body.append(copy);
+            });
+        }
+        var wasNew = !places.has(id);
+        places.add(id);
+        save();
+        updateHud();
+        var mine = L.DETAILS.filter(function (d) { return d.near === id; });
+        var got = mine.filter(function (d) { return found.has(d.id); }).length;
+        var foot = $("spot-foot");
+        foot.replaceChildren();
+        var strong = document.createElement("b");
+        if (!mine.length) { strong.textContent = "Nothing buried here."; foot.append(strong, " Everything is in the open."); }
+        else if (got === mine.length) { strong.textContent = "All " + mine.length + " buried details found."; foot.append(strong, " Nice digging."); }
+        else {
+            strong.textContent = got + " of " + mine.length + " buried details found.";
+            foot.append(strong, " Look for sparkling dirt around the " + meta.building.toLowerCase() + ".");
+        }
+        if (wasNew && places.size === TOTAL_PLACES) foot.append(" That is every place on the island.");
+        el.spot.showModal();
+        el.spot.scrollTop = 0;
+        $("spot-close").focus();
+    }
+
+    /* ---------- index ---------- */
+
+    var resetArmed = false;
+    function renderIndex() {
+        var ul = $("index-places");
+        ul.replaceChildren();
+        Object.keys(L.SPOTS).forEach(function (id) {
+            var m = L.SPOTS[id];
+            var li = document.createElement("li");
+            li.className = "index-item" + (places.has(id) ? " is-done" : "");
+            li.style.setProperty("--hue", HUES[m.roof]);
+            var dot = document.createElement("span"); dot.className = "index-dot"; dot.setAttribute("aria-hidden", "true");
+            var name = document.createElement("span"); name.className = "index-name";
+            name.append(document.createTextNode(m.building + " · " + m.title));
+            var small = document.createElement("small"); small.textContent = m.teaser + (places.has(id) ? " (visited)" : "");
+            name.append(small);
+            var btns = document.createElement("span"); btns.className = "index-btns";
+            var read = document.createElement("button"); read.type = "button"; read.className = "btn btn-lemon"; read.textContent = "Read";
+            read.setAttribute("aria-label", "Read " + m.title);
+            read.addEventListener("click", function () { el.index.close(); openSpot(id); });
+            var go = document.createElement("button"); go.type = "button"; go.className = "btn btn-cyan"; go.textContent = "Walk there";
+            go.setAttribute("aria-label", "Walk to the " + m.building);
+            go.addEventListener("click", function () {
+                el.index.close();
+                var t = interactableById(id);
+                if (t) goToTarget(t);
+            });
+            btns.append(read, go);
+            li.append(dot, name, btns);
+            ul.append(li);
+        });
+        var dl = $("index-details");
+        dl.replaceChildren();
+        L.DETAILS.forEach(function (d) {
+            var li = document.createElement("li");
+            var ok = found.has(d.id);
+            li.className = "index-item" + (ok ? " is-done" : " is-secret");
+            var dot = document.createElement("span"); dot.className = "index-dot"; dot.setAttribute("aria-hidden", "true");
+            var name = document.createElement("span"); name.className = "index-name";
+            var text = ok ? d.title : "???";
+            name.append(document.createTextNode(text));
+            var small = document.createElement("small");
+            small.textContent = ok ? (d.special === "chest" ? "The judge's verdict on your walk through the hedge." : d.text) : "Buried " + nearName(d) + ".";
+            name.append(small);
+            li.append(dot, name);
+            dl.append(li);
+        });
+        $("index-count").textContent = found.size + "/" + TOTAL_DETAILS;
+        $("index-reset").textContent = "Reset my progress";
+        resetArmed = false;
+        $("index-note").textContent = "";
+    }
+
+    function openIndex() {
+        if (el.index.open) return;
+        renderIndex();
+        el.index.showModal();
+        el.index.scrollTop = 0;
+    }
+
+    /* ---------- theme ---------- */
+
+    function applyTheme(theme, persist) {
+        root.setAttribute("data-theme", theme);
+        root.style.colorScheme = theme;
+        nightTarget = theme === "dark" ? 1 : 0;
+        if (reduced) night = nightTarget;
+        el.theme.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+        var next = theme === "dark" ? "day" : "night";
+        el.theme.setAttribute("aria-label", "Switch to " + next);
+        el.theme.querySelector(".btn-theme-text").textContent = next.charAt(0).toUpperCase() + next.slice(1);
+        if (persist) { try { localStorage.setItem("theme", theme); } catch (e) { /* ignore */ } }
+    }
+
+    /* ---------- render ---------- */
+
+    var clouds = [[40, 30, 70, 22], [260, 140, 90, 26], [520, 70, 80, 20], [150, 380, 100, 28], [640, 330, 70, 20]];
+
+    function render(now, dt) {
+        var s = view.scale * view.dpr;
+        ctx.setTransform(s, 0, 0, s, 0, 0);
+        ctx.imageSmoothingEnabled = false;
+        var cx = Math.round(cam.x), cy = Math.round(cam.y);
+        A.drawOcean(ctx, cx, cy, view.w, view.h, world, now, !reduced);
+        ctx.drawImage(art.land, -cx, -cy);
+        ctx.save();
+        ctx.translate(-cx, -cy);
+
+        // buried spots on the ground
+        world.digs.forEach(function (d, i) {
+            var dug = found.has(d.detail);
+            ctx.drawImage(art.spr.dig[dug ? 1 : 0].c, d.tx * T, d.ty * T);
+            if (!dug) {
+                var ph = reduced ? 0.2 : ((now / 700) + i * 0.37) % 2;
+                if (ph < 0.55) {
+                    var sx = d.tx * T + 11, sy = d.ty * T + 4;
+                    A.rect(ctx, sx - 1, sy, 3, 1, "#fff"); A.rect(ctx, sx, sy - 1, 1, 3, "#fff");
+                }
+            }
+        });
+
+        // objects sorted by their baseline
+        var x0 = cx - 40, x1 = cx + view.w + 40, y0 = cy - 50, y1 = cy + view.h + 60;
+        var list = [];
+        for (var i = 0; i < statics.length; i++) {
+            var o = statics[i];
+            if (o.by < y0 || o.y0 > y1 || o.x1 < x0 || o.x0 > x1) continue;
+            list.push(o);
+        }
+        list.push({ by: player.y, draw: function (g) { A.drawPlayer(g, player.x, player.y, player.dir, player.moving ? [0, 1, 0, 3][Math.floor(player.ft / 120) % 4] : 0, digging ? Math.sin(digging.t / 90) * 0.5 + 0.5 : 0); } });
+        list.push({ by: cat.y, draw: function (g) { A.drawCat(g, cat.x, cat.y, cat.dir, Math.floor(cat.ft / 150), cat.sit, now); } });
+        list.sort(function (a, b) { return a.by - b.by; });
+        for (var j = 0; j < list.length; j++) list[j].draw(ctx, now);
+
+        if (!reduced) butterflies.forEach(function (bf) { A.drawButterfly(ctx, bf.x, bf.y, now, bf.seed); });
+
+        // where you are heading
+        if (dest) {
+            var pulse = reduced ? 3 : 3 + Math.round(Math.sin(now / 150) * 1.5);
+            ctx.fillStyle = "rgba(255,255,255,0.85)";
+            ctx.fillRect(Math.round(dest.x) - pulse, Math.round(dest.y), pulse * 2 + 1, 1);
+            ctx.fillRect(Math.round(dest.x), Math.round(dest.y) - pulse, 1, pulse * 2 + 1);
+        }
+
+        // marker over whatever you can use
+        if (near && !digging && !dialogOpen()) {
+            var up = { spot: 24, dig: 12, sign: 32, owl: 34, chest: 26, button: 36, cat: 18 }[near.kind] || 20;
+            var ax = near.kind === "cat" ? cat.x : near.x, ay = (near.kind === "cat" ? cat.y : near.y) - up + (reduced ? 0 : Math.round(Math.sin(now / 160) * 1.5));
+            ax = Math.round(ax); ay = Math.round(ay);
+            A.rect(ctx, ax - 3, ay - 1, 7, 2, A.C.ink); A.rect(ctx, ax - 2, ay + 1, 5, 2, A.C.ink); A.rect(ctx, ax - 1, ay + 3, 3, 2, A.C.ink); A.dot(ctx, ax, ay + 5, A.C.ink);
+            A.rect(ctx, ax - 2, ay, 5, 1, A.C.gold); A.rect(ctx, ax - 1, ay + 1, 3, 1, A.C.gold); A.dot(ctx, ax, ay + 2, A.C.gold); A.rect(ctx, ax - 2, ay, 2, 1, "#fff3b0");
+        }
+
+        particles.forEach(function (p) {
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, Math.min(1, p.life / 400));
+            ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+        });
+        ctx.globalAlpha = 1;
+
+        if (!reduced && night < 0.6) {
+            clouds.forEach(function (c, k) {
+                var span = world.W * T + 200;
+                var x = ((c[0] + now / (160 + k * 40)) % span) - 100;
+                A.ell(ctx, Math.round(x), c[1], c[2], c[3], "rgba(25,45,120,0.075)");
+            });
+        }
+        ctx.restore();
+
+        if (night > 0.01) {
+            var lights = art.lights.slice();
+            lights.push({ x: player.x, y: player.y - 8, r: 46, color: "#ffe2a8", a: 0.95, flicker: true });
+            if (!reduced) lights.push({ x: cat.x, y: cat.y - 4, r: 10, color: "#ffd89a", a: 0.4 });
+            A.drawNight(ctx, dk, view.w, view.h, lights, cx, cy, now, night, reduced ? 0.6 : now / 2600);
+            if (night > 0.4 && !reduced) {
+                ctx.globalCompositeOperation = "lighter";
+                fireflies.forEach(function (ff) {
+                    var x = ff.x + Math.cos(now / 1400 + ff.a) * ff.r - cx, y = ff.y + Math.sin(now / 1100 + ff.a * 1.3) * ff.r * 0.7 - cy;
+                    var tw = 0.5 + 0.5 * Math.sin(now / 350 + ff.a);
+                    ctx.fillStyle = "rgba(255,240,120," + (0.25 * tw * night).toFixed(2) + ")";
+                    ctx.fillRect(Math.round(x) - 2, Math.round(y) - 2, 5, 5);
+                    ctx.fillStyle = "rgba(255,250,170," + (0.9 * tw * night).toFixed(2) + ")";
+                    ctx.fillRect(Math.round(x), Math.round(y), 1, 1);
+                });
+                ctx.globalCompositeOperation = "source-over";
+            }
         }
     }
 
-    function newMaze() {
-        closeDialogs();
-        startMaze(randomSeed());
-        canvas.focus({ preventScroll: true });
+    /* ---------- minimap ---------- */
+
+    var mm = $("minimap"), mmCtx = mm.getContext("2d"), mmBase = null;
+    var MM_COL = ["#3a86e8", "#5ec24c", "#f6dfa8", "#dba869", "#cfd6ea", "#8c5b34", "#1f6b34", "#a6e27f", "#f4fbff"];
+    function buildMinimap() {
+        mmBase = A.canvas(world.W * 3, world.H * 3);
+        for (var y = 0; y < world.H; y++) for (var x = 0; x < world.W; x++) A.rect(mmBase.g, x * 3, y * 3, 3, 3, MM_COL[world.tiles[y * world.W + x]]);
+        world.decor.forEach(function (d) { if (d.kind === "tree") A.rect(mmBase.g, d.tx * 3, d.ty * 3, 3, 3, "#2f9e4f"); });
     }
+
+    function drawMinimap(now) {
+        if (!mmBase) buildMinimap();
+        mmCtx.imageSmoothingEnabled = false;
+        mmCtx.drawImage(mmBase.c, 0, 0);
+        world.buildings.concat([{ id: "dock", roof: "wood", x: world.dock.x, y: world.dock.endY - 1, w: 2, h: 2 }]).forEach(function (b) {
+            var meta = L.SPOTS[b.id];
+            var cx = Math.round((b.x + b.w / 2) * 3), cy = Math.round((b.y + b.h / 2) * 3);
+            A.rect(mmCtx, cx - 3, cy - 3, 7, 7, places.has(b.id) ? "#ffffff" : A.C.ink);
+            A.rect(mmCtx, cx - 2, cy - 2, 5, 5, places.has(b.id) ? "#5ec24c" : HUES[meta.roof]);
+        });
+        var vx = Math.round(cam.x / T * 3), vy = Math.round(cam.y / T * 3), vw = Math.round(view.w / T * 3), vh = Math.round(view.h / T * 3);
+        mmCtx.fillStyle = "rgba(255,255,255,0.9)";
+        mmCtx.fillRect(vx, vy, vw, 1); mmCtx.fillRect(vx, vy + vh - 1, vw, 1); mmCtx.fillRect(vx, vy, 1, vh); mmCtx.fillRect(vx + vw - 1, vy, 1, vh);
+        if (reduced || Math.floor(now / 400) % 2 === 0) {
+            var px = Math.round(player.x / T * 3), py = Math.round((player.y - 4) / T * 3);
+            A.rect(mmCtx, px - 2, py - 2, 5, 5, A.C.ink); A.rect(mmCtx, px - 1, py - 1, 3, 3, A.C.hoodie);
+        }
+    }
+
+    /* ---------- loop ---------- */
+
+    function frame(now) {
+        if (!running) return;
+        requestAnimationFrame(frame);
+        var dt = Math.min(50, now - (last || now));
+        last = now;
+        var modal = dialogOpen();
+        if (!modal) {
+            updatePlayer(dt);
+            updateDig(dt);
+        } else player.moving = false;
+        if (pressAnim > 0) pressAnim -= dt;
+        updateCat(dt);
+        updateParticles(dt);
+        if (dest) dest.t += dt;
+        butterflies.forEach(function (bf) {
+            bf.a += dt / 1000;
+            bf.x = bf.home[0] + Math.cos(bf.a * 0.9 + bf.seed) * 22 + Math.sin(bf.a * 2.1) * 6;
+            bf.y = bf.home[1] + Math.sin(bf.a * 1.3 + bf.seed * 2) * 14 - 8;
+        });
+        if (night !== nightTarget) {
+            var step = dt / 700;
+            night = reduced ? nightTarget : (night < nightTarget ? Math.min(nightTarget, night + step) : Math.max(nightTarget, night - step));
+        }
+        var tx = clampCam(player.x - view.w / 2, world.W * T, view.w), ty = clampCam(player.y - view.h / 2 - 6, world.H * T, view.h);
+        if (reduced) { cam.x = tx; cam.y = ty; }
+        else { var k = 1 - Math.pow(0.001, dt / 1000); cam.x += (tx - cam.x) * k; cam.y += (ty - cam.y) * k; }
+
+        // trail inside the hedge garden, for the judge
+        var g = world.garden, pt = tileOf(player.x, player.y);
+        var lx = pt[0] - g.x, ly = pt[1] - g.y;
+        if (lx >= 0 && ly >= 0 && lx < g.size && ly < g.size) trail.add(ly * g.size + lx);
+        else if (trail.size && (lx < -1 || ly < -2 || lx > g.size || ly > g.size)) trail.clear();
+
+        near = modal ? null : findNear();
+        updatePrompt();
+        render(now, dt);
+        if (mm.offsetParent !== null) drawMinimap(now);
+    }
+
+    function start() {
+        if (running) return;
+        running = true;
+        last = 0;
+        requestAnimationFrame(frame);
+    }
+
+    /* ---------- input ---------- */
+
+    var KEYDIR = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", s: "down", a: "left", d: "right", W: "up", S: "down", A: "left", D: "right" };
+
+    function resetInput() { keys.length = 0; pad = {}; }
 
     function init() {
-        readColors();
-        startMaze(seedFromUrl() || randomSeed());
-        updateCount();
-        setMode(root.getAttribute("data-mode") === "plain" ? "plain" : "game", false);
+        applyTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light", false);
+        night = nightTarget;
+        updateHud();
+        var steps = $("intro-steps");
+        L.INTRO.steps.forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.append(li); });
 
-        els.btnMode.addEventListener("click", () => setMode(inGame() ? "plain" : "game", true));
-        $("skip-game").addEventListener("click", () => setMode("plain", true));
-        $("btn-intro-plain").addEventListener("click", () => setMode("plain", true));
-        $("btn-start").addEventListener("click", () => els.intro.close());
-        $("btn-card").addEventListener("click", openCard);
-        $("btn-new").addEventListener("click", newMaze);
-        els.btnModel.addEventListener("click", () => setModel(model.state === "off"));
-        $("room-close").addEventListener("click", () => els.room.close());
-        $("card-close").addEventListener("click", () => els.card.close());
-
-        els.cardGrid.addEventListener("click", (e) => {
-            const cell = e.target.closest(".card-cell");
-            if (!cell) return;
-            els.card.close();
-            walkTo(cell.dataset.id);
-        });
-        $("card-share").addEventListener("click", () => {
-            const url = `${location.origin}${location.pathname}?maze=${seed}`;
-            const done = () => { els.cardNote.textContent = "Link copied."; };
-            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, () => window.prompt("Copy this link:", url));
-            else window.prompt("Copy this link:", url);
-        });
-        $("card-reset").addEventListener("click", () => {
-            opened.clear();
-            runRooms.clear();
-            saveOpened();
-            updateCount();
-            renderCard();
-            els.cardNote.textContent = "Card cleared.";
-            dirty = true;
+        el.theme.addEventListener("click", function () { applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark", true); });
+        var sys = mq("(prefers-color-scheme: dark)");
+        if (sys.addEventListener) sys.addEventListener("change", function (e) {
+            var stored = null; try { stored = localStorage.getItem("theme"); } catch (er) { /* ignore */ }
+            if (!stored) applyTheme(e.matches ? "dark" : "light", false);
         });
 
-        [els.intro, els.room, els.card].forEach((dlg) => {
-            dlg.addEventListener("close", () => {
-                resetInput();
-                userActive();
-                dirty = true;
-                if (inGame() && !dialogOpen() && dlg !== els.card) canvas.focus({ preventScroll: true });
-            });
+        $("btn-index").addEventListener("click", openIndex);
+        $("btn-start").addEventListener("click", function () { el.intro.close(); });
+        $("btn-intro-index").addEventListener("click", function () { el.intro.close(); openIndex(); });
+        $("spot-close").addEventListener("click", function () { el.spot.close(); });
+        $("detail-ok").addEventListener("click", function () { el.detail.close(); });
+        $("index-close").addEventListener("click", function () { el.index.close(); });
+        $("index-reset").addEventListener("click", function () {
+            if (!resetArmed) { resetArmed = true; $("index-reset").textContent = "Really reset?"; $("index-note").textContent = "This forgets every place and detail."; return; }
+            found.clear(); places.clear(); pressed = 0; trail.clear(); save(); updateHud(); renderIndex();
+            $("index-note").textContent = "Progress cleared.";
+        });
+        el.prompt.addEventListener("click", interactNow);
+        el.act.addEventListener("click", interactNow);
+
+        [el.intro, el.spot, el.detail, el.index].forEach(function (d) {
+            d.addEventListener("close", function () { resetInput(); canvas.focus({ preventScroll: true }); });
         });
 
-        document.addEventListener("keydown", (e) => {
-            if (!playing() || e.ctrlKey || e.metaKey || e.altKey) return;
-            const dir = KEYS[e.key];
+        document.addEventListener("keydown", function (e) {
+            if (dialogOpen() || e.ctrlKey || e.metaKey || e.altKey) return;
+            var dir = KEYDIR[e.key];
             if (dir) {
                 e.preventDefault();
-                if (!keys.includes(dir)) keys.push(dir);
-                held = dir;
-                pendingDir = dir;
-                queue = [];
-                userActive();
+                if (keys.indexOf(dir) === -1) keys.push(dir);
+                path = null; dest = null;
                 return;
             }
-            const tag = document.activeElement ? document.activeElement.tagName : "";
-            if ((e.key === "Enter" || e.key === " ") && tag !== "BUTTON" && tag !== "A") {
+            var tag = document.activeElement ? document.activeElement.tagName : "";
+            if ((e.key === "e" || e.key === "E" || e.key === " " || e.key === "Enter") && tag !== "BUTTON" && tag !== "A") {
                 e.preventDefault();
-                openHere();
-            } else if (e.key === "c" || e.key === "C") {
-                openCard();
-            } else if (e.key === "m" || e.key === "M") {
-                setModel(model.state === "off");
-            } else if (e.key === "Escape" && model.state !== "off") {
-                setModel(false);
+                if (!e.repeat) interactNow();
+            } else if (e.key === "i" || e.key === "I") {
+                openIndex();
+            } else if (e.key === "Escape") {
+                el.bubble.hidden = true;
             }
         });
-        document.addEventListener("keyup", (e) => {
-            const dir = KEYS[e.key];
-            if (!dir) return;
-            const at = keys.indexOf(dir);
+        document.addEventListener("keyup", function (e) {
+            var dir = KEYDIR[e.key];
+            var at = keys.indexOf(dir);
             if (at !== -1) keys.splice(at, 1);
-            held = keys[keys.length - 1] || null;
         });
         window.addEventListener("blur", resetInput);
 
-        let ptr = null;
-        canvas.addEventListener("pointerdown", (e) => {
-            ptr = { x: e.clientX, y: e.clientY };
-            userActive();
-            try { canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
-        });
-        canvas.addEventListener("pointerup", (e) => {
-            if (!ptr || !playing()) { ptr = null; return; }
-            const dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
-            ptr = null;
-            if (Math.hypot(dx, dy) < 14) tapAt(e.clientX, e.clientY);
-            else runDir(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up"));
-        });
-        canvas.addEventListener("pointercancel", () => { ptr = null; });
-
-        document.querySelectorAll(".dpad button").forEach((btn) => {
-            const dir = btn.dataset.dir;
-            btn.addEventListener("pointerdown", (e) => {
-                e.preventDefault();
-                if (!playing()) return;
-                held = pendingDir = dir;
-                queue = [];
-                userActive();
-            });
-            ["pointerup", "pointerleave", "pointercancel"].forEach((type) => {
-                btn.addEventListener(type, () => { if (held === dir) held = null; });
-            });
+        document.querySelectorAll(".dpad button").forEach(function (btn) {
+            var dir = btn.dataset.dir;
+            btn.addEventListener("pointerdown", function (e) { e.preventDefault(); pad[dir] = true; path = null; dest = null; });
+            ["pointerup", "pointerleave", "pointercancel"].forEach(function (type) { btn.addEventListener(type, function () { pad[dir] = false; }); });
         });
 
-        if (typeof ResizeObserver === "function") {
-            const ro = new ResizeObserver(() => { if (inGame() && layout()) dirty = true; });
-            ro.observe(els.stage.parentElement);
-            ro.observe(document.querySelector(".game-hud"));
+        var down = null;
+        canvas.addEventListener("pointerdown", function (e) { down = { x: e.clientX, y: e.clientY }; });
+        canvas.addEventListener("pointerup", function (e) {
+            if (!down || dialogOpen()) { down = null; return; }
+            var moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
+            down = null;
+            if (moved > 10) return;
+            tapAt(e.clientX, e.clientY);
+        });
+
+        window.addEventListener("resize", resize);
+        if (typeof ResizeObserver === "function") new ResizeObserver(resize).observe(el.stage);
+        resize();
+        cam.x = clampCam(player.x - view.w / 2, world.W * T, view.w);
+        cam.y = clampCam(player.y - view.h / 2, world.H * T, view.h);
+        start();
+        el.intro.showModal();
+
+        if (DEBUG) {
+            window.__island = {
+                player: player, world: world, found: found, places: places,
+                teleport: function (x, y) { player.x = x; player.y = y; path = null; },
+                reveal: reveal, openSpot: openSpot, activate: activate, near: function () { return near; }, trail: trail
+            };
         }
-        window.addEventListener("resize", () => { if (inGame() && layout()) dirty = true; });
+    }
 
-        new MutationObserver(() => {
-            if (!cssW) return;
-            readColors();
-            buildStatic();
-            rebuildMemory();
-            if (model.state !== "off") renderModelFrame();
-            dirty = true;
-        }).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-
-        window.addEventListener("hashchange", () => {
-            if (inGame() && PLAIN_HASH.test(location.hash)) setMode("plain", false);
+    function tapAt(clientX, clientY) {
+        var rect = canvas.getBoundingClientRect();
+        var wx = (clientX - rect.left) / view.scale + Math.round(cam.x), wy = (clientY - rect.top) / view.scale + Math.round(cam.y);
+        // something to use?
+        var best = null, bestD = 13;
+        world.interactables.forEach(function (t) {
+            if (t.kind === "dig" && found.has(t.detail)) return;
+            var cyy = t.kind === "spot" || t.kind === "dig" ? t.y : t.y - 8;
+            var d = Math.hypot(wx - t.x, wy - cyy);
+            if (d < bestD) { best = t; bestD = d; }
         });
-
-        const baseTitle = document.title;
-        document.addEventListener("visibilitychange", () => {
-            document.title = document.hidden && inGame() ? "the lantern is going out…" : baseTitle;
-        });
-
-        if (inGame()) els.intro.showModal();
+        if (Math.hypot(wx - cat.x, wy - (cat.y - 5)) < 11) best = { kind: "cat", id: "cat", x: cat.x, y: cat.y, reach: 22 };
+        if (!best) {
+            for (var i = 0; i < world.buildings.length; i++) {
+                var b = world.buildings[i];
+                if (wx >= b.x * T && wx < (b.x + b.w) * T && wy >= b.y * T - 8 && wy < (b.y + b.h) * T) { best = interactableById(b.id); break; }
+            }
+        }
+        if (best) {
+            var d2 = Math.hypot(player.x - best.x, player.y - best.y);
+            if (d2 <= best.reach && best.kind !== "spot") activate(best);
+            else if (!goToTarget(best)) say("", "I can't find a way there.");
+            return;
+        }
+        var tx = Math.floor(wx / T), ty = Math.floor((wy - 3) / T);
+        if (IW.walkable(world, tx, ty)) goTo(tx, ty, null);
     }
 
     init();

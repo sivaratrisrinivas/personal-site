@@ -3,47 +3,34 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description"
-        content="Srinivas Sivaratri is a self-directed engineer who measures whether a model is actually right, and refuses to act when it is not." />
-    <meta name="theme-color" content="#f4f0e6" />
+        content="Srinivas Sivaratri is a self-directed engineer who measures whether a model is actually right, and refuses to act when it is not. This site is a tiny island you can walk around." />
+    <meta name="theme-color" content="#1d1b3a" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Srinivas Sivaratri | Engineer" />
-    <meta property="og:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
+    <meta property="og:description" content="A tiny island to explore: systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta property="og:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Srinivas Sivaratri: Practical systems. Evidence on screen." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Srinivas Sivaratri | Engineer" />
-    <meta name="twitter:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
+    <meta name="twitter:description" content="A tiny island to explore: systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta name="twitter:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <title>Srinivas Sivaratri | Engineer</title>
     <script>
+        /* Mark JS early so the game shows (and the plain codex hides) before first paint. Night follows the system until the visitor chooses. */
         (function () {
-            var key = "theme";
+            var root = document.documentElement;
+            root.className += " js";
             var stored = null;
-            try { stored = localStorage.getItem(key); } catch (e) {}
+            try { stored = localStorage.getItem("theme"); } catch (e) {}
             var theme = (stored === "dark" || stored === "light")
                 ? stored
                 : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-            document.documentElement.style.colorScheme = theme;
-            var meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute("content", theme === "dark" ? "#1b2228" : "#f4f0e6");
-        })();
-    </script>
-
-    <script>
-        /* The site opens as a hedge-maze game. Deep links, ?plain, and a saved choice keep the plain page. */
-        (function () {
-            var mode = "game";
-            var stored = null;
-            try { stored = localStorage.getItem("mode"); } catch (e) {}
-            if (stored === "plain"
-                || /(^|[?&])plain(=|&|$)/.test(location.search)
-                || /^#(top|about|experience|open-source|work|contact)$/.test(location.hash)) mode = "plain";
-            document.documentElement.setAttribute("data-mode", mode);
+            root.setAttribute("data-theme", theme);
+            root.style.colorScheme = theme;
         })();
     </script>
 
@@ -52,82 +39,267 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Silkscreen:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/game.css" />
 </head>
 
 <body>
-    <a class="skip-link skip-plain-page" href="#work">Skip to projects</a>
-    <button type="button" class="skip-link skip-game" id="skip-game">Skip the game: read the plain page</button>
-    <div class="cursor-orb" aria-hidden="true"></div>
-    <div class="ambient-light" aria-hidden="true"></div>
-
-    <header class="site-header">
-        <a class="brand-mark" href="#top" aria-label="Srinivas Sivaratri home">
-            <span class="brand-initials"><img src="assets/screening-mark.png" alt="" /></span>
+    <header class="hud" id="hud">
+        <a class="brand" href="./" aria-label="Srinivas Sivaratri, start over">
+            <img src="assets/screening-mark.png" alt="" width="30" height="30" />
             <span class="brand-name">Srinivas Sivaratri</span>
         </a>
-        <div class="header-controls">
-            <nav class="site-nav" aria-label="Primary navigation">
-                <a href="#about">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#open-source">Open source</a>
-                <a href="#work">Work</a>
-                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <div class="game-nav" role="group" aria-label="Game controls">
-                <button type="button" class="game-btn" id="btn-card" aria-haspopup="dialog">Card <span id="card-count">0/9</span></button>
-                <button type="button" class="game-btn" id="btn-model" aria-pressed="false" aria-label="Ask the model to solve this maze">Model</button>
-                <button type="button" class="game-btn" id="btn-new" aria-label="Start a new maze">New maze</button>
-            </div>
-            <button type="button" class="game-btn mode-toggle" id="btn-mode">Plain page</button>
-            <button type="button" class="theme-toggle" aria-pressed="false" aria-label="Switch to dark appearance">
-                <svg class="icon-sun" viewBox="0 0 20 20" aria-hidden="true">
-                    <circle cx="10" cy="10" r="3.25" />
-                    <path d="M10 2.4v1.6M10 16v1.6M2.4 10H4M16 10h1.6M4.7 4.7l1.1 1.1M14.2 14.2l1.1 1.1M15.3 4.7l-1.1 1.1M5.8 14.2l-1.1 1.1" />
-                </svg>
-                <svg class="icon-moon" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M16.2 12.4A6.4 6.4 0 0 1 7.6 3.8 6.6 6.6 0 1 0 16.2 12.4Z" />
-                </svg>
-                <span class="theme-toggle-text">Dark</span>
-            </button>
+        <div class="hud-stats" aria-label="Progress">
+            <span class="chip chip-places" id="chip-places">Places <b>0/10</b></span>
+            <span class="chip chip-details" id="chip-details">Details <b>0/17</b></span>
         </div>
+        <nav class="hud-actions" aria-label="Game menu">
+            <button type="button" class="btn btn-cyan" id="btn-index" aria-haspopup="dialog">Index</button>
+            <a class="btn btn-ghost" href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+            <a class="btn btn-pink" href="mailto:srinivassivaratri1122@gmail.com">Say hi</a>
+            <button type="button" class="btn btn-ghost btn-theme" id="btn-theme" aria-pressed="false" aria-label="Switch to night">
+                <svg class="icon-sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.25" /><path d="M10 2.4v1.6M10 16v1.6M2.4 10H4M16 10h1.6M4.7 4.7l1.1 1.1M14.2 14.2l1.1 1.1M15.3 4.7l-1.1 1.1M5.8 14.2l-1.1 1.1" /></svg>
+                <svg class="icon-moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.2 12.4A6.4 6.4 0 0 1 7.6 3.8 6.6 6.6 0 1 0 16.2 12.4Z" /></svg>
+                <span class="btn-theme-text">Night</span>
+            </button>
+        </nav>
     </header>
 
-    <section class="game" id="game" aria-label="Hedge maze game">
-        <h1 class="sr-only">Srinivas Sivaratri: a hedge maze with a website inside. A plain version of this page is one button away.</h1>
-        <div class="game-stage" id="game-stage">
-            <canvas id="maze" tabindex="0" role="application" aria-label="Hedge maze. Walk with the arrow keys or WASD. Eight rooms hide in the dead ends; the heart is in the middle. Press C for your card, or choose Plain page in the header to read everything without playing."></canvas>
-        </div>
-        <div class="game-hud">
-            <p class="game-status" id="game-status" role="status" aria-live="polite"></p>
-            <p class="game-whisper" id="game-whisper" aria-hidden="true"></p>
-            <p class="model-note" id="model-note" hidden>The model's guess. A stand-in: breadth-first search hidden under a made-up noise schedule. The real model, a 2.7M-parameter U-Net, solved 4,990 of 5,000 held-out mazes (<a href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">repo</a>).</p>
-        </div>
-        <div class="dpad" aria-label="Walk controls">
-            <button type="button" data-dir="up" aria-label="Walk up"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 13l6-6 6 6" /></svg></button>
-            <button type="button" data-dir="left" aria-label="Walk left"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" /></svg></button>
-            <button type="button" data-dir="right" aria-label="Walk right"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" /></svg></button>
-            <button type="button" data-dir="down" aria-label="Walk down"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" /></svg></button>
-        </div>
-    </section>
+    <main class="stage" id="stage">
+        <h1 class="sr-only">Srinivas Sivaratri: a tiny island to explore. Walk around with the arrow keys, open buildings with E, or use the Index button for a plain list of everything.</h1>
+        <canvas id="world" tabindex="0" role="application"
+            aria-label="A tiny pixel island. Walk with the arrow keys or WASD. Press E, Space or Enter to open buildings, talk to things and dig. Press I for the index, a plain list of every place."></canvas>
 
-    <dialog class="hedge-dialog intro" id="dlg-intro" aria-labelledby="intro-title">
-        <div class="dlg-inner">
-            <p class="dlg-kicker">A hedge maze with a website inside</p>
-            <h2 id="intro-title">Srinivas <span>Sivaratri</span></h2>
-            <p class="intro-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
-            <ul class="intro-rules">
-                <li><b>Walk</b> with arrow keys, WASD, swipes, or by tapping a footprint. <kbd>C</kbd> opens your card, <kbd>M</kbd> asks the model.</li>
-                <li><b>Eight rooms</b> hide in the dead ends: the work, the roles, the pull requests. The <b>heart</b> in the middle is where you can reach me.</li>
-                <li><b>A strict judge</b> grades your route. One clean path counts; reading everything counts as getting lost.</li>
-            </ul>
+        <canvas class="minimap" id="minimap" width="144" height="108" aria-hidden="true"></canvas>
+
+        <div class="hud-bottom">
+            <p class="bubble" id="bubble" role="status" aria-live="polite" hidden></p>
+            <button type="button" class="prompt" id="prompt" hidden></button>
+        </div>
+
+        <div class="touch" aria-label="Touch controls">
+            <div class="dpad">
+                <button type="button" data-dir="up" aria-label="Walk up"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 13l6-6 6 6" /></svg></button>
+                <button type="button" data-dir="left" aria-label="Walk left"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" /></svg></button>
+                <button type="button" data-dir="right" aria-label="Walk right"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" /></svg></button>
+                <button type="button" data-dir="down" aria-label="Walk down"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" /></svg></button>
+            </div>
+            <button type="button" class="act" id="btn-act" aria-label="Interact">A</button>
+        </div>
+    </main>
+
+    <!--
+        The codex: every word on the island lives here once. The game clones a section into a dialog
+        when you open its building. With JavaScript off this is simply the page.
+    -->
+    <div class="codex" id="codex">
+        <section data-spot="intro" class="codex-intro">
+            <h1>Srinivas <span>Sivaratri</span></h1>
+            <p class="codex-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
+            <p class="codex-note"><noscript>This site is a small island game that needs JavaScript. Everything on it is below.</noscript></p>
+        </section>
+
+        <section data-spot="profile">
+            <h2 class="codex-h">Profile</h2>
+            <div class="about-copy">
+                <p>Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript.</p>
+                <p class="availability-line"><strong>Available</strong>: remote full-time or contract · UTC+5:30 (IST)</p>
+            </div>
+        </section>
+
+        <section data-spot="independent">
+            <h2 class="codex-h">Experience</h2>
+            <article class="role-card">
+                <header class="role-card-head">
+                    <div class="role-identity">
+                        <h3>Independent engineering</h3>
+                        <p class="role-position">Software Engineer</p>
+                    </div>
+                    <p class="role-meta">May 2025–present <span>Remote</span></p>
+                </header>
+                <ul class="role-highlights">
+                    <li>Proposed a request-scoped skip flag and regression test for an email-enumeration leak in better-auth; maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</li>
+                    <li>Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section data-spot="accenture">
+            <article class="role-card">
+                <header class="role-card-head">
+                    <div class="role-identity">
+                        <h3>Accenture</h3>
+                        <p class="role-position">Software Engineer</p>
+                    </div>
+                    <p class="role-meta">Jul 2021–Jul 2022 <span>Bangalore</span></p>
+                </header>
+                <ul class="role-highlights">
+                    <li>Developed a Python ETL script that automated data-processing workflows, saved 50 labor hours monthly, and reduced processing errors.</li>
+                    <li>Implemented a GitHub Actions CI/CD pipeline.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section data-spot="school">
+            <div class="education-block">
+                <h3>Education</h3>
+                <ul>
+                    <li><span>MS Computer Science</span> University of Alabama at Birmingham · 2023–25</li>
+                    <li><span>BS Computer Science</span> BV Raju Institute of Technology · 2017–21</li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-spot="better-auth">
+            <h2 class="codex-h">Open source</h2>
+            <article class="contribution-card">
+                <header class="contribution-card-head">
+                    <h3>better-auth: email enumeration at sign-in</h3>
+                    <p class="contribution-meta">2025 <span>Security</span></p>
+                </header>
+                <p>Signing in with an unregistered email and a compromised password returned <code>PASSWORD_COMPROMISED</code> instead of the generic error, revealing which emails were registered. Traced it to the Have I Been Pwned plugin throwing during the dummy-password hash, and proposed a request-scoped skip flag plus a regression test.</p>
+                <p class="contribution-status"><span>Status</span> Maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</p>
+                <div class="project-actions">
+                    <a class="text-link" href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" rel="noopener noreferrer">Proposal #5973 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                    <a class="text-link" href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">Shipped #5998 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                </div>
+            </article>
+        </section>
+
+        <section data-spot="go-ethereum">
+            <article class="contribution-card">
+                <header class="contribution-card-head">
+                    <h3>go-ethereum: <code>geth db truncate-freezer</code></h3>
+                    <p class="contribution-meta">2025 <span>Systems</span></p>
+                </header>
+                <p>A subcommand for archive nodes that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies. Reviewed across three rounds by core maintainers (<code>s1na</code>, <code>jwasinger</code>, <code>MariusVanDerWijden</code>); revised it to batch-process rather than hold roughly 15 GB in memory on mainnet, to move headers into a fresh freezer instead of assuming equal table lengths, and to look up merge blocks per network.</p>
+                <p class="contribution-status"><span>Status</span> The core team built its own version of the command.</p>
+                <div class="project-actions">
+                    <a class="text-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer">PR #31351 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                </div>
+            </article>
+        </section>
+
+        <section data-spot="unmaze">
+            <h2 class="codex-h">Projects</h2>
+            <article class="project-card">
+                <header class="project-card-head">
+                    <div class="project-heading">
+                        <h3>unmaze</h3>
+                        <ul class="proof-chips" aria-label="Proof">
+                            <li><span class="proof-chip">Measured</span></li>
+                        </ul>
+                    </div>
+                </header>
+                <dl class="project-beats">
+                    <div>
+                        <dt>What</dt>
+                        <dd>A small diffusion model that solves hedge mazes by turning random noise into the path from the entrance to the centre. It trains on a plain CPU, and a browser page replays the model’s real frames so you can watch it work.</dd>
+                    </div>
+                    <div>
+                        <dt>Why</dt>
+                        <dd>Image models turn noise into pictures. This tests whether the same idea can turn noise into the one correct path through a maze, and measures where it stops working.</dd>
+                    </div>
+                    <div>
+                        <dt>How</dt>
+                        <dd>
+                            <p>Python, PyTorch, and NumPy. Mazes come from Wilson’s algorithm and their solutions from BFS. A 2.7M-parameter U-Net with self-attention denoises the path mask, and a DDIM sampler runs 50 steps; training took about 50 minutes on 3 CPU threads. A strict judge counts an answer only if it is exactly one simple path with no gaps or stray pixels, and no repair step runs afterward. The page is plain HTML, CSS, and JavaScript.</p>
+                            <ul class="project-evidence-list">
+                                <li>5,000 fresh 11×11 mazes the model never saw: 4,990 solved (99.8%)</li>
+                                <li>On depth-first-search mazes it never trained on: 66%</li>
+                                <li>All 10 failures were in the longest quarter of routes; on the 300 longest routes of 30,000 it solves 93%</li>
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+                <div class="project-actions">
+                    <a class="text-link" href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                </div>
+            </article>
+        </section>
+
+        <section data-spot="bingo">
+            <article class="project-card">
+                <header class="project-card-head">
+                    <div class="project-heading">
+                        <h3>Bingo</h3>
+                        <ul class="proof-chips" aria-label="Proof">
+                            <li><span class="proof-chip">Measured</span></li>
+                        </ul>
+                    </div>
+                </header>
+                <dl class="project-beats">
+                    <div>
+                        <dt>What</dt>
+                        <dd>A command-line movie search over 5,000 films that ranks results with keyword search, meaning-based search, or both, and can answer questions about the results with an LLM.</dd>
+                    </div>
+                    <div>
+                        <dt>Why</dt>
+                        <dd>Keyword search misses movies described in different words, and meaning-based search misses exact names. Measuring both on the same queries shows which one actually helps.</dd>
+                    </div>
+                    <div>
+                        <dt>How</dt>
+                        <dd>
+                            <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), a local cross-encoder reranker, CLIP for image search, and Gemini 2.0 Flash for answers with citations. I built it while working through Boot.dev's RAG course: BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, and reranking. I then built an 834-query known-item eval (each query aims at one movie; queries that leak the title are dropped), rewrote BM25 to score from precomputed term statistics, and added a side-by-side view that runs all four methods on one query next to their eval scores.</p>
+                            <ul class="project-evidence-list">
+                                <li>834 known-item queries, test split, target in the top 10: RRF with cross-encoder reranking 0.916, BM25 0.863, plain RRF 0.837, semantic 0.626</li>
+                                <li>Plain hybrid fusion scored below BM25 alone; only reranking beat it</li>
+                                <li>BM25 p95 latency fell from 3.4 s to 5 ms</li>
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+                <div class="project-actions">
+                    <a class="text-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
+                </div>
+            </article>
+        </section>
+
+        <section data-spot="library">
+            <h2 class="codex-h">Résumés and links</h2>
+            <div class="link-list" aria-label="Profiles and résumés">
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
+                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
+                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+                <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
+                <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
+                <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
+            </div>
+        </section>
+
+        <section data-spot="dock">
+            <h2 class="codex-h">Contact</h2>
+            <div class="contact-stage">
+                <p class="contact-title">Let’s make the next useful thing.</p>
+                <a class="contact-cta" href="mailto:srinivassivaratri1122@gmail.com">
+                    <span>Start a conversation</span>
+                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
+                </a>
+            </div>
+            <div class="contact-links" aria-label="Contact links">
+                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
+                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
+                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+            </div>
+        </section>
+
+        <footer class="codex-footer"><span>© 2025-26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
+    </div>
+
+    <dialog class="dlg dlg-intro" id="dlg-intro" aria-labelledby="intro-title">
+        <div class="dlg-body">
+            <p class="pixel-kicker">A tiny island, a lot of details</p>
+            <h2 id="intro-title" class="intro-title">Srinivas <span>Sivaratri</span></h2>
+            <p class="intro-tagline">I measure whether a model is actually right, and refuse to act when it is not.</p>
+            <ol class="intro-steps" id="intro-steps"></ol>
             <div class="dlg-actions">
-                <button type="button" class="game-btn game-btn-primary" id="btn-start">Enter the maze</button>
-                <button type="button" class="game-btn" id="btn-intro-plain">Plain page instead</button>
+                <button type="button" class="btn btn-lemon btn-big" id="btn-start">Start exploring</button>
+                <button type="button" class="btn btn-ghost" id="btn-intro-index">Browse the index</button>
             </div>
             <p class="intro-links">
                 <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
@@ -137,246 +309,57 @@
         </div>
     </dialog>
 
-    <dialog class="hedge-dialog room" id="dlg-room" aria-labelledby="room-title">
-        <div class="dlg-inner">
-            <div class="dlg-top">
-                <p class="dlg-kicker" id="room-kicker"></p>
-                <button type="button" class="game-btn" id="room-close">Back to the maze</button>
+    <dialog class="dlg dlg-spot" id="dlg-spot" aria-labelledby="spot-title">
+        <header class="dlg-head" id="spot-head">
+            <div>
+                <p class="pixel-kicker" id="spot-kicker"></p>
+                <h2 id="spot-title" class="dlg-title"></h2>
             </div>
-            <h2 class="sr-only" id="room-title"></h2>
-            <div class="room-body" id="room-body"></div>
-            <p class="room-foot" id="room-foot"></p>
+            <button type="button" class="btn btn-ghost" id="spot-close">Close</button>
+        </header>
+        <div class="dlg-body">
+            <div class="card-body" id="spot-body"></div>
+            <p class="spot-foot" id="spot-foot"></p>
         </div>
     </dialog>
 
-    <dialog class="hedge-dialog card" id="dlg-card" aria-labelledby="card-title">
-        <div class="dlg-inner">
-            <div class="dlg-top">
-                <p class="dlg-kicker">Your card</p>
-                <button type="button" class="game-btn" id="card-close">Back to the maze</button>
-            </div>
-            <h2 id="card-title">Bingo, <span id="card-summary">0 of 9</span></h2>
-            <p class="card-help">Nine squares: eight rooms and the heart. Choose one and the ghost will walk you there. Any line of three is a bingo.</p>
-            <div class="card-grid" id="card-grid"></div>
-            <div id="card-verdict"></div>
-            <div class="card-tools">
-                <button type="button" class="game-btn" id="card-share">Copy link to this maze</button>
-                <button type="button" class="game-btn" id="card-reset">Clear my card</button>
-                <span class="card-tools-note" id="card-tools-note" role="status"></span>
+    <dialog class="dlg dlg-detail" id="dlg-detail" aria-labelledby="detail-title">
+        <div class="dlg-body">
+            <p class="pixel-kicker" id="detail-kicker"></p>
+            <h2 id="detail-title" class="detail-title"></h2>
+            <p class="detail-text" id="detail-text"></p>
+            <div class="detail-extra" id="detail-extra"></div>
+            <div class="dlg-actions">
+                <button type="button" class="btn btn-lemon" id="detail-ok">Keep digging</button>
+                <a class="btn btn-pink" id="detail-cta" href="mailto:srinivassivaratri1122@gmail.com" hidden>Say hi</a>
             </div>
         </div>
     </dialog>
 
-    <main id="top">
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="hero-content">
-                <h1 id="hero-title">Srinivas <span>Sivaratri</span></h1>
-                <p class="hero-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
-                <div class="hero-links" data-room="resumes" aria-label="Profiles">
-                    <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
-                    <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
-                    <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
-                    <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
-                    <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
-                    <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
-                </div>
+    <dialog class="dlg dlg-index" id="dlg-index" aria-labelledby="index-title">
+        <header class="dlg-head dlg-head-plain">
+            <div>
+                <p class="pixel-kicker">The whole island, as a list</p>
+                <h2 id="index-title" class="dlg-title">Index</h2>
             </div>
-            <div class="hero-footer">
-                <a class="primary-action" href="#work">
-                    <span>View the work</span>
-                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
-                </a>
+            <button type="button" class="btn btn-ghost" id="index-close">Close</button>
+        </header>
+        <div class="dlg-body">
+            <h3 class="index-h">Places</h3>
+            <ul class="index-list" id="index-places"></ul>
+            <h3 class="index-h">Buried details <span id="index-count"></span></h3>
+            <ul class="index-list" id="index-details"></ul>
+            <div class="dlg-actions">
+                <button type="button" class="btn btn-ghost" id="index-reset">Reset my progress</button>
+                <span class="index-note" id="index-note" role="status"></span>
             </div>
-        </section>
+        </div>
+    </dialog>
 
-        <section id="about" class="about-section section-shell" aria-labelledby="about-title">
-            <div class="section-label">About</div>
-            <div class="about-grid">
-                <h2 id="about-title">Profile</h2>
-                <div class="about-copy" data-room="profile">
-                    <p>Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript.</p>
-                    <p class="availability-line"><strong>Available</strong>: remote full-time or contract · UTC+5:30 (IST)</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience" class="experience-section section-shell" aria-labelledby="experience-title">
-            <div class="section-label">Experience</div>
-            <h2 id="experience-title">Roles</h2>
-            <div class="role-list">
-                <article class="role-card" data-room="independent">
-                    <header class="role-card-head">
-                        <div class="role-identity">
-                            <h3>Independent engineering</h3>
-                            <p class="role-position">Software Engineer</p>
-                        </div>
-                        <p class="role-meta">May 2025–present <span>Remote</span></p>
-                    </header>
-                    <ul class="role-highlights">
-                        <li>Proposed a request-scoped skip flag and regression test for an email-enumeration leak in better-auth; maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</li>
-                        <li>Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.</li>
-                    </ul>
-                </article>
-                <article class="role-card" data-room="accenture">
-                    <header class="role-card-head">
-                        <div class="role-identity">
-                            <h3>Accenture</h3>
-                            <p class="role-position">Software Engineer</p>
-                        </div>
-                        <p class="role-meta">Jul 2021–Jul 2022 <span>Bangalore</span></p>
-                    </header>
-                    <ul class="role-highlights">
-                        <li>Developed a Python ETL script that automated data-processing workflows, saved 50 labor hours monthly, and reduced processing errors.</li>
-                        <li>Implemented a GitHub Actions CI/CD pipeline.</li>
-                    </ul>
-                </article>
-                <div class="education-block" data-room="profile">
-                    <h3>Education</h3>
-                    <ul>
-                        <li><span>MS Computer Science</span> University of Alabama at Birmingham · 2023–25</li>
-                        <li><span>BS Computer Science</span> BV Raju Institute of Technology · 2017–21</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="open-source" class="opensource-section section-shell" aria-labelledby="open-source-title">
-            <div class="section-label">Open source</div>
-            <h2 id="open-source-title">Upstream</h2>
-            <div class="contribution-list">
-                <article class="contribution-card" data-room="better-auth">
-                    <header class="contribution-card-head">
-                        <h3>better-auth: email enumeration at sign-in</h3>
-                        <p class="contribution-meta">2025 <span>Security</span></p>
-                    </header>
-                    <p>Signing in with an unregistered email and a compromised password returned <code>PASSWORD_COMPROMISED</code> instead of the generic error, revealing which emails were registered. Traced it to the Have I Been Pwned plugin throwing during the dummy-password hash, and proposed a request-scoped skip flag plus a regression test.</p>
-                    <p class="contribution-status"><span>Status</span> Maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</p>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/better-auth/better-auth/pull/5973" target="_blank" rel="noopener noreferrer">Proposal #5973 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                        <a class="text-link" href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">Shipped #5998 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-                <article class="contribution-card" data-room="go-ethereum">
-                    <header class="contribution-card-head">
-                        <h3>go-ethereum: <code>geth db truncate-freezer</code></h3>
-                        <p class="contribution-meta">2025 <span>Systems</span></p>
-                    </header>
-                    <p>A subcommand for archive nodes that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies. Reviewed across three rounds by core maintainers (<code>s1na</code>, <code>jwasinger</code>, <code>MariusVanDerWijden</code>); revised it to batch-process rather than hold roughly 15 GB in memory on mainnet, to move headers into a fresh freezer instead of assuming equal table lengths, and to look up merge blocks per network.</p>
-                    <p class="contribution-status"><span>Status</span> The core team built its own version of the command.</p>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer">PR #31351 <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section id="work" class="projects-section section-shell" aria-labelledby="projects-title">
-            <div class="section-label">Work</div>
-            <h2 id="projects-title">Projects</h2>
-            <div class="project-list">
-
-                <article class="project-card" id="unmaze" data-room="unmaze">
-                    <header class="project-card-head">
-                        <span class="project-index">01</span>
-                        <div class="project-heading">
-                            <h3>unmaze</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><span class="proof-chip">Measured</span></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>A small diffusion model that solves hedge mazes by turning random noise into the path from the entrance to the centre. It trains on a plain CPU, and a browser page replays the model’s real frames so you can watch it work.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Image models turn noise into pictures. This tests whether the same idea can turn noise into the one correct path through a maze, and measures where it stops working.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Python, PyTorch, and NumPy. Mazes come from Wilson’s algorithm and their solutions from BFS. A 2.7M-parameter U-Net with self-attention denoises the path mask, and a DDIM sampler runs 50 steps; training took about 50 minutes on 3 CPU threads. A strict judge counts an answer only if it is exactly one simple path with no gaps or stray pixels, and no repair step runs afterward. The page is plain HTML, CSS, and JavaScript.</p>
-                                <ul class="project-evidence-list">
-                                    <li>5,000 fresh 11×11 mazes the model never saw: 4,990 solved (99.8%)</li>
-                                    <li>On depth-first-search mazes it never trained on: 66%</li>
-                                    <li>All 10 failures were in the longest quarter of routes; on the 300 longest routes of 30,000 it solves 93%</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-                <article class="project-card" id="bingo" data-room="bingo">
-                    <header class="project-card-head">
-                        <span class="project-index">02</span>
-                        <div class="project-heading">
-                            <h3>Bingo</h3>
-                            <ul class="proof-chips" aria-label="Proof">
-                                <li><span class="proof-chip">Measured</span></li>
-                            </ul>
-                        </div>
-                    </header>
-                    <dl class="project-beats">
-                        <div>
-                            <dt>What</dt>
-                            <dd>A command-line movie search over 5,000 films that ranks results with keyword search, meaning-based search, or both, and can answer questions about the results with an LLM.</dd>
-                        </div>
-                        <div>
-                            <dt>Why</dt>
-                            <dd>Keyword search misses movies described in different words, and meaning-based search misses exact names. Measuring both on the same queries shows which one actually helps.</dd>
-                        </div>
-                        <div>
-                            <dt>How</dt>
-                            <dd>
-                                <p>Python, NLTK, sentence-transformers (<code>all-MiniLM-L6-v2</code>), a local cross-encoder reranker, CLIP for image search, and Gemini 2.0 Flash for answers with citations. I built it while working through Boot.dev's RAG course: BM25 over an inverted index, chunked embeddings, Reciprocal Rank Fusion, and reranking. I then built an 834-query known-item eval (each query aims at one movie; queries that leak the title are dropped), rewrote BM25 to score from precomputed term statistics, and added a side-by-side view that runs all four methods on one query next to their eval scores.</p>
-                                <ul class="project-evidence-list">
-                                    <li>834 known-item queries, test split, target in the top 10: RRF with cross-encoder reranking 0.916, BM25 0.863, plain RRF 0.837, semantic 0.626</li>
-                                    <li>Plain hybrid fusion scored below BM25 alone; only reranking beat it</li>
-                                    <li>BM25 p95 latency fell from 3.4 s to 5 ms</li>
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
-                    <div class="project-actions">
-                        <a class="text-link" href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Repo <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg></a>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <section id="contact" class="contact-section section-shell" aria-labelledby="contact-title">
-            <div class="section-label">Contact</div>
-            <div class="contact-stage" data-room="heart">
-                <h2 id="contact-title">Let’s make the next useful thing.</h2>
-                <a class="contact-cta" href="mailto:srinivassivaratri1122@gmail.com">
-                    <span>Start a conversation</span>
-                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
-                </a>
-            </div>
-            <div class="contact-links" data-room="heart" aria-label="Contact links">
-                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
-                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
-                <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
-                <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
-                <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
-            </div>
-            <footer class="site-footer"><span>© 2025-26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
-        </section>
-    </main>
-
-    <script src="js/script.js"></script>
     <script src="js/maze.js"></script>
+    <script src="js/lore.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/art.js"></script>
     <script src="js/game.js"></script>
 </body>
 
