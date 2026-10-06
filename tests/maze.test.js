@@ -4,7 +4,6 @@ const assert = require("node:assert/strict");
 const M = require("../js/maze.js");
 
 const SEEDS = Array.from({ length: 200 }, (_, i) => i + 1);
-const ROOM_IDS = ["profile", "independent", "accenture", "better-auth", "go-ethereum", "unmaze", "bingo", "resumes"];
 
 test("mulberry32 is deterministic and stays in [0, 1)", () => {
     const a = M.mulberry32(42), b = M.mulberry32(42);
@@ -53,43 +52,6 @@ test("generate: entrance on the outer ring, heart at the centre, solution is one
     }
 });
 
-test("placeRooms: eight distinct dead ends off the solution, deterministic per seed", () => {
-    for (const seed of SEEDS) {
-        const m = M.generate(seed, 11);
-        const rooms = M.placeRooms(m, ROOM_IDS);
-        const onPath = new Set(m.solution);
-        assert.equal(rooms.length, ROOM_IDS.length);
-        assert.deepEqual(rooms.map((r) => r.id), ROOM_IDS);
-        assert.equal(new Set(rooms.map((r) => r.idx)).size, ROOM_IDS.length, `seed ${seed}: distinct tiles`);
-        for (const r of rooms) {
-            assert.ok(!onPath.has(r.idx), `seed ${seed}: ${r.id} is off the solution`);
-            assert.notEqual(r.idx, m.heart);
-            assert.equal(M.openNeighbors(m.walls, m.size, r.idx).length, 1, `seed ${seed}: ${r.id} is a dead end`);
-        }
-        assert.deepEqual(rooms, M.placeRooms(M.generate(seed, 11), ROOM_IDS));
-    }
-});
-
-test("placeRooms: the first room is the one nearest the entrance", () => {
-    for (const seed of SEEDS) {
-        const m = M.generate(seed, 11);
-        const rooms = M.placeRooms(m, ROOM_IDS);
-        const { dist } = M.bfs(m.walls, m.size, m.entrance);
-        const nearest = Math.min(...rooms.map((r) => dist[r.idx]));
-        assert.equal(dist[rooms[0].idx], nearest);
-    }
-});
-
-test("placeEyes: interior hedge tiles beside a corridor", () => {
-    const m = M.generate(3, 11);
-    const eyes = M.placeEyes(m, 5);
-    assert.ok(eyes.length > 0 && eyes.length <= 5);
-    for (const i of eyes) {
-        assert.equal(m.walls[i], 1);
-        assert.ok(M.openNeighbors(m.walls, m.size, i).length >= 1);
-    }
-});
-
 test("judge: the exact path is SOLVED", () => {
     const m = M.generate(5, 11);
     const verdict = M.judge(m, new Set(m.solution));
@@ -99,11 +61,10 @@ test("judge: the exact path is SOLVED", () => {
     assert.equal(verdict.strayBlobs, 0);
 });
 
-test("judge: a detour into a room is LOST, counted as one stray blob", () => {
+test("judge: a detour into a dead end is LOST, counted as one stray blob", () => {
     const m = M.generate(5, 11);
-    const [room] = M.placeRooms(m, ROOM_IDS);
     const parent = M.bfs(m.walls, m.size, m.entrance).parent;
-    const detour = M.pathTo(parent, m.entrance, room.idx);
+    const detour = M.pathTo(parent, m.entrance, m.deadEnds[0]);
     const verdict = M.judge(m, new Set([...m.solution, ...detour]));
     assert.equal(verdict.solved, false);
     assert.equal(verdict.reachedHeart, true);
@@ -125,7 +86,7 @@ test("bfs with an allowed set stays inside it", () => {
     const allowed = new Set(m.solution);
     const path = M.shortestPath(m.walls, m.size, m.entrance, m.heart, allowed);
     assert.deepEqual(path, m.solution);
-    const off = M.placeRooms(m, ROOM_IDS)[0].idx;
+    const off = m.deadEnds[0];
     assert.equal(M.shortestPath(m.walls, m.size, m.entrance, off, allowed), null);
 });
 
@@ -135,8 +96,8 @@ test("denoise: schedule climbs from noise to clean, and the last frame is the ex
     assert.ok(M.alphaBar(0, steps) < 0.001);
     for (let k = 1; k <= steps; k++) assert.ok(M.alphaBar(k, steps) > M.alphaBar(k - 1, steps));
 
-    const m = M.generate(9, 11);
-    const mask = M.pathMask(m, 3);
+    const mask = new Float32Array(35).fill(-1);
+    [0, 1, 2, 9, 16, 17, 18, 25].forEach((i) => { mask[i] = 1; });
     const eps = M.gaussianField(mask.length, 99);
     assert.deepEqual(M.denoiseFrame(mask, eps, steps, steps), mask);
 
