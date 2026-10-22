@@ -663,6 +663,48 @@
             rect(g, o[0] + 8, o[1] + 24, 8, 8, C.ink); rect(g, o[0] + 9, o[1] + 25, 6, 6, "#fff"); rect(g, o[0] + 11, o[1] + 25, 1, 6, C.ink);
             rect(g, o[0] + 34, o[1] + 38, 24, 3, C.wood); dot(g, o[0] + 38, o[1] + 37, C.pink); dot(g, o[0] + 48, o[1] + 37, C.yellow); dot(g, o[0] + 52, o[1] + 37, C.pink);
             L.push({ x: o[0] + 46, y: o[1] + 30, r: 26, color: "#ffd37a", a: 0.7 });
+        },
+        /* Reading Room: a shop window holding a wooden shelf of books, each with a bookmark ribbon. */
+        readingroom: function (g, b, L) {
+            var o = [4, 20], W = b.w * T, H = b.h * T;
+            rect(g, o[0] + 2, o[1] + 16, W - 4, H - 16, C.cream || "#f3e6c8");
+            rect(g, o[0] + 2, o[1] + H - 4, W - 4, 4, C.woodLight);
+            roof(g, o[0], o[1], W, 20, "teal");
+            doorAt(g, o[0] + 6, o[1] + H - 15, 9, 15, C.wood);
+            rect(g, o[0] + 20, o[1] + 21, 40, 22, C.ink);
+            rect(g, o[0] + 21, o[1] + 22, 38, 20, "#3b2a1a");
+            var books = [C.coral, C.blue, C.yellow, C.violet, C.teal, C.pink, C.green];
+            for (var sh = 0; sh < 2; sh++) {
+                var sy = o[1] + 22 + sh * 10;
+                rect(g, o[0] + 21, sy + 8, 38, 2, C.woodLight);
+                for (var bk = 0; bk < 12; bk++) {
+                    var hgt = 6 + ((bk * 7 + sh * 3) % 3) - 1;
+                    rect(g, o[0] + 22 + bk * 3, sy + 8 - hgt, 2, hgt, books[(bk + sh * 2) % books.length]);
+                }
+                dot(g, o[0] + 25 + sh * 12, sy + 9, C.coral); dot(g, o[0] + 25 + sh * 12, sy + 10, C.coral);
+            }
+            rect(g, o[0] + 4, o[1] + 22, 12, 9, C.ink); rect(g, o[0] + 5, o[1] + 23, 10, 7, "#fff");
+            rect(g, o[0] + 6, o[1] + 25, 3, 1, C.ink); rect(g, o[0] + 11, o[1] + 25, 3, 1, C.ink); rect(g, o[0] + 10, o[1] + 23, 1, 7, C.tealDark);
+            L.push({ x: o[0] + 40, y: o[1] + 32, r: 26, color: "#ffd37a", a: 0.7 });
+        },
+        /* Picture House: a marquee with ticket stubs pinned across the front wall. */
+        picturehouse: function (g, b, L) {
+            var o = [4, 20], W = b.w * T, H = b.h * T;
+            rect(g, o[0] + 2, o[1] + 16, W - 4, H - 16, "#3b2a4a");
+            rect(g, o[0] + 2, o[1] + H - 4, W - 4, 4, C.ink);
+            roof(g, o[0], o[1], W, 20, "coral");
+            rect(g, o[0] + 8, o[1] + 17, W - 16, 6, C.ink);
+            for (var bl = 0; bl < 12; bl++) dot(g, o[0] + 10 + bl * 4, o[1] + 19, bl % 2 ? C.yellow : "#fff");
+            var stubs = [C.pink, C.yellow, C.violet, C.teal];
+            for (var k = 0; k < 4; k++) {
+                var sx = o[0] + [5, 15, 45, 55][k], sy = o[1] + 26 + (k % 2) * 2;
+                rect(g, sx, sy, 8, 11, stubs[k]);
+                rect(g, sx, sy + 7, 8, 1, C.ink);
+                dot(g, sx + 3, sy + 1, C.ink);
+                rect(g, sx + 2, sy + 3, 4, 1, "#fff");
+            }
+            doorAt(g, o[0] + 26, o[1] + H - 16, 12, 16, C.coralDark || C.coral);
+            L.push({ x: o[0] + 32, y: o[1] + 20, r: 30, color: "#ffcb3d", a: 0.6 });
         }
     };
 

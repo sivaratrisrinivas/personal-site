@@ -51,7 +51,7 @@
             <span class="brand-name">Srinivas Sivaratri</span>
         </a>
         <div class="hud-stats" aria-label="Progress">
-            <span class="chip chip-places" id="chip-places">Places <b>0/10</b></span>
+            <span class="chip chip-places" id="chip-places">Places <b>0/12</b></span>
             <span class="chip chip-details" id="chip-details">Details <b>0/17</b></span>
         </div>
         <nav class="hud-actions" aria-label="Game menu">
@@ -270,6 +270,18 @@
             </div>
         </section>
 
+        <section data-spot="reading">
+            <h2 class="codex-h">Favourites, 2026: the Reading Room</h2>
+            <p class="fav-intro">What is on the nightstand, with a bookmark in each.</p>
+            <div data-fav-host="reading"><p>Books: Crime and Punishment (Fyodor Dostoevsky), Outsmart Everyone (Andrew Bustamante), Creative Confidence (Tom Kelley &amp; David Kelley).</p></div>
+        </section>
+
+        <section data-spot="pictures">
+            <h2 class="codex-h">Favourites, 2026: the Picture House</h2>
+            <p class="fav-intro">Ticket stubs from the year at the movies.</p>
+            <div data-fav-host="pictures"><p>Films: Dorothy, Dhurandhar: The Revenge, Obsession, The Odyssey.</p></div>
+        </section>
+
         <section data-spot="dock">
             <h2 class="codex-h">Contact</h2>
             <div class="contact-stage">
@@ -347,6 +359,8 @@
         <div class="dlg-body">
             <h3 class="index-h">Places</h3>
             <ul class="index-list" id="index-places"></ul>
+            <h3 class="index-h">Favourites, 2026</h3>
+            <ul class="index-list index-favourites" id="index-favourites"></ul>
             <h3 class="index-h">Buried details <span id="index-count"></span></h3>
             <ul class="index-list" id="index-details"></ul>
             <div class="dlg-actions">
@@ -360,6 +374,8 @@
     <script src="js/lore.js"></script>
     <script src="js/world.js"></script>
     <script src="js/art.js"></script>
+    <script src="js/favourites.js"></script>
+    <script src="js/favourites-view.js"></script>
     <script src="js/game.js"></script>
 </body>
 
