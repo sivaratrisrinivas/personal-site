@@ -23,7 +23,9 @@
         { id: "bingo", x: 36, y: 15, w: 5, h: 4, door: 2 },
         { id: "go-ethereum", x: 8, y: 22, w: 4, h: 3, door: 1 },
         { id: "unmaze", x: 15, y: 22, w: 4, h: 3, door: 1 },
-        { id: "school", x: 36, y: 24, w: 5, h: 3, door: 2 }
+        { id: "school", x: 36, y: 24, w: 5, h: 3, door: 2 },
+        { id: "reading", x: 26, y: 10, w: 4, h: 3, door: 1 },
+        { id: "pictures", x: 31, y: 10, w: 4, h: 3, door: 2 }
     ];
 
     var BLOBS = [

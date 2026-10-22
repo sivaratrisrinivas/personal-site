@@ -9,7 +9,7 @@
 })(typeof self !== "undefined" ? self : this, function () {
     "use strict";
 
-    /* The ten places. `kind` picks the building painter; `roof` is the colour family. */
+    /* The twelve places. `kind` picks the building painter; `roof` is the colour family. */
     var SPOTS = {
         profile: { building: "Lighthouse", title: "Profile", kicker: "The lighthouse", kind: "lighthouse", roof: "coral", teaser: "the short version" },
         independent: { building: "Workshop", title: "Independent engineering", kicker: "The workshop", kind: "workshop", roof: "teal", teaser: "two upstream pull requests, two very different endings" },
@@ -20,6 +20,8 @@
         bingo: { building: "Cinema", title: "Bingo", kicker: "The cinema", kind: "cinema", roof: "yellow", teaser: "5,000 films, four ways to search them" },
         school: { building: "School", title: "Education", kicker: "The school", kind: "school", roof: "brick", teaser: "two computer science degrees" },
         library: { building: "Library", title: "Résumés & links", kicker: "The library", kind: "library", roof: "green", teaser: "four PDFs and the usual profiles" },
+        reading: { building: "Reading Room", title: "Reading Room", kicker: "Favourites, 2026 · books", kind: "readingroom", roof: "teal", teaser: "three books on the shelf, bookmarks in" },
+        pictures: { building: "Picture House", title: "Picture House", kicker: "Favourites, 2026 · films", kind: "picturehouse", roof: "coral", teaser: "four ticket stubs pinned to the wall" },
         dock: { building: "Dock", title: "Contact", kicker: "The dock", kind: "dock", roof: "wood", teaser: "say hello" }
     };
 

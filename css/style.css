@@ -667,3 +667,38 @@ html:not(.js) body { background: #bfe8ff; }
     .dlg[open], .bubble { animation: none; }
     .btn, .text-link, .contact-cta { transition: none; }
 }
+
+/* ---------- Favourites, 2026 (Reading Room shelf + Picture House stubs) ---------- */
+.fav-intro { color: var(--muted); margin: 0 0 0.75rem; }
+.fav-shelf { list-style: none; margin: 0; padding: 0 0 0.9rem; display: grid; gap: 1rem;
+    border-bottom: 10px solid #8c5b34; box-shadow: 0 4px 0 #66411f; }
+.fav-book { display: grid; grid-template-columns: 60px 1fr; gap: 0.9rem; align-items: start; }
+.fav-cover { position: relative; width: 60px; height: 90px; border: 2px solid var(--border); background: var(--spine, #ff5d6c); image-rendering: pixelated; }
+.fav-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fav-spine { position: absolute; inset: 4px; display: flex; align-items: center; justify-content: center; text-align: center;
+    font-family: var(--font-pixel); font-size: 0.55rem; line-height: 1.2; color: #fff6e0; border-top: 4px solid #ffd23f; border-bottom: 4px solid #ffd23f; overflow: hidden; }
+.fav-book h3, .fav-stub h3 { margin: 0; font-family: var(--font-pixel); font-size: 0.95rem; }
+.fav-author, .fav-label, .fav-credit, .fav-credit-line { margin: 0.15rem 0; color: var(--muted); font-size: 0.8rem; }
+.fav-bar { height: 10px; border: 2px solid var(--border); background: var(--panel-2); margin-top: 0.4rem; max-width: 16rem; }
+.fav-bar-fill { display: block; height: 100%; background: var(--spine, var(--coral)); }
+.fav-facts { margin: 0.4rem 0; padding-left: 1.1rem; font-size: 0.85rem; }
+.fav-facts li { margin: 0.2rem 0; }
+.fav-src { font-size: 0.75rem; }
+.fav-pd { display: flex; gap: 0.5rem; align-items: center; margin: 0.4rem 0; font-size: 0.7rem; color: var(--muted); }
+.fav-pd img { border: 1px solid var(--border); height: auto; }
+.fav-wall { list-style: none; margin: 0; padding: 0.8rem; display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    background: #3b2a4a; border: 2px solid var(--border); }
+.fav-stub { background: var(--panel); border: 2px solid var(--border); color: var(--text); }
+.fav-stub:nth-child(odd) { transform: rotate(-1deg); }
+.fav-stub:nth-child(even) { transform: rotate(1deg); }
+.fav-stub-top { background: var(--stub, var(--coral)); color: #1d1b3a; padding: 0.5rem 0.6rem; }
+.fav-stub-top .fav-credit-line { color: #1d1b3a; }
+.fav-admit { font-family: var(--font-pixel); font-size: 0.6rem; letter-spacing: 0.05em; }
+.fav-stub-tear { height: 0; border-top: 3px dashed var(--border); }
+.fav-stub-body { padding: 0.4rem 0.6rem 0.6rem; }
+.fav-note { font-size: 0.75rem; color: var(--label); margin: 0.3rem 0; }
+.fav-official { font-size: 0.8rem; }
+.fav-ix { display: grid; grid-template-columns: 3.2rem 1fr; column-gap: 0.5rem; }
+.fav-ix small { grid-column: 2; color: var(--muted); }
+.fav-ix-kind { grid-row: span 2; font-family: var(--font-pixel); font-size: 0.6rem; align-self: center; }
+@media (prefers-reduced-motion: reduce) { .fav-stub { transform: none !important; } }
