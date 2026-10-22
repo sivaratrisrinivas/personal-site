@@ -596,7 +596,8 @@
             var read = document.createElement("button"); read.type = "button"; read.className = "btn btn-lemon"; read.textContent = "Read";
             read.setAttribute("aria-label", "Read " + m.title);
             read.addEventListener("click", function () { el.index.close(); openSpot(id); });
-            var go = document.createElement("button"); go.type = "button"; go.className = "btn btn-cyan"; go.textContent = "Walk there";
+            read.className = "btn btn-lemon index-read";
+            var go = document.createElement("button"); go.type = "button"; go.className = "btn btn-ghost index-walk"; go.textContent = "Walk there";
             go.setAttribute("aria-label", "Walk to the " + m.building);
             go.addEventListener("click", function () {
                 el.index.close();
@@ -605,6 +606,8 @@
             });
             btns.append(read, go);
             li.append(dot, name, btns);
+            /* The whole card reads the place (handy on phones); Walk there stays its own button. */
+            li.addEventListener("click", function (e) { if (!e.target.closest("button")) read.click(); });
             ul.append(li);
         });
         var dl = $("index-details");
@@ -624,6 +627,7 @@
             dl.append(li);
         });
         $("index-count").textContent = found.size + "/" + TOTAL_DETAILS;
+        $("index-places-count").textContent = places.size + "/" + Object.keys(L.SPOTS).length;
         $("index-reset").textContent = "Reset my progress";
         resetArmed = false;
         $("index-note").textContent = "";
@@ -646,6 +650,7 @@
         el.theme.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
         var next = theme === "dark" ? "day" : "night";
         el.theme.setAttribute("aria-label", "Switch to " + next);
+        el.theme.setAttribute("title", "Switch to " + next);
         el.theme.querySelector(".btn-theme-text").textContent = next.charAt(0).toUpperCase() + next.slice(1);
         if (persist) { try { localStorage.setItem("theme", theme); } catch (e) { /* ignore */ } }
     }
@@ -909,6 +914,7 @@
         cam.y = clampCam(player.y - view.h / 2, world.H * T, view.h);
         start();
         el.intro.showModal();
+        $("btn-start").focus();
 
         if (DEBUG) {
             window.__island = {
