@@ -258,7 +258,7 @@ html:not([data-theme="dark"]) .btn-theme .icon-sun { display: none; }
     min-height: 44px;
     padding: 0.35rem 1rem 0.35rem 0.5rem;
     font-family: var(--font-pixel);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
@@ -274,7 +274,7 @@ html:not([data-theme="dark"]) .btn-theme .icon-sun { display: none; }
     background: var(--lemon);
     color: var(--ink);
     font-family: var(--font-pixel);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
 }
 
 .bubble {
