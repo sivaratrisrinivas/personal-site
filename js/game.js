@@ -1,5 +1,5 @@
 /*
- * The island game: loop, input, camera, interaction, digging, dialogs, progress.
+ * The island game: loop, input, camera, interaction, digging, dialogs.
  * World geometry is in world.js, words in lore.js, pixel art in art.js. Every word of real content
  * lives once in the page's codex and is cloned into a dialog when you open its building.
  */
@@ -16,7 +16,6 @@
 
     var T = IW.T;
     var SPEED = 62;
-    var STORE = "island-v1";
     var DEBUG = /(^|[?&])debug(=|&|$)/.test(location.search);
     var HUES = {
         coral: "#ff5d6c", teal: "#2dc4b6", blue: "#6a9bff", pink: "#ff7ac8", ice: "#9fdcf5", violet: "#a98bff",
@@ -32,7 +31,7 @@
     var ctx = canvas.getContext("2d");
     var el = {
         stage: $("stage"), prompt: $("prompt"), bubble: $("bubble"), act: $("btn-act"),
-        chipPlaces: $("chip-places"), chipDetails: $("chip-details"), theme: $("btn-theme"),
+        theme: $("btn-theme"),
         intro: $("dlg-intro"), spot: $("dlg-spot"), detail: $("dlg-detail"), index: $("dlg-index")
     };
 
@@ -44,31 +43,9 @@
 
     var world = IW.build();
     var art = A.create(world);
-    var TOTAL_DETAILS = L.DETAILS.length;
-    var TOTAL_PLACES = Object.keys(L.SPOTS).length;
 
-    /* ---------- progress ---------- */
-
+    /* What you have seen this visit. Not saved: there is no score to keep. */
     var found = new Set(), places = new Set(), pressed = 0;
-    try {
-        var saved = JSON.parse(localStorage.getItem(STORE));
-        if (saved) {
-            (saved.found || []).forEach(function (id) { if (L.DETAILS.some(function (d) { return d.id === id; })) found.add(id); });
-            (saved.places || []).forEach(function (id) { if (L.SPOTS[id]) places.add(id); });
-            pressed = saved.pressed | 0;
-        }
-    } catch (e) { /* private mode or bad data */ }
-
-    function save() {
-        try { localStorage.setItem(STORE, JSON.stringify({ found: Array.from(found), places: Array.from(places), pressed: pressed })); } catch (e) { /* ignore */ }
-    }
-
-    function updateHud() {
-        el.chipPlaces.querySelector("b").textContent = places.size + "/" + TOTAL_PLACES;
-        el.chipDetails.querySelector("b").textContent = found.size + "/" + TOTAL_DETAILS;
-        el.chipPlaces.classList.toggle("is-done", places.size === TOTAL_PLACES);
-        el.chipDetails.classList.toggle("is-done", found.size === TOTAL_DETAILS);
-    }
 
     /* ---------- state ---------- */
 
@@ -82,7 +59,7 @@
     var near = null;
     var particles = [];
     var night = root.getAttribute("data-theme") === "dark" ? 1 : 0, nightTarget = night;
-    var pressAnim = 0, catLine = 0, owlLine = 0, bubbleTimer = 0;
+    var pressAnim = 0, owlLine = 0, bubbleTimer = 0;
     var trail = new Set();
     var running = false, last = 0;
 
@@ -134,23 +111,13 @@
             var bob = reduced ? 0 : Math.round(Math.sin(now / 600));
             put(g, art.spr.boat[0], (dockX + 3.4) * T, (dockEnd - 1) * T + 6 + bob);
             put(g, art.spr.bottle[0], (dockX + 1) * T, (dockEnd + 0.8) * T + bob);
-            if (places.has("dock")) star(g, (dockX + 1) * T, (dockEnd - 0.4) * T, now);
         }
     });
     statics.sort(function (a, b) { return a.by - b.by; });
 
-    function star(g, x, y, now) {
-        var bob = reduced ? 0 : Math.round(Math.sin(now / 300));
-        x = Math.round(x); y = Math.round(y) + bob;
-        A.rect(g, x - 1, y - 3, 3, 7, A.C.ink); A.rect(g, x - 3, y - 1, 7, 3, A.C.ink);
-        A.rect(g, x, y - 2, 1, 5, A.C.gold); A.rect(g, x - 2, y, 5, 1, A.C.gold);
-        A.dot(g, x, y, "#fff");
-    }
-
     function buildingFX(g, b, now) {
         var bx = b.x * T, by = b.y * T;
         var t = reduced ? 0 : now;
-        if (places.has(b.id) && b.id !== "dock") star(g, bx + b.w * T / 2, by - (b.kind === "lighthouse" ? 26 : b.kind === "tower" ? 24 : 10), now);
         if (b.kind === "workshop") {
             for (var i = 0; i < 3; i++) {
                 var p = ((t / 1400) + i / 3) % 1;
@@ -179,13 +146,6 @@
                 A.rect(g, bx + 8 + k * 5, by + 24, 2, 2, col);
                 A.rect(g, bx + 8 + k * 5, by + 39, 2, 2, (k + phase + 1) % 2 ? "#ffffff" : A.C.coral);
             }
-        } else if (b.kind === "school") {
-            for (var c = 0; c < 8; c++) {
-                var wave = reduced ? 0 : Math.round(Math.sin(now / 220 + c * 0.7));
-                A.rect(g, bx + 63 + c, by - 10 + wave, 1, 5, c % 3 === 0 ? A.C.blueDark : A.C.blue);
-            }
-        } else if (b.kind === "tower") {
-            if (reduced || Math.floor(now / 700) % 2 === 0) A.rect(g, bx + 25, by - 17, 4, 3, "#ff9aa4");
         } else if (b.kind === "lighthouse") {
             if (!reduced && Math.floor(now / 180) % 6 === 0) { A.rect(g, bx + 20, by - 6, 2, 2, "#ffffff"); }
         }
@@ -307,7 +267,6 @@
 
     function goToTarget(t) {
         var cands = t.kind === "spot" || t.kind === "dig" ? [[t.tx, t.ty]] : [[t.tx, t.ty + 1], [t.tx - 1, t.ty], [t.tx + 1, t.ty], [t.tx, t.ty - 1]];
-        if (t.kind === "cat") { var ct = tileOf(cat.x, cat.y); cands = [[ct[0], ct[1] + 1], [ct[0] + 1, ct[1]], [ct[0] - 1, ct[1]], [ct[0], ct[1] - 1]]; }
         for (var i = 0; i < cands.length; i++) {
             if (IW.walkable(world, cands[i][0], cands[i][1]) && goTo(cands[i][0], cands[i][1], t)) return true;
         }
@@ -349,7 +308,6 @@
             case "spot": return t.id === "dock" ? "Open the bottle" : "Enter the " + L.SPOTS[t.id].building;
             case "dig": return "Dig here";
             case "sign": return "Read the sign";
-            case "cat": return "Pet the cat";
             case "owl": return "Talk to the owl";
             case "button": return "Press the button";
             case "chest": return "Open the chest";
@@ -367,7 +325,6 @@
             if (t.kind === "dig" && found.has(t.detail)) return;
             consider(t);
         });
-        consider({ kind: "cat", id: "cat", x: cat.x, y: cat.y, reach: 22 });
         return best;
     }
 
@@ -407,7 +364,6 @@
             case "spot": player.dir = "up"; openSpot(t.id); break;
             case "dig": startDig(t); break;
             case "sign": face(); say(L.SIGNS[t.signIndex].speaker, L.SIGNS[t.signIndex].text); break;
-            case "cat": face(); say("Cat", L.CAT_LINES[catLine++ % L.CAT_LINES.length]); burst(cat.x, cat.y - 10, ["#ff7ac8"], 4); break;
             case "owl": face(); say("Owl, the judge", L.OWL_LINES[owlLine++ % L.OWL_LINES.length]); break;
             case "button": face(); pressButton(); break;
             case "chest": face(); openChest(); break;
@@ -448,14 +404,6 @@
         }
     }
 
-    function confetti() {
-        if (reduced) return;
-        var colors = ["#ffd23f", "#ff4d8d", "#27d3cc", "#8e63ff", "#5ec24c", "#ff5d6c"];
-        for (var i = 0; i < 120; i++) {
-            particles.push({ x: cam.x + Math.random() * view.w, y: cam.y - 6 - Math.random() * 40, vx: (Math.random() - 0.5) * 30, vy: 30 + Math.random() * 50, life: 2200 + Math.random() * 1500, max: 3700, color: colors[i % colors.length], size: 2, grav: 0 });
-        }
-    }
-
     function updateParticles(dt) {
         particles = particles.filter(function (p) { return (p.life -= dt) > 0; });
         particles.forEach(function (p) {
@@ -488,7 +436,7 @@
         } else {
             var blobs = j.strayBlobs + " stray blob" + (j.strayBlobs === 1 ? "" : "s"), tiles = j.strayTiles + " stray tile" + (j.strayTiles === 1 ? "" : "s");
             p1.textContent = "Reason: " + (j.strayTiles ? blobs + ", " + tiles + " off the path." : "the trail does not cover the whole path.") + " The judge runs no repair step.";
-            p2.textContent = "You took the scenic route. The owl respects it, and does not forgive it.";
+            p2.textContent = "Walk only the path to the heart, and the judge counts it solved.";
         }
         box.append(big, p1, p2);
         return box;
@@ -496,11 +444,8 @@
 
     function reveal(id) {
         var d = L.DETAILS.find(function (x) { return x.id === id; });
-        var fresh = !found.has(id);
-        if (fresh) { found.add(id); save(); updateHud(); }
-        var done = found.size === TOTAL_DETAILS && fresh;
-        var n = found.size;
-        $("detail-kicker").textContent = (fresh ? "Detail " + n + " of " + TOTAL_DETAILS : "Already found") + " · " + nearName(d);
+        found.add(id);
+        $("detail-kicker").textContent = "Hidden detail · " + nearName(d);
         $("detail-title").textContent = d.title;
         var extra = $("detail-extra");
         extra.replaceChildren();
@@ -510,17 +455,6 @@
         } else {
             $("detail-text").textContent = d.text;
         }
-        var cta = $("detail-cta");
-        cta.hidden = !done;
-        $("detail-ok").textContent = done ? "Keep wandering" : "Keep digging";
-        if (done) {
-            $("detail-kicker").textContent = "Every detail found · " + n + " of " + TOTAL_DETAILS;
-            var fin = document.createElement("p");
-            fin.className = "detail-text";
-            fin.textContent = "That was the last one. You dug up everything on this island. The rest is a conversation.";
-            extra.append(fin);
-            confetti();
-        }
         el.detail.showModal();
         $("detail-ok").focus();
     }
@@ -528,7 +462,6 @@
     function pressButton() {
         pressed++;
         pressAnim = 260;
-        save();
         var line = pressed >= 4 ? "The button has said everything it will say." : L.BUTTON_LINES[Math.min(pressed, 3) - 1];
         if (pressed === 3 && !found.has("egg-button")) {
             say("Button", L.BUTTON_LINES[2]);
@@ -555,22 +488,7 @@
                 body.append(copy);
             });
         }
-        var wasNew = !places.has(id);
         places.add(id);
-        save();
-        updateHud();
-        var mine = L.DETAILS.filter(function (d) { return d.near === id; });
-        var got = mine.filter(function (d) { return found.has(d.id); }).length;
-        var foot = $("spot-foot");
-        foot.replaceChildren();
-        var strong = document.createElement("b");
-        if (!mine.length) { strong.textContent = "Nothing buried here."; foot.append(strong, " Everything is in the open."); }
-        else if (got === mine.length) { strong.textContent = "All " + mine.length + " buried details found."; foot.append(strong, " Nice digging."); }
-        else {
-            strong.textContent = got + " of " + mine.length + " buried details found.";
-            foot.append(strong, " Look for sparkling dirt around the " + meta.building.toLowerCase() + ".");
-        }
-        if (wasNew && places.size === TOTAL_PLACES) foot.append(" That is every place on the island.");
         el.spot.showModal();
         el.spot.scrollTop = 0;
         $("spot-close").focus();
@@ -578,19 +496,18 @@
 
     /* ---------- index ---------- */
 
-    var resetArmed = false;
     function renderIndex() {
         var ul = $("index-places");
         ul.replaceChildren();
         Object.keys(L.SPOTS).forEach(function (id) {
             var m = L.SPOTS[id];
             var li = document.createElement("li");
-            li.className = "index-item" + (places.has(id) ? " is-done" : "");
+            li.className = "index-item";
             li.style.setProperty("--hue", HUES[m.roof]);
             var dot = document.createElement("span"); dot.className = "index-dot"; dot.setAttribute("aria-hidden", "true");
             var name = document.createElement("span"); name.className = "index-name";
             name.append(document.createTextNode(m.building + " · " + m.title));
-            var small = document.createElement("small"); small.textContent = m.teaser + (places.has(id) ? " (visited)" : "");
+            var small = document.createElement("small"); small.textContent = m.teaser;
             name.append(small);
             var btns = document.createElement("span"); btns.className = "index-btns";
             var read = document.createElement("button"); read.type = "button"; read.className = "btn btn-lemon"; read.textContent = "Read";
@@ -621,16 +538,11 @@
             var text = ok ? d.title : "???";
             name.append(document.createTextNode(text));
             var small = document.createElement("small");
-            small.textContent = ok ? (d.special === "chest" ? "The judge's verdict on your walk through the hedge." : d.text) : "Buried " + nearName(d) + ".";
+            small.textContent = ok ? (d.special === "chest" ? "The judge's verdict on your walk through the hedge." : d.text) : "Hidden in " + nearName(d) + ".";
             name.append(small);
             li.append(dot, name);
             dl.append(li);
         });
-        $("index-count").textContent = found.size + "/" + TOTAL_DETAILS;
-        $("index-places-count").textContent = places.size + "/" + Object.keys(L.SPOTS).length;
-        $("index-reset").textContent = "Reset my progress";
-        resetArmed = false;
-        $("index-note").textContent = "";
     }
 
     function openIndex() {
@@ -707,8 +619,8 @@
 
         // marker over whatever you can use
         if (near && !digging && !dialogOpen()) {
-            var up = { spot: 24, dig: 12, sign: 32, owl: 34, chest: 26, button: 36, cat: 18 }[near.kind] || 20;
-            var ax = near.kind === "cat" ? cat.x : near.x, ay = (near.kind === "cat" ? cat.y : near.y) - up + (reduced ? 0 : Math.round(Math.sin(now / 160) * 1.5));
+            var up = { spot: 24, dig: 12, sign: 32, owl: 34, chest: 26, button: 36 }[near.kind] || 20;
+            var ax = near.x, ay = near.y - up + (reduced ? 0 : Math.round(Math.sin(now / 160) * 1.5));
             ax = Math.round(ax); ay = Math.round(ay);
             A.rect(ctx, ax - 3, ay - 1, 7, 2, A.C.ink); A.rect(ctx, ax - 2, ay + 1, 5, 2, A.C.ink); A.rect(ctx, ax - 1, ay + 3, 3, 2, A.C.ink); A.dot(ctx, ax, ay + 5, A.C.ink);
             A.rect(ctx, ax - 2, ay, 5, 1, A.C.gold); A.rect(ctx, ax - 1, ay + 1, 3, 1, A.C.gold); A.dot(ctx, ax, ay + 2, A.C.gold); A.rect(ctx, ax - 2, ay, 2, 1, "#fff3b0");
@@ -836,7 +748,14 @@
     function init() {
         applyTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light", false);
         night = nightTarget;
-        updateHud();
+        var summary = $("intro-summary"), lead = document.querySelector("#codex .codex-intro");
+        if (summary && lead) [".role-line", ".codex-statement", ".project-chips"].forEach(function (sel) {
+            var n = lead.querySelector(sel);
+            if (!n) return;
+            var copy = n.cloneNode(true);
+            if (sel === ".codex-statement") copy.className = "intro-tagline";
+            summary.append(copy);
+        });
         var steps = $("intro-steps");
         L.INTRO.steps.forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.append(li); });
 
@@ -851,13 +770,17 @@
         $("btn-start").addEventListener("click", function () { el.intro.close(); });
         $("btn-intro-index").addEventListener("click", function () { el.intro.close(); openIndex(); });
         $("spot-close").addEventListener("click", function () { el.spot.close(); });
+        // in-page links inside a dialog (e.g. Experience -> Open source) open that place instead
+        $("spot-body").addEventListener("click", function (e) {
+            var a = e.target.closest('a[href^="#"]');
+            var section = a && document.querySelector("#codex " + a.getAttribute("href"));
+            if (!section || !section.dataset.spot) return;
+            e.preventDefault();
+            el.spot.close();
+            openSpot(section.dataset.spot);
+        });
         $("detail-ok").addEventListener("click", function () { el.detail.close(); });
         $("index-close").addEventListener("click", function () { el.index.close(); });
-        $("index-reset").addEventListener("click", function () {
-            if (!resetArmed) { resetArmed = true; $("index-reset").textContent = "Really reset?"; $("index-note").textContent = "This forgets every place and detail."; return; }
-            found.clear(); places.clear(); pressed = 0; trail.clear(); save(); updateHud(); renderIndex();
-            $("index-note").textContent = "Progress cleared.";
-        });
         el.prompt.addEventListener("click", interactNow);
         el.act.addEventListener("click", interactNow);
 
@@ -936,7 +859,6 @@
             var d = Math.hypot(wx - t.x, wy - cyy);
             if (d < bestD) { best = t; bestD = d; }
         });
-        if (Math.hypot(wx - cat.x, wy - (cat.y - 5)) < 11) best = { kind: "cat", id: "cat", x: cat.x, y: cat.y, reach: 22 };
         if (!best) {
             for (var i = 0; i < world.buildings.length; i++) {
                 var b = world.buildings[i];

@@ -16,14 +16,11 @@
     /* Layout is written on a 44 x 34 base grid and shifted by (OX, OY) so there is an ocean margin. */
     var BUILDINGS = [
         { id: "profile", x: 34, y: 3, w: 3, h: 5, door: 1 },
-        { id: "independent", x: 8, y: 5, w: 5, h: 4, door: 2 },
-        { id: "accenture", x: 19, y: 2, w: 4, h: 6, door: 2 },
-        { id: "library", x: 27, y: 5, w: 4, h: 3, door: 1 },
+        { id: "experience", x: 8, y: 5, w: 5, h: 4, door: 2 },
         { id: "better-auth", x: 4, y: 14, w: 4, h: 3, door: 1 },
         { id: "bingo", x: 36, y: 15, w: 5, h: 4, door: 2 },
         { id: "go-ethereum", x: 8, y: 22, w: 4, h: 3, door: 1 },
         { id: "unmaze", x: 15, y: 22, w: 4, h: 3, door: 1 },
-        { id: "school", x: 36, y: 24, w: 5, h: 3, door: 2 },
         { id: "reading", x: 26, y: 10, w: 4, h: 3, door: 1 },
         { id: "pictures", x: 31, y: 10, w: 4, h: 3, door: 2 }
     ];
@@ -312,7 +309,7 @@
         });
         interactables.push({ id: "dock", kind: "spot", tx: dockX, ty: dockEnd, x: (dockX + 1) * T, y: (dockEnd + 0.4) * T, reach: 22 });
 
-        // calibrated signposts around the plaza
+        // signposts around the plaza
         var signAt = [[19, 13], [25, 19], [19, 19]];
         Lore.SIGNS.forEach(function (sg, i) {
             var spot = nearestPlain(signAt[i][0] + OX, signAt[i][1] + OY, 3);

@@ -14,7 +14,7 @@ Present Srinivas Sivaratri as a self-directed engineer who builds practical AI s
 
 ## Brand Personality
 
-Playful, inventive and honest, with a weird streak. A small colourful world made with care, where the jokes (calibrated signposts, a button that refuses to act, a mail-leaking post office) are all riffs on the actual work: measuring whether a model is right and refusing to act when it is not.
+Playful, inventive and honest, with a weird streak. A small colourful world made with care, where the one joke (a button that refuses to act) riffs on the actual work: measuring whether a model is right and refusing to act when it is not.
 
 ## Anti-references
 
@@ -23,7 +23,7 @@ Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, f
 ## Design Principles
 
 - The site is the game. There is no plainer site hiding behind it.
-- Reward curiosity: details sit near the thing they are about, hints are free (the Index), and finding them all ends in a conversation, not a lock.
+- Reward exploring without scoring it: three hidden details, hints are free (the Index), and nothing is locked or counted.
 - Never make anyone play to read: the Index lists everything as text, and the Résumé and Say hi buttons are always in the top bar.
 - Be weird on purpose, and honest: every number and claim comes from the real work, and anything that is only a joke reads as one. Never invent a chip.
 - One source of content: every word of the real material lives once, in the page's codex, and is reused by the game.

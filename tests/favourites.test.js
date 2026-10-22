@@ -54,7 +54,7 @@ test("Reading Room and Picture House are places with buildings, codex hosts and 
     assert.ok(w.buildings.find((b) => b.id === "pictures" && b.kind === "picturehouse"));
     assert.ok(html.includes('id="index-favourites"'));
     assert.ok(html.indexOf("js/favourites-view.js") < html.indexOf("js/game.js"), "view loads before game");
-    assert.ok(html.includes("0/" + Object.keys(L.SPOTS).length), "places chip total");
+    assert.ok(!html.includes("hud-stats"), "no progress counters in the header");
 });
 
 test("progress text marks approximate values", () => {
