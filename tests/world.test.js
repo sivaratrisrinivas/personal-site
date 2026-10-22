@@ -14,6 +14,12 @@ test("the island is deterministic", () => {
     assert.deepEqual(again.interactables.map((i) => [i.id, i.tx, i.ty]), w.interactables.map((i) => [i.id, i.tx, i.ty]));
 });
 
+test("nine places and three hidden details", () => {
+    assert.equal(Object.keys(Lore.SPOTS).length, 9);
+    assert.deepEqual(Lore.DETAILS.map((d) => d.id), ["egg-wilson", "egg-chest", "egg-button"]);
+    assert.equal(w.digs.length, 1);
+});
+
 test("every place in the lore has a building (or the dock) and an interactable", () => {
     for (const id of Object.keys(Lore.SPOTS)) {
         assert.ok(w.byId[id], `${id} has a building`);
@@ -111,7 +117,7 @@ test("collision: water and buildings block, roads do not", () => {
 
 test("pathfinding avoids solids and returns adjacent steps", () => {
     const sx = Math.floor(w.spawn.x), sy = Math.floor(w.spawn.y);
-    const target = w.interactables.find((i) => i.kind === "spot" && i.id === "school");
+    const target = w.interactables.find((i) => i.kind === "spot" && i.id === "bingo");
     const path = IW.findPath(w, sx, sy, target.tx, target.ty);
     assert.ok(path && path.length > 5);
     let [px, py] = [sx, sy];

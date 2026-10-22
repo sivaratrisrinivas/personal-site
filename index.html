@@ -5,21 +5,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description"
-        content="Srinivas Sivaratri is a self-directed engineer who measures whether a model is actually right, and refuses to act when it is not. This site is a tiny island you can walk around." />
+        content="Srinivas Sivaratri is a self-directed engineer who measures whether a model is actually right, and refuses to act when it is not." />
     <meta name="theme-color" content="#bfe8ff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#10153f" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href="https://srinivassivaratri.is-a.dev/" />
     <meta property="og:url" content="https://srinivassivaratri.is-a.dev/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Srinivas Sivaratri | Software Engineer (AI systems)" />
-    <meta property="og:description" content="A tiny island to explore: systems that measure whether a model is actually right, and refuse to act when it is not." />
+    <meta property="og:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta property="og:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Srinivas Sivaratri: Practical systems. Evidence on screen." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Srinivas Sivaratri | Software Engineer (AI systems)" />
-    <meta name="twitter:description" content="A tiny island to explore: systems that measure whether a model is actually right, and refuse to act when it is not." />
+    <meta name="twitter:description" content="Systems that measure whether a model is actually right, and refuse to act when it is not." />
     <meta name="twitter:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png" />
     <title>Srinivas Sivaratri | Software Engineer (AI systems)</title>
     <script>
@@ -53,10 +53,6 @@
             <img src="assets/logo-60.png" alt="" width="30" height="30" />
             <span class="brand-name">Srinivas Sivaratri</span>
         </a>
-        <div class="hud-stats" aria-label="Progress">
-            <span class="chip chip-places" id="chip-places">Places <b>0/12</b></span>
-            <span class="chip chip-details" id="chip-details">Details <b>0/17</b></span>
-        </div>
         <nav class="hud-actions" aria-label="Game menu">
             <button type="button" class="btn btn-cyan" id="btn-index" aria-haspopup="dialog">Index</button>
             <a class="btn btn-ghost btn-hud-resume" href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
@@ -70,7 +66,7 @@
     </header>
 
     <main class="stage" id="stage">
-        <h1 class="sr-only">Srinivas Sivaratri: a tiny island to explore. Walk around with the arrow keys, open buildings with E, or use the Index button for a plain list of everything.</h1>
+        <h1 class="sr-only">Srinivas Sivaratri, software engineer. Walk around with the arrow keys, open buildings with E, or use the Index button for a plain list of everything.</h1>
         <canvas id="world" tabindex="0" role="application"
             aria-label="A tiny pixel island. Walk with the arrow keys or WASD. Press E, Space or Enter to open buildings, talk to things and dig. Press I for the index, a plain list of every place."></canvas>
 
@@ -104,7 +100,7 @@
             <h1>Srinivas <span>Sivaratri</span></h1>
             <p class="role-line">Software engineer · Python, Go, TypeScript · AI systems &amp; developer tools</p>
             <p class="codex-statement">I measure whether a model is actually right, and refuse to act when it is not.</p>
-                        <ul class="project-chips" aria-label="Selected work">
+            <ul class="project-chips" aria-label="Selected work">
                 <li><a href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">unmaze</a></li>
                 <li><a href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Bingo</a></li>
                 <li><a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">better-auth #5998</a></li>
@@ -119,9 +115,16 @@
                 <p>Software engineer building practical AI systems and developer tools across Python, Go, and TypeScript.</p>
                 <p class="availability-line"><strong>Available</strong>: remote full-time or contract · UTC+5:30 (IST)</p>
             </div>
+            <div class="education-block">
+                <h3>Education</h3>
+                <ul>
+                    <li><span>MS Computer Science</span> University of Alabama at Birmingham · 2023–25</li>
+                    <li><span>BS Computer Science</span> BV Raju Institute of Technology · 2017–21</li>
+                </ul>
+            </div>
         </section>
 
-        <section id="experience" data-spot="independent">
+        <section id="experience" data-spot="experience">
             <h2 class="codex-h">Experience</h2>
             <article class="role-card">
                 <header class="role-card-head">
@@ -132,13 +135,9 @@
                     <p class="role-meta">May 2025–present <span>Remote</span></p>
                 </header>
                 <ul class="role-highlights">
-                    <li>Proposed a request-scoped skip flag and regression test for an email-enumeration leak in better-auth; maintainers adopted the approach and shipped it in <a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">#5998</a>.</li>
-                    <li>Designed a go-ethereum archive-node command that binary-searches the merge block, preserves headers and hashes, and drops pre-merge bodies; revised it across three core-maintainer review rounds, after which the core team built its own version.</li>
+                    <li>Upstream contributions to better-auth and go-ethereum; see <a href="#open-source">Open source</a>.</li>
                 </ul>
             </article>
-        </section>
-
-        <section data-spot="accenture">
             <article class="role-card">
                 <header class="role-card-head">
                     <div class="role-identity">
@@ -152,16 +151,6 @@
                     <li>Implemented a GitHub Actions CI/CD pipeline.</li>
                 </ul>
             </article>
-        </section>
-
-        <section data-spot="school">
-            <div class="education-block">
-                <h3>Education</h3>
-                <ul>
-                    <li><span>MS Computer Science</span> University of Alabama at Birmingham · 2023–25</li>
-                    <li><span>BS Computer Science</span> BV Raju Institute of Technology · 2017–21</li>
-                </ul>
-            </div>
         </section>
 
         <section id="open-source" data-spot="better-auth">
@@ -200,9 +189,6 @@
                 <header class="project-card-head">
                     <div class="project-heading">
                         <h3>unmaze</h3>
-                        <ul class="proof-chips" aria-label="Proof">
-                            <li><span class="proof-chip">Measured</span></li>
-                        </ul>
                     </div>
                 </header>
                 <dl class="project-beats">
@@ -237,9 +223,6 @@
                 <header class="project-card-head">
                     <div class="project-heading">
                         <h3>Bingo</h3>
-                        <ul class="proof-chips" aria-label="Proof">
-                            <li><span class="proof-chip">Measured</span></li>
-                        </ul>
                     </div>
                 </header>
                 <dl class="project-beats">
@@ -269,41 +252,18 @@
             </article>
         </section>
 
-        <section data-spot="library">
-            <h2 class="codex-h">Résumés and links</h2>
-            <div class="link-list" aria-label="Profiles and résumés">
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a>
-                <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
-                <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
-                <a href="assets/srinivas-sivaratri-backend-resume.pdf" target="_blank" rel="noopener noreferrer">Backend résumé</a>
-                <a href="assets/srinivas-sivaratri-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">Full-stack résumé</a>
-                <a href="assets/srinivas-sivaratri-product-engineer-resume.pdf" target="_blank" rel="noopener noreferrer">Product résumé</a>
-            </div>
-        </section>
-
         <section id="favourites" data-spot="reading">
             <h2 class="codex-h">Favourites, 2026: the Reading Room</h2>
-            <p class="fav-intro">What is on the nightstand, with a bookmark in each.</p>
             <div data-fav-host="reading"><p>Books: Crime and Punishment (Fyodor Dostoevsky), Outsmart Everyone (Andrew Bustamante), Creative Confidence (Tom Kelley &amp; David Kelley).</p></div>
         </section>
 
         <section data-spot="pictures">
             <h2 class="codex-h">Favourites, 2026: the Picture House</h2>
-            <p class="fav-intro">Ticket stubs from the year at the movies.</p>
             <div data-fav-host="pictures"><p>Films: Dorothy, Dhurandhar: The Revenge, Obsession, The Odyssey.</p></div>
         </section>
 
         <section id="contact" data-spot="dock">
             <h2 class="codex-h">Contact</h2>
-            <div class="contact-stage">
-                <p class="contact-title">Let’s make the next useful thing.</p>
-                <a class="contact-cta" href="mailto:srinivassivaratri1122@gmail.com">
-                    <span>Start a conversation</span>
-                    <svg class="icon-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M8 3h9v9" /></svg>
-                </a>
-            </div>
             <div class="contact-links" aria-label="Contact links">
                 <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
                 <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -313,31 +273,18 @@
             </div>
         </section>
 
-        <footer class="codex-footer"><span>© 2025-26 Srinivas Sivaratri</span><span>Made with curiosity / shipped with intent</span></footer>
+        <footer class="codex-footer"><span>© 2025-26 Srinivas Sivaratri</span></footer>
     </div>
 
     <dialog class="dlg dlg-intro" id="dlg-intro" aria-labelledby="intro-title">
         <div class="dlg-body">
-            <p class="pixel-kicker">A tiny island, a lot of details</p>
             <h2 id="intro-title" class="intro-title">Srinivas <span>Sivaratri</span></h2>
-            <p class="role-line">Software engineer · Python, Go, TypeScript · AI systems &amp; developer tools</p>
-            <p class="intro-tagline">I measure whether a model is actually right, and refuse to act when it is not.</p>
-                        <ul class="project-chips" aria-label="Selected work">
-            <li><a href="https://github.com/sivaratrisrinivas/unmaze" target="_blank" rel="noopener noreferrer">unmaze</a></li>
-            <li><a href="https://github.com/sivaratrisrinivas/Bingo" target="_blank" rel="noopener noreferrer">Bingo</a></li>
-            <li><a href="https://github.com/better-auth/better-auth/pull/5998" target="_blank" rel="noopener noreferrer">better-auth #5998</a></li>
-            <li><a href="https://github.com/ethereum/go-ethereum/pull/31351" target="_blank" rel="noopener noreferrer">go-ethereum #31351</a></li>
-        </ul>
+            <div id="intro-summary"></div>
             <ol class="intro-steps" id="intro-steps"></ol>
             <div class="dlg-actions">
                 <button type="button" class="btn btn-lemon btn-big" id="btn-start">Start exploring</button>
-                <a class="btn btn-pink btn-big" href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
                 <button type="button" class="btn btn-ghost" id="btn-intro-index">Browse the index</button>
             </div>
-            <p class="intro-links">
-                <a href="mailto:srinivassivaratri1122@gmail.com">Email</a>
-                <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </p>
         </div>
     </dialog>
 
@@ -351,7 +298,6 @@
         </header>
         <div class="dlg-body">
             <div class="card-body" id="spot-body"></div>
-            <p class="spot-foot" id="spot-foot"></p>
         </div>
     </dialog>
 
@@ -362,8 +308,7 @@
             <p class="detail-text" id="detail-text"></p>
             <div class="detail-extra" id="detail-extra"></div>
             <div class="dlg-actions">
-                <button type="button" class="btn btn-lemon" id="detail-ok">Keep digging</button>
-                <a class="btn btn-pink" id="detail-cta" href="mailto:srinivassivaratri1122@gmail.com" hidden>Say hi</a>
+                <button type="button" class="btn btn-lemon" id="detail-ok">Keep exploring</button>
             </div>
         </div>
     </dialog>
@@ -377,16 +322,12 @@
             <button type="button" class="btn btn-ghost" id="index-close">Close</button>
         </header>
         <div class="dlg-body">
-            <h3 class="index-h">Places <span id="index-places-count"></span></h3>
+            <h3 class="index-h">Places</h3>
             <ul class="index-list" id="index-places"></ul>
             <h3 class="index-h">Favourites, 2026</h3>
             <ul class="index-list index-favourites" id="index-favourites"></ul>
-            <h3 class="index-h">Buried details <span id="index-count"></span></h3>
+            <h3 class="index-h">Hidden details</h3>
             <ul class="index-list" id="index-details"></ul>
-            <div class="dlg-actions">
-                <button type="button" class="btn btn-ghost" id="index-reset">Reset my progress</button>
-                <span class="index-note" id="index-note" role="status"></span>
-            </div>
         </div>
     </dialog>
 

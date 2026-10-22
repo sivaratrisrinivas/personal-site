@@ -377,8 +377,7 @@
             rect(g, 2, 3, 1, 9, C.woodDark); rect(g, 15, 3, 1, 9, C.woodDark);
             var cy = 7;
             if (dir === 0) { rect(g, 5, cy, 8, 1, "#fff"); line(g, 9, cy - 2, 12, cy, "#fff"); line(g, 9, cy + 2, 12, cy, "#fff"); }
-            else if (dir === 1) { rect(g, 5, cy, 8, 1, "#fff"); line(g, 9, cy - 2, 6, cy, "#fff"); line(g, 9, cy + 2, 6, cy, "#fff"); }
-            else { dot(g, 9, 5, "#fff"); dot(g, 10, 5, "#fff"); dot(g, 10, 7, "#fff"); dot(g, 9, 8, "#fff"); dot(g, 9, 10, "#fff"); }
+            else { rect(g, 5, cy, 8, 1, "#fff"); line(g, 9, cy - 2, 6, cy, "#fff"); line(g, 9, cy + 2, 6, cy, "#fff"); }
         });
     }
 
@@ -532,31 +531,6 @@
             for (var a = 0; a < 8; a++) { var an = a * Math.PI / 4; rect(g, o[0] + 40 + Math.round(Math.cos(an) * 6) - 1, o[1] + 29 + Math.round(Math.sin(an) * 6) - 1, 2, 2, C.yellowDark); }
             L.push({ x: o[0] + 40, y: o[1] + H - 4, r: 24, color: "#ffd37a", a: 0.8 });
         },
-        tower: function (g, b, L) {
-            var o = [4, 20], W = b.w * T, H = b.h * T;
-            rect(g, o[0] + 3, o[1] + 12, W - 6, H - 12, "#6f8fb8");
-            rect(g, o[0] + 3, o[1] + 12, 3, H - 12, "#8fb0d6"); rect(g, o[0] + W - 6, o[1] + 12, 3, H - 12, "#56759c");
-            rect(g, o[0], o[1] + 8, W, 6, "#3d5a80"); rect(g, o[0], o[1] + 8, W, 2, "#5b7ba3");
-            rect(g, o[0] + 30, o[1] - 14, 2, 22, C.ink);
-            rect(g, o[0] + 29, o[1] - 17, 4, 3, C.coral);
-            rect(g, o[0] + 6, o[1] + 2, 10, 7, "#8d96b3"); rect(g, o[0] + 8, o[1] + 4, 6, 1, "#5b6285");
-            for (var r = 0; r < 6; r++) {
-                for (var c = 0; c < 4; c++) {
-                    var wx = o[0] + 8 + c * 13, wy = o[1] + 18 + r * 11;
-                    if (wy > o[1] + H - 24) continue;
-                    var lit = hash(c, r, 5) < 0.4;
-                    rect(g, wx - 1, wy - 1, 11, 9, "#3d5a80");
-                    rect(g, wx, wy, 9, 7, lit ? C.lit : "#bfe3ff");
-                    if (!lit) rect(g, wx, wy + 5, 9, 2, "#8fc7ee");
-                    rect(g, wx + 4, wy, 1, 7, "#3d5a80");
-                    if (lit) L.push({ x: wx + 4, y: wy + 3, r: 14, color: "#ffd37a", a: 0.6 });
-                }
-            }
-            for (var s = 0; s < 28; s += 4) { rect(g, o[0] + 18 + s, o[1] + H - 24, 4, 5, s % 8 ? "#ffffff" : C.blue); }
-            rect(g, o[0] + 18, o[1] + H - 19, 28, 1, "rgba(20,18,60,0.3)");
-            doorAt(g, o[0] + 33, o[1] + H - 15, 12, 15, "#bfe3ff");
-            rect(g, o[0] + 39, o[1] + H - 15, 1, 15, C.ink);
-        },
         post: function (g, b, L) {
             var o = [4, 20], W = b.w * T, H = b.h * T;
             rect(g, o[0] + 2, o[1] + 16, W - 4, H - 16, C.cream);
@@ -627,44 +601,6 @@
             rect(g, o[0] + 39, o[1] + H - 18, 1, 18, C.gold);
             L.push({ x: o[0] + 40, y: o[1] + 33, r: 44, color: "#ffd35a", a: 0.9 });
         },
-        school: function (g, b, L) {
-            var o = [4, 20], W = b.w * T, H = b.h * T;
-            rect(g, o[0] + 2, o[1] + 14, W - 4, H - 14, C.brick);
-            for (var y = 0; y < H - 14; y += 4) {
-                rect(g, o[0] + 2, o[1] + 14 + y + 3, W - 4, 1, C.brickDark);
-                for (var x = (y / 4) % 2 ? 4 : 0; x < W - 4; x += 8) rect(g, o[0] + 2 + x, o[1] + 14 + y, 1, 3, C.brickDark);
-            }
-            rect(g, o[0] + 2, o[1] + 14, W - 4, 2, C.brickLight);
-            rect(g, o[0], o[1] + 12, W, 4, "#4a3b78");
-            rect(g, o[0] + 30, o[1] - 2, 20, 16, C.cream); rect(g, o[0] + 30, o[1] - 2, 20, 2, C.creamDark);
-            rect(g, o[0] + 36, o[1] + 2, 8, 10, C.ink); disc(g, o[0] + 40, o[1] + 8, 3, C.gold);
-            for (var r = 0; r < 8; r++) rect(g, o[0] + 28 + r, o[1] - 10 + r, 24 - r * 2, 1, r % 2 ? C.coralDark : C.coral);
-            rect(g, o[0] + 66, o[1] - 10, 1, 24, C.ink); rect(g, o[0] + 67, o[1] - 10, 8, 5, C.blue); rect(g, o[0] + 67, o[1] - 10, 8, 1, "#8fb8ff");
-            for (var w2 = 0; w2 < 4; w2++) {
-                var wx = o[0] + [8, 20, 52, 64][w2];
-                windowAt(g, wx, o[1] + 22, 8, 12, w2 % 2 === 0, L, o[0], o[1]);
-            }
-            doorAt(g, o[0] + 34, o[1] + H - 14, 12, 14, C.woodLight);
-            rect(g, o[0] + 33, o[1] + H - 18, 14, 3, C.ink); rect(g, o[0] + 36, o[1] + H - 21, 8, 3, C.ink); line(g, o[0] + 44, o[1] + H - 20, o[0] + 46, o[1] + H - 16, C.gold);
-        },
-        library: function (g, b, L) {
-            var o = [4, 20], W = b.w * T, H = b.h * T;
-            rect(g, o[0] + 2, o[1] + 16, W - 4, H - 16, "#d8cba8");
-            rect(g, o[0] + 2, o[1] + H - 4, W - 4, 4, "#bfae85");
-            roof(g, o[0], o[1], W, 20, "green");
-            doorAt(g, o[0] + 20, o[1] + H - 15, 9, 15, C.greenDark);
-            rect(g, o[0] + 34, o[1] + 22, 24, 17, C.ink);
-            rect(g, o[0] + 35, o[1] + 23, 22, 15, "#3b2a1a");
-            var colors = [C.coral, C.blue, C.yellow, C.green, C.violet, C.pink, C.teal];
-            for (var sh = 0; sh < 2; sh++) {
-                rect(g, o[0] + 35, o[1] + 30 + sh * 0 + (sh ? 0 : -7), 22, 1, C.wood);
-                for (var bk = 0; bk < 10; bk++) rect(g, o[0] + 36 + bk * 2, o[1] + (sh ? 31 : 24), 2, 6, colors[(bk + sh * 3) % colors.length]);
-            }
-            rect(g, o[0] + 8, o[1] + 24, 8, 8, C.ink); rect(g, o[0] + 9, o[1] + 25, 6, 6, "#fff"); rect(g, o[0] + 11, o[1] + 25, 1, 6, C.ink);
-            rect(g, o[0] + 34, o[1] + 38, 24, 3, C.wood); dot(g, o[0] + 38, o[1] + 37, C.pink); dot(g, o[0] + 48, o[1] + 37, C.yellow); dot(g, o[0] + 52, o[1] + 37, C.pink);
-            L.push({ x: o[0] + 46, y: o[1] + 30, r: 26, color: "#ffd37a", a: 0.7 });
-        },
-        /* Reading Room: a shop window holding a wooden shelf of books, each with a bookmark ribbon. */
         readingroom: function (g, b, L) {
             var o = [4, 20], W = b.w * T, H = b.h * T;
             rect(g, o[0] + 2, o[1] + 16, W - 4, H - 16, C.cream || "#f3e6c8");
@@ -858,7 +794,7 @@
         art.spr.lamp = [lampSprite()];
         art.spr.fence = [fenceSprite()];
         art.spr.pedestal = [pedestalSprite(false), pedestalSprite(true)];
-        art.spr.sign = [signSprite(0), signSprite(1), signSprite(2)];
+        art.spr.sign = [signSprite(0), signSprite(0), signSprite(1)]; // north and east point right, the south-west sign points left
         art.spr.owl = [owlSprite(false), owlSprite(true)];
         art.spr.chest = [chestSprite(false), chestSprite(true)];
         art.spr.dig = [digSprite(0), digSprite(1)];

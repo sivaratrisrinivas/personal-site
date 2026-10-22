@@ -58,7 +58,7 @@ $RECYCLE.BIN/
 .Trash-*
 
 # Design review captures
-.impeccable/review/
+.impeccable/
 
 # Netlify
 .netlify/
