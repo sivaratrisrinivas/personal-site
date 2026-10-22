@@ -8,7 +8,7 @@ const L = require("../js/lore.js");
 const IW = require("../js/world.js");
 
 const root = path.join(__dirname, "..");
-const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const html = fs.readFileSync(path.join(root, "island.html"), "utf8");
 const isUrl = (u) => /^https:\/\/[^\s]+$/.test(u);
 
 test("books carry title, author, progress in [0,1], label and sourced facts", () => {
