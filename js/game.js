@@ -22,7 +22,7 @@
         yellow: "#ffcb3d", brick: "#f08a6e", green: "#4fd18a", wood: "#e2b274"
     };
     var HINTS = {
-        "egg-wilson": "a quiet corner east of the lighthouse",
+        "egg-wilson": "a quiet corner east of the beach house",
         "egg-chest": "the heart of the hedge maze",
         "egg-button": "a red button inside the fence"
     };
@@ -64,6 +64,52 @@
     var running = false, last = 0;
 
     var cat = { x: (world.plaza.tx + 3.5) * T, y: (world.plaza.ty + 3.8) * T, dir: "right", ft: 0, sit: true, timer: 2000, path: null };
+    /* the crew follows a breadcrumb trail of where the car has been */
+    var crumbs = [], CREW_GAP = 14;
+    var crew = (L.CREW || []).map(function (m, i) { return { m: m, x: player.x - (i + 1) * 10, y: player.y + 4, dir: "down", ft: 0, moving: false }; });
+    function updateCrew(dt) {
+        var lastC = crumbs[0];
+        if (!lastC || Math.hypot(player.x - lastC[0], player.y - lastC[1]) > 1.5) {
+            crumbs.unshift([player.x, player.y, player.dir]);
+            if (crumbs.length > CREW_GAP * (crew.length + 2)) crumbs.length = CREW_GAP * (crew.length + 2);
+        }
+        crew.forEach(function (c, i) {
+            var cr = crumbs[Math.min(crumbs.length - 1, (i + 1) * CREW_GAP + 6)];
+            if (!cr) return;
+            var dx = cr[0] - c.x, dy = cr[1] - c.y, d = Math.hypot(dx, dy);
+            c.moving = d > 0.5;
+            if (c.moving) {
+                var k = Math.min(1, dt / 120);
+                c.x += dx * k; c.y += dy * k;
+                c.dir = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? "left" : "right") : (dy < 0 ? "up" : "down");
+                c.ft += dt;
+            } else { c.ft = 0; if (!player.moving) c.dir = "down"; }
+        });
+    }
+
+    /* a short phone ring and a pen scratch for the deal offices (Web Audio, only after a key or tap) */
+    var audio = null;
+    function ring() {
+        try {
+            audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+            var t0 = audio.currentTime + 0.02, out = audio.createGain();
+            out.gain.value = 0.05; out.connect(audio.destination);
+            [0, 0.5].forEach(function (off) {
+                [440, 480].forEach(function (hz) {
+                    var o = audio.createOscillator(), g = audio.createGain();
+                    o.frequency.value = hz; g.gain.setValueAtTime(0, t0 + off); g.gain.linearRampToValueAtTime(1, t0 + off + 0.02);
+                    g.gain.setValueAtTime(1, t0 + off + 0.36); g.gain.linearRampToValueAtTime(0, t0 + off + 0.4);
+                    o.connect(g); g.connect(out); o.start(t0 + off); o.stop(t0 + off + 0.42);
+                });
+            });
+            var n = audio.createBuffer(1, audio.sampleRate * 0.35, audio.sampleRate), d = n.getChannelData(0);
+            for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (0.5 + 0.5 * Math.sin(i / 900)) * 0.6;
+            var src = audio.createBufferSource(), bp = audio.createBiquadFilter();
+            src.buffer = n; bp.type = "bandpass"; bp.frequency.value = 2600;
+            src.connect(bp); bp.connect(out); src.start(t0 + 1.05);
+        } catch (e) { /* no audio, no problem */ }
+    }
+
     var butterflies = [];
     for (var b = 0; b < 7; b++) {
         var fl = world.flowers[(b * 37) % world.flowers.length] || { tx: 20, ty: 20 };
@@ -145,6 +191,22 @@
                 var col = (k + phase) % 2 ? "#ffffff" : A.C.coral;
                 A.rect(g, bx + 8 + k * 5, by + 24, 2, 2, col);
                 A.rect(g, bx + 8 + k * 5, by + 39, 2, 2, (k + phase + 1) % 2 ? "#ffffff" : A.C.coral);
+            }
+        } else if (b.kind === "premiere" || b.kind === "marquee") {
+            var w = b.w * T, a1 = reduced ? -0.5 : Math.sin(now / 900) * 0.6 - 0.5, a2 = reduced ? 0.5 : Math.sin(now / 900 + 2) * 0.6 + 0.5;
+            [[bx + 10, a1], [bx + w - 2, a2]].forEach(function (sl) {
+                g.fillStyle = "rgba(255,240,190,0.22)";
+                g.beginPath(); g.moveTo(sl[0], by + 4);
+                g.lineTo(sl[0] + Math.sin(sl[1] - 0.08) * 70, by + 4 - Math.cos(sl[1] - 0.08) * 70);
+                g.lineTo(sl[0] + Math.sin(sl[1] + 0.08) * 70, by + 4 - Math.cos(sl[1] + 0.08) * 70);
+                g.closePath(); g.fill();
+            });
+            var ph = reduced ? 0 : Math.floor(now / 260) % 2;
+            for (var q = 0; q < 8; q++) A.dot(g, bx + 10 + q * ((b.w * T - 12) / 7), by + 12, (q + ph) % 2 ? "#fff3b0" : "#ffcb3d");
+        } else if (b.kind === "deal" || b.kind === "deal2") {
+            if (!reduced && Math.floor(now / 300) % 8 < 2) {
+                var rx = bx + 36, ry = by + (b.kind === "deal2" ? 2 : 14) + (Math.floor(now / 60) % 2);
+                A.rect(g, rx - 4, ry, 2, 1, "#ffcb3d"); A.rect(g, rx + 6, ry, 2, 1, "#ffcb3d"); A.rect(g, rx - 5, ry - 2, 1, 1, "#ffcb3d"); A.rect(g, rx + 8, ry - 2, 1, 1, "#ffcb3d");
             }
         } else if (b.kind === "lighthouse") {
             if (!reduced && Math.floor(now / 180) % 6 === 0) { A.rect(g, bx + 20, by - 6, 2, 2, "#ffffff"); }
@@ -305,7 +367,7 @@
 
     function labelOf(t) {
         switch (t.kind) {
-            case "spot": return t.id === "dock" ? "Open the bottle" : "Enter the " + L.SPOTS[t.id].building;
+            case "spot": return t.id === "dock" ? "Knock at the Agent's Office" : "Visit the " + L.SPOTS[t.id].building;
             case "dig": return "Dig here";
             case "sign": return "Read the sign";
             case "owl": return "Talk to the owl";
@@ -364,7 +426,7 @@
             case "spot": player.dir = "up"; openSpot(t.id); break;
             case "dig": startDig(t); break;
             case "sign": face(); say(L.SIGNS[t.signIndex].speaker, L.SIGNS[t.signIndex].text); break;
-            case "owl": face(); say("Owl, the judge", L.OWL_LINES[owlLine++ % L.OWL_LINES.length]); break;
+            case "owl": face(); say("Owl, the critic", L.OWL_LINES[owlLine++ % L.OWL_LINES.length]); break;
             case "button": face(); pressButton(); break;
             case "chest": face(); openChest(); break;
         }
@@ -488,6 +550,33 @@
                 body.append(copy);
             });
         }
+        var flav = document.createElement("div");
+        flav.className = "strip-flavour";
+        if (L.TRADES && L.TRADES[id]) {
+            var tr = document.createElement("p");
+            tr.className = "trades";
+            var tl = document.createElement("span"); tl.textContent = "The trades";
+            tr.append(tl, document.createTextNode(L.TRADES[id]));
+            flav.append(tr);
+        }
+        var lines = (L.CREW_LINES || {})[id] || [];
+        if (lines.length) {
+            var ul = document.createElement("ul");
+            ul.className = "crew-lines";
+            ul.setAttribute("aria-label", "What the crew says");
+            lines.forEach(function (ln) {
+                var who = L.CREW.find(function (c) { return c.id === ln[0]; });
+                var li = document.createElement("li");
+                var b = document.createElement("b"); b.textContent = who.name + ", " + who.role.replace(/, .*/, "");
+                b.style.setProperty("--crew", who.shirt);
+                li.style.setProperty("--crew", who.shirt);
+                li.append(b, document.createTextNode(ln[1]));
+                ul.append(li);
+            });
+            flav.append(ul);
+        }
+        if (flav.childNodes.length) body.prepend(flav);
+        if (meta.kind === "deal" || meta.kind === "deal2") ring();
         places.add(id);
         el.spot.showModal();
         el.spot.scrollTop = 0;
@@ -514,8 +603,8 @@
             read.setAttribute("aria-label", "Read " + m.title);
             read.addEventListener("click", function () { el.index.close(); openSpot(id); });
             read.className = "btn btn-lemon index-read";
-            var go = document.createElement("button"); go.type = "button"; go.className = "btn btn-ghost index-walk"; go.textContent = "Walk there";
-            go.setAttribute("aria-label", "Walk to the " + m.building);
+            var go = document.createElement("button"); go.type = "button"; go.className = "btn btn-ghost index-walk"; go.textContent = "Drive there";
+            go.setAttribute("aria-label", "Drive to the " + m.building);
             go.addEventListener("click", function () {
                 el.index.close();
                 var t = interactableById(id);
@@ -577,6 +666,7 @@
         ctx.imageSmoothingEnabled = false;
         var cx = Math.round(cam.x), cy = Math.round(cam.y);
         A.drawOcean(ctx, cx, cy, view.w, view.h, world, now, !reduced);
+        if (A.drawBackdrop) { ctx.save(); ctx.translate(-cx, -cy); A.drawBackdrop(ctx, world, night); ctx.restore(); }
         ctx.drawImage(art.land, -cx, -cy);
         ctx.save();
         ctx.translate(-cx, -cy);
@@ -603,6 +693,7 @@
             list.push(o);
         }
         list.push({ by: player.y, draw: function (g) { A.drawPlayer(g, player.x, player.y, player.dir, player.moving ? [0, 1, 0, 3][Math.floor(player.ft / 120) % 4] : 0, digging ? Math.sin(digging.t / 90) * 0.5 + 0.5 : 0); } });
+        if (A.drawCrew) crew.forEach(function (c) { list.push({ by: c.y, draw: function (g) { A.drawCrew(g, c.m, c.x, c.y, c.dir, c.moving ? Math.floor(c.ft / 140) : 0, now, reduced); } }); });
         list.push({ by: cat.y, draw: function (g) { A.drawCat(g, cat.x, cat.y, cat.dir, Math.floor(cat.ft / 150), cat.sit, now); } });
         list.sort(function (a, b) { return a.by - b.by; });
         for (var j = 0; j < list.length; j++) list[j].draw(ctx, now);
@@ -641,6 +732,7 @@
             });
         }
         ctx.restore();
+        if (A.drawGolden) A.drawGolden(ctx, view.w, view.h, 1 - night);
 
         if (night > 0.01) {
             var lights = art.lights.slice();
@@ -665,7 +757,7 @@
     /* ---------- minimap ---------- */
 
     var mm = $("minimap"), mmCtx = mm.getContext("2d"), mmBase = null;
-    var MM_COL = ["#3a86e8", "#5ec24c", "#f6dfa8", "#dba869", "#cfd6ea", "#8c5b34", "#1f6b34", "#a6e27f", "#f4fbff"];
+    var MM_COL = ["#2f7fcf", "#86c04c", "#f7d9a4", "#4b4660", "#f2c9a0", "#8c5b34", "#1f6b34", "#a9d977", "#fdf1df"];
     function buildMinimap() {
         mmBase = A.canvas(world.W * 3, world.H * 3);
         for (var y = 0; y < world.H; y++) for (var x = 0; x < world.W; x++) A.rect(mmBase.g, x * 3, y * 3, 3, 3, MM_COL[world.tiles[y * world.W + x]]);
@@ -705,6 +797,7 @@
         } else player.moving = false;
         if (pressAnim > 0) pressAnim -= dt;
         updateCat(dt);
+        updateCrew(dt);
         updateParticles(dt);
         if (dest) dest.t += dt;
         butterflies.forEach(function (bf) {
@@ -756,6 +849,12 @@
             if (sel === ".codex-statement") copy.className = "intro-tagline";
             summary.append(copy);
         });
+        if (A.buildBackdrop) {
+            var bd = A.buildBackdrop(320, 56, "SRINIVAS");
+            bd.className = "intro-backdrop";
+            bd.setAttribute("aria-hidden", "true");
+            el.intro.prepend(bd);
+        }
         var steps = $("intro-steps");
         L.INTRO.steps.forEach(function (text) { var li = document.createElement("li"); li.textContent = text; steps.append(li); });
 

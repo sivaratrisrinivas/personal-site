@@ -1,12 +1,12 @@
 /*
  * Island UI. The world itself is drawn on a canvas (js/art.js); this file styles the frame around
  * it: the top bar, prompts, touch controls, dialogs, and the plain codex people see without JavaScript.
- * Day is a sunny cream-and-candy palette; night (the theme toggle) is deep indigo.
+ * Day is a golden-hour sunset-strip palette; night (the theme toggle) is a neon-lit deep indigo.
  */
 :root {
     --ink: #1d1b3a;
-    --panel: #fff6e0;
-    --panel-2: #ffe9bf;
+    --panel: #fff3e4;
+    --panel-2: #ffd9b8;
     --text: #1d1b3a;
     --muted: #5a5483;
     --border: #1d1b3a;
@@ -18,8 +18,8 @@
     --lime: #5ec24c;
     --violet: #8e63ff;
     --coral: #ff5d6c;
-    --bar: #1d1b3a;
-    --bar-text: #fff6e0;
+    --bar: #3a1f4f;
+    --bar-text: #fff3e4;
     --font-pixel: "Silkscreen", "Courier New", monospace;
     --font-body: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
     --hud-h: 60px;
@@ -40,7 +40,7 @@ html[data-theme="dark"] {
 * { margin: 0; padding: 0; }
 
 html {
-    background: #bfe8ff;
+    background: linear-gradient(#ff7a59, #ffb36b 55%, #ffd99a) fixed #ffb36b;
     color-scheme: light;
 }
 
@@ -568,7 +568,7 @@ html:not([data-theme="dark"]) .btn-theme .icon-sun { display: none; }
 
 /* ---- the plain codex, for no-JavaScript visitors ---- */
 
-html:not(.js) body { background: #bfe8ff; }
+html:not(.js) body { background: #fff3e4; }
 .codex { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 3rem; }
 .codex > section { margin-bottom: 1.5rem; padding: 1.25rem; border: 3px solid var(--border); box-shadow: 6px 6px 0 var(--border); background: var(--panel); }
 .codex-intro h1 { font-family: var(--font-pixel); font-size: clamp(2rem, 9vw, 3.4rem); line-height: 1; }
@@ -669,3 +669,21 @@ html:not(.js) body { background: #bfe8ff; }
 /* merged places: education under Profile, two roles under Experience */
 .about-copy + .education-block { margin-top: 1.2rem; }
 .role-card + .role-card { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 3px dashed color-mix(in srgb, var(--border) 35%, transparent); }
+
+/* ---------- Hollywood strip flavour ---------- */
+.intro-backdrop { display: block; width: 100%; height: auto; image-rendering: pixelated; border-bottom: 3px solid var(--border); }
+.strip-flavour { display: grid; gap: 0.6rem; }
+.trades {
+    border: 3px solid var(--border);
+    background: #fff8ec;
+    color: #1d1b3a;
+    padding: 0.55rem 0.7rem;
+    font-family: var(--font-pixel);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    box-shadow: 4px 4px 0 var(--border);
+}
+.trades span { display: block; margin-bottom: 0.2rem; color: #c2255f; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 2px solid #1d1b3a; }
+.crew-lines { list-style: none; display: grid; gap: 0.35rem; font-size: 0.85rem; }
+.crew-lines li { padding-left: 0.7rem; border-left: 4px solid var(--crew, var(--pink)); }
+.crew-lines b { display: block; font-family: var(--font-pixel); font-size: 0.72rem; color: var(--label); }

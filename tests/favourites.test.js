@@ -50,8 +50,8 @@ test("Reading Room and Picture House are places with buildings, codex hosts and 
         assert.ok(html.includes('data-fav-host="' + id + '"'), "render host " + id);
     });
     const w = IW.build();
-    assert.ok(w.buildings.find((b) => b.id === "reading" && b.kind === "readingroom"));
-    assert.ok(w.buildings.find((b) => b.id === "pictures" && b.kind === "picturehouse"));
+    assert.ok(w.buildings.find((b) => b.id === "reading" && b.kind === "screening"));
+    assert.ok(w.buildings.find((b) => b.id === "pictures" && b.kind === "poolparty"));
     assert.ok(html.includes('id="index-favourites"'));
     assert.ok(html.indexOf("js/favourites-view.js") < html.indexOf("js/game.js"), "view loads before game");
     assert.ok(!html.includes("hud-stats"), "no progress counters in the header");

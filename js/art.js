@@ -811,6 +811,6 @@
 
     root.IslandArt = {
         T: T, C: C, create: create, drawOcean: drawOcean, drawPlayer: drawPlayer, drawCat: drawCat, drawButterfly: drawButterfly,
-        drawNight: drawNight, canvas: canvas, rect: rect, dot: dot, disc: disc, ell: ell, line: line, hash: hash, hexA: hexA, shadow: shadow
+        drawNight: drawNight, PAINTERS: PAINTERS, ROOFS: ROOFS, makeSprite: makeSprite, paintLand: paintLand, windowAt: windowAt, doorAt: doorAt, roof: roof, canvas: canvas, rect: rect, dot: dot, disc: disc, ell: ell, line: line, hash: hash, hexA: hexA, shadow: shadow
     };
 })(typeof window !== "undefined" ? window : this);
