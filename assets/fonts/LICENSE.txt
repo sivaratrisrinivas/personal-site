@@ -1,0 +1,2 @@
+InterVariable.woff2: Inter by Rasmus Andersson (https://rsms.me/inter), Latin subset, weights 400-600, as served by Google Fonts (v20).
+Licensed under the SIL Open Font License 1.1: https://openfontlicense.org

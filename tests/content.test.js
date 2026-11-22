@@ -9,7 +9,7 @@ const root = path.join(__dirname, "..");
 const read = (f) => fs.readFileSync(path.join(root, f), "utf8");
 const home = read("index.html");
 const play = read("play/index.html");
-const changed = ["index.html", "play/index.html", "css/home.css", "js/home.js", "js/lore.js", "js/favourites.js"];
+const changed = ["index.html", "play/index.html", "404.html", "js/game.js", "css/style.css", "css/home.css", "js/home.js", "js/lore.js", "js/favourites.js"];
 
 test("home: the title and headline use the role's own words", () => {
     assert.match(home, /<title>Srinivas Sivaratri \| AI engineer \(LLM tools and evals\)<\/title>/);
@@ -55,7 +55,8 @@ test("play: the island moved to /play and still loads everything", () => {
     assert.match(play, /href="\.\.\/css\/style.css"/);
     assert.match(play, /class="brand" href="\.\.\/"/);
     assert.deepEqual(Object.keys(Lore.SPOTS).slice(0, 4), ["unmaze", "bingo", "better-auth", "go-ethereum"]);
-    assert.match(play, /id="btn-intro-index">See the work</);
+    assert.match(play, /id="btn-intro-back" href="\.\.\/">Back to the work</);
+    assert.match(play, /class="btn btn-ghost btn-back" href="\.\.\/">← Work</);
 });
 
 for (const [name, html] of [["home", home], ["play", play]]) {
@@ -83,4 +84,31 @@ test("copy rules across the changed files", () => {
         assert.ok(!/href="[^"]*\/game\b/.test(s), `${f}: no /game route`);
     }
     assert.ok(!fs.existsSync(path.join(root, "game")), "no /game directory");
+});
+
+test("GS-T78: share image, fonts, video and 404", () => {
+    for (const html of [home, play]) {
+        assert.match(html, /content="https:\/\/srinivassivaratri.is-a.dev\/assets\/og-image.png\?v=2" property="og:image"|property="og:image" content="https:\/\/srinivassivaratri.is-a.dev\/assets\/og-image.png\?v=2"/);
+        assert.ok(html.includes('assets/og-image.png?v=2" name="twitter:image"') || html.includes('name="twitter:image" content="https://srinivassivaratri.is-a.dev/assets/og-image.png?v=2"'));
+        assert.ok(html.includes("Srinivas Sivaratri, AI engineer. I build LLM tools and the evals that check them."), "og alt");
+        assert.ok(!html.includes("Practical systems"));
+        assert.ok(html.includes("Telegram bot (runs on demand)"));
+        assert.ok(html.includes("X (Twitter)"));
+        assert.ok(html.includes('unmaze-replay.webm" type="video/webm"'));
+    }
+    assert.ok(!home.includes("fonts.googleapis.com"), "Inter is self-hosted");
+    assert.match(home, /rel="preload" href="assets\/fonts\/InterVariable.woff2"/);
+    assert.ok(fs.statSync(path.join(root, "assets/fonts/InterVariable.woff2")).size < 80 * 1024);
+    assert.match(home, /<main id="main" tabindex="-1">/);
+    assert.match(home, /preload="none"/);
+    const nf = read("404.html");
+    assert.match(nf, /<h1>Nothing here\.<\/h1>/);
+    assert.match(nf, /href="\/">See the work</);
+    assert.match(nf, /href="\/play\/">Play the island</);
+    const og = fs.readFileSync(path.join(root, "assets/og-image.png"));
+    assert.equal(og.readUInt32BE(16), 1200);
+    assert.equal(og.readUInt32BE(20), 630);
+    for (const f of ["assets/unmaze/unmaze-replay.webm", "assets/unmaze/unmaze-replay.mp4"]) {
+        assert.ok(fs.statSync(path.join(root, f)).size < 600 * 1024, f);
+    }
 });

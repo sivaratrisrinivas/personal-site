@@ -1,19 +1,26 @@
 /* Home: a narrow, quiet page. Inter, two themes, the work does the moving. */
+@font-face {
+    font-family: "Inter";
+    src: url("../assets/fonts/InterVariable.woff2") format("woff2");
+    font-weight: 400 600;
+    font-style: normal;
+    font-display: swap;
+}
 :root {
-    --bg: #f7f7f5; --ink: #171717; --muted: #525252; --faint: #737373;
+    --bg: #f7f7f5; --ink: #171717; --muted: #525252; --faint: #6b6b6b;
     --line: #e5e5e5; --card: #ffffff; --hover: #f0f0ee; --focus: #2563eb; --ok: #16a34a;
     --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     color-scheme: light;
 }
 :root[data-theme="dark"] {
-    --bg: #09090b; --ink: #fafafa; --muted: #a1a1aa; --faint: #71717a;
+    --bg: #09090b; --ink: #fafafa; --muted: #a1a1aa; --faint: #8b8b94;
     --line: #27272a; --card: #18181b; --hover: #202023; --focus: #93c5fd; --ok: #4ade80;
     color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-        --bg: #09090b; --ink: #fafafa; --muted: #a1a1aa; --faint: #71717a;
+        --bg: #09090b; --ink: #fafafa; --muted: #a1a1aa; --faint: #8b8b94;
         --line: #27272a; --card: #18181b; --hover: #202023; --focus: #93c5fd; --ok: #4ade80;
         color-scheme: dark;
     }
@@ -43,10 +50,11 @@ code { font-family: var(--mono); font-size: 0.9em; }
 .wordmark { font-weight: 600; text-decoration: none; }
 .top-nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 1rem; color: var(--muted); }
 .top-nav a { padding: 0.35rem 0; }
-.theme-toggle { font: inherit; color: inherit; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 0.15rem 0.7rem; cursor: pointer; }
+.theme-toggle { min-height: 2rem; font: inherit; color: inherit; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 0.15rem 0.8rem; cursor: pointer; }
 .theme-toggle:hover { background: var(--hover); }
 
 main > section { padding-top: 3.5rem; }
+main:focus { outline: none; }
 main > section:first-child { padding-top: 3rem; }
 .intro, .about, .proof, .avail, .contact-lead { max-width: 37rem; }
 
@@ -65,6 +73,7 @@ h1 { font-size: 1.375rem; font-weight: 600; line-height: 1.3; letter-spacing: -0
 
 /* ---- sections ---- */
 .section-h { margin-bottom: 1rem; color: var(--muted); font-size: 0.875rem; font-weight: 500; }
+.section-sub { margin: -0.75rem 0 1rem; color: var(--faint); font-size: 0.8125rem; }
 .sub-h { margin: 1.5rem 0 0.6rem; font-size: 0.875rem; font-weight: 500; color: var(--muted); }
 .os-meta, .card-meta, .lib-meta { color: var(--faint); font-size: 0.8125rem; font-weight: 400; }
 
@@ -72,8 +81,10 @@ h1 { font-size: 1.375rem; font-weight: 600; line-height: 1.3; letter-spacing: -0
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
 .card { border: 1px solid var(--line); border-radius: 12px; background: var(--card); overflow: hidden; transition: border-color 0.15s; }
 .card:hover { border-color: color-mix(in srgb, var(--faint) 60%, var(--line)); }
-#unmaze { grid-row: span 2; }
-.card-media video { display: block; width: 100%; height: auto; aspect-ratio: 560 / 318; object-fit: cover; background: #10153f; border-bottom: 1px solid var(--line); }
+/* Unmaze is the feature card: clip and text side by side, the other two cards share the row below. */
+#unmaze { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: start; }
+#unmaze .card-media video { border-bottom: 0; border-right: 1px solid var(--line); }
+.card-media video { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; background: #10153f; border-bottom: 1px solid var(--line); }
 .card-body { padding: 1rem 1.1rem 1.1rem; }
 .card-title { font-size: 1rem; font-weight: 600; }
 .card-meta { margin-top: 0.1rem; }
@@ -104,24 +115,29 @@ h1 { font-size: 1.375rem; font-weight: 600; line-height: 1.3; letter-spacing: -0
 .lib-item { display: grid; grid-template-columns: 40px 1fr; gap: 0.75rem; align-items: start; }
 .lib-film { grid-template-columns: 1fr; padding-left: 0.75rem; border-left: 2px solid var(--line); }
 .lib-cover { position: relative; display: block; width: 40px; height: 60px; border-radius: 3px; overflow: hidden; background: var(--spine, var(--line)); }
-.lib-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lib-cover::before, .lib-cover::after { content: ""; position: absolute; left: 0; right: 0; height: 4px; background: rgb(255 255 255 / 0.55); }
+.lib-cover::before { top: 8px; }
+.lib-cover::after { bottom: 8px; }
 .lib-title { font-size: 0.9375rem; font-weight: 500; line-height: 1.35; }
 .lib-fact { margin-top: 0.3rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.5; }
 .lib > p { color: var(--muted); }
 
 /* ---- contact, footer ---- */
 .contact-links { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; margin-top: 1rem; }
+.contact-links a { padding: 0.35rem 0.1rem; }
 .foot { padding: 3.5rem 0 2.5rem; color: var(--faint); font-size: 0.8125rem; }
 
 /* ---- small screens ---- */
 @media (max-width: 720px) {
     .grid, .lib-list { grid-template-columns: 1fr; }
-    #unmaze { grid-row: auto; }
+    #unmaze { display: block; }
+    #unmaze .card-media video { border-right: 0; border-bottom: 1px solid var(--line); }
     main > section { padding-top: 2.75rem; }
 }
 @media (max-width: 480px) {
     .top, main, .foot { width: min(100% - 2rem, 46rem); }
-    .top { padding-top: 1rem; }
+    .top { padding-top: 1rem; justify-content: flex-end; }
+    .wordmark { display: none; }
     .top-nav { gap: 0.25rem 0.8rem; }
     main > section:first-child { padding-top: 1.75rem; }
     h1 { font-size: 1.25rem; }
@@ -130,3 +146,4 @@ h1 { font-size: 1.375rem; font-weight: 600; line-height: 1.3; letter-spacing: -0
 @media (prefers-reduced-motion: reduce) {
     body, .btn, .card { transition: none; }
 }
+.notfound { padding-top: 6rem; }

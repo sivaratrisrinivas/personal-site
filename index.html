@@ -9,14 +9,14 @@
     <meta content="website" property="og:type"/>
     <meta content="Srinivas Sivaratri | AI engineer (LLM tools and evals)" property="og:title"/>
     <meta content="I build LLM tools and the evals that check them. Python first, then TypeScript and Go." property="og:description"/>
-    <meta content="https://srinivassivaratri.is-a.dev/assets/og-image.png" property="og:image"/>
+    <meta content="https://srinivassivaratri.is-a.dev/assets/og-image.png?v=2" property="og:image"/>
     <meta content="1200" property="og:image:width"/>
     <meta content="630" property="og:image:height"/>
-    <meta content="Srinivas Sivaratri: Practical systems. Evidence on screen." property="og:image:alt"/>
+    <meta content="Srinivas Sivaratri, AI engineer. I build LLM tools and the evals that check them." property="og:image:alt"/>
     <meta content="summary_large_image" name="twitter:card"/>
     <meta content="Srinivas Sivaratri | AI engineer (LLM tools and evals)" name="twitter:title"/>
     <meta content="I build LLM tools and the evals that check them. Python first, then TypeScript and Go." name="twitter:description"/>
-    <meta content="https://srinivassivaratri.is-a.dev/assets/og-image.png" name="twitter:image"/>
+    <meta content="https://srinivassivaratri.is-a.dev/assets/og-image.png?v=2" name="twitter:image"/>
     <link rel="canonical" href="https://srinivassivaratri.is-a.dev/" />
     <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
@@ -33,9 +33,7 @@
     </script>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/home.css" />
 </head>
 
@@ -53,7 +51,7 @@
         </nav>
     </header>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
         <section class="intro" aria-labelledby="name">
             <h1 id="name">Srinivas Sivaratri</h1>
             <p class="role">AI engineer · I build LLM tools and the evals that check them</p>
@@ -71,7 +69,8 @@
             <div class="grid">
             <article class="card" id="unmaze">
                 <figure class="card-media">
-                    <video data-loop muted loop playsinline preload="metadata" poster="assets/unmaze/unmaze-replay-poster.jpg" width="560" height="318" aria-label="The unmaze model starts from noise and sharpens into the one path through an 11x11 maze.">
+                    <video data-loop muted loop playsinline preload="none" poster="assets/unmaze/unmaze-replay-poster.jpg" width="360" height="360" aria-label="The unmaze model starts from noise and sharpens into the one path through an 11x11 maze.">
+                        <source src="assets/unmaze/unmaze-replay.webm" type="video/webm" />
                         <source src="assets/unmaze/unmaze-replay.mp4" type="video/mp4" />
                     </video>
                     <figcaption class="sr-only">The unmaze model starts from noise and sharpens into the one path through an 11x11 maze.</figcaption>
@@ -107,7 +106,7 @@
                         <li>Same model and prompt, median of 5 runs: 293 tokens/s on Cerebras vs 192 and 44 on two GPU hosts. On this short task one GPU host still finished first, because Kimi wrote more reasoning tokens on Cerebras.</li>
                     </ul>
                     <p class="card-links">
-                        <a href="https://t.me/kimi_filmfinder_bot" target="_blank" rel="noopener noreferrer">Telegram bot</a>
+                        <a href="https://t.me/kimi_filmfinder_bot" target="_blank" rel="noopener noreferrer">Telegram bot (runs on demand)</a>
                         <a href="https://github.com/sivaratrisrinivas/film-finder" target="_blank" rel="noopener noreferrer">Repo</a>
                     </p>
                     <details class="card-more">
@@ -192,7 +191,8 @@
         </section>
 
         <section id="library" aria-labelledby="library-h">
-            <h2 id="library-h" class="section-h">Library <span class="os-meta">Favourites, 2026</span></h2>
+            <h2 id="library-h" class="section-h">Library</h2>
+            <p class="section-sub">Favourites, 2026</p>
             <h3 class="sub-h">Books</h3>
             <div class="lib" data-lib="books"><p>Books: Crime and Punishment (Fyodor Dostoevsky), Outsmart Everyone (Andrew Bustamante), Creative Confidence (Tom Kelley &amp; David Kelley).</p></div>
             <h3 class="sub-h">Films</h3>
@@ -208,7 +208,7 @@
             <h2 id="contact-h" class="section-h">Contact</h2>
             <p class="contact-lead"><a href="mailto:srinivassivaratri1122@gmail.com">Email me</a>, I reply within a day.</p>
             <p class="avail"><span class="dot" aria-hidden="true"></span><strong>Looking for</strong>: AI engineer roles at early-stage teams, full-time or contract. Remote from India with US-hours overlap, or relocating to SF with visa sponsorship.</p>
-            <p class="contact-links"><a href="mailto:srinivassivaratri1122@gmail.com">Email</a> <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a> <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X</a> <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a></p>
+            <p class="contact-links"><a href="mailto:srinivassivaratri1122@gmail.com">Email</a> <a href="https://github.com/sivaratrisrinivas" target="_blank" rel="noopener noreferrer">GitHub</a> <a href="https://x.com/SrinivasSi78619" target="_blank" rel="noopener noreferrer">X (Twitter)</a> <a href="https://www.linkedin.com/in/srinivas-sivaratri-3a0a32162/" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a href="assets/srinivas-sivaratri-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a></p>
         </section>
     </main>
 

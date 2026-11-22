@@ -4,6 +4,9 @@ Two pages, plain HTML, CSS and JavaScript, no build step:
 
 - **Home (`index.html`)**: a narrow, single-column page in Inter with light and dark themes (system setting by default, toggle persists). Intro and ask, Work (Unmaze, Film Finder, Bingo), Open source, About, Library (the 2026 shelf, built from `js/favourites.js` by `js/home.js`), Play and Contact. Styles in `css/home.css`.
 - **Play (`play/index.html`)**: the island game below, reached from the Play link.
+- **404 (`404.html`)**: a plain page with links back to the work and the island.
+- Inter is self-hosted (`assets/fonts/InterVariable.woff2`, Latin subset, OFL; see `assets/fonts/LICENSE.txt`).
+- Résumé: edit `resume/Srinivas_Sivaratri_Resume.yaml`, run `rendercv render` (RenderCV 2.8) in `resume/`, copy `rendercv_output/Srinivas_Sivaratri_Resume.pdf` to `assets/srinivas-sivaratri-resume.pdf`.
 
 When you change copy, change it on both pages: Home holds it as plain sections, and the game holds it in its codex.
 
