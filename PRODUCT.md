@@ -24,7 +24,7 @@ Generic SaaS landing pages, ornamental terminal cosplay, dense résumé walls, f
 
 - The site is the game. There is no plainer site hiding behind it.
 - Reward exploring without scoring it: three hidden details, hints are free (the Index), and nothing is locked or counted.
-- Never make anyone play to read: the Index lists everything as text, and the Résumé and Say hi buttons are always in the top bar.
+- Never make anyone play to read: the Index lists everything as text, and the Résumé and Email me buttons are always in the top bar.
 - Be weird on purpose, and honest: every number and claim comes from the real work, and anything that is only a joke reads as one. Never invent a chip.
 - One source of content: every word of the real material lives once, in the page's codex, and is reused by the game.
 - Make every interaction work with keyboard, mouse and touch.

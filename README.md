@@ -1,6 +1,15 @@
-# Personal site: a pixel island
+# Personal site
 
-The portfolio of Srinivas Sivaratri is a small pixel-art island you walk around. Buildings hold the work, the roles and the pull requests, plus two favourites rooms (books and films). Pure HTML, CSS and JavaScript: no framework, no build step. Every sprite is drawn in code; the only content image is one public-domain book cover in `assets/favourites/`.
+Two pages, plain HTML, CSS and JavaScript, no build step:
+
+- **Home (`index.html`)**: a narrow, single-column page in Inter with light and dark themes (system setting by default, toggle persists). Intro and ask, Work (Unmaze, Film Finder, Bingo), Open source, About, Library (the 2026 shelf, built from `js/favourites.js` by `js/home.js`), Play and Contact. Styles in `css/home.css`.
+- **Play (`play/index.html`)**: the island game below, reached from the Play link.
+
+When you change copy, change it on both pages: Home holds it as plain sections, and the game holds it in its codex.
+
+## The island (`/play/`)
+
+The portfolio of Srinivas Sivaratri is also a small pixel-art island you walk around. Buildings hold the work, the roles and the pull requests, plus two favourites rooms (books and films). Pure HTML, CSS and JavaScript: no framework, no build step. Every sprite is drawn in code; the only content image is one public-domain book cover in `assets/favourites/`.
 
 ## Playing it
 
@@ -10,7 +19,7 @@ The portfolio of Srinivas Sivaratri is a small pixel-art island you walk around.
 - **Night** (header button) switches the theme: windows, lamps and the lighthouse beam light up.
 - Nothing is tracked or scored; only the theme choice is kept in `localStorage`.
 
-Without JavaScript the same content shows as a normal page (the *codex* in `index.html`).
+Without JavaScript the same content shows as a normal page (the *codex* in `play/index.html`).
 
 ## Places
 
@@ -32,7 +41,7 @@ The hedge garden next to the lab is a real maze, grown with Wilson's algorithm l
 
 ## Editing content
 
-Every word of real content lives once, in the `#codex` block of `index.html`, as `<section data-spot="<id>">`. The game clones a section into a dialog when you open its building, so edit it there. Place names, the three hidden details, and the owl, button and signpost lines live in `js/lore.js`.
+Every word of real content lives once, in the `#codex` block of `play/index.html`, as `<section data-spot="<id>">`. The game clones a section into a dialog when you open its building, so edit it there. Place names, the three hidden details, and the owl, button and signpost lines live in `js/lore.js`.
 
 To add a place: add a section to the codex, an entry to `SPOTS` in `js/lore.js`, a building to `BUILDINGS` in `js/world.js`, and a painter for its `kind` in `js/art.js`.
 
