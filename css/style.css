@@ -674,7 +674,7 @@ html:not(.js) body { background: #bfe8ff; }
 .project-chips a.chip-demo { background: var(--lemon); color: var(--ink); }
 .project-meta { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.8rem; }
 .project-clip { margin: 0 0 1rem; }
-.project-clip video { display: block; width: 100%; height: auto; aspect-ratio: 560 / 318; border: 3px solid var(--border); background: #10153f; }
+.project-clip video { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 1 / 1; border: 3px solid var(--border); background: #10153f; }
 .project-clip figcaption { margin-top: 0.35rem; color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
 .project-card + .project-card { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 3px dashed color-mix(in srgb, var(--border) 35%, transparent); }
 .contribution-card + .contribution-card { margin-top: 1.6rem; }
@@ -682,3 +682,16 @@ html:not(.js) body { background: #bfe8ff; }
 .contact-lead { margin-bottom: 0.8rem; font-size: 0.95rem; }
 .intro-steps li:only-child { grid-template-columns: 1fr; }
 .intro-steps li:only-child::before { display: none; }
+
+/* ---- GS-T78: a visible way back to the work, at every width ---- */
+.btn-back { flex: 0 0 auto; white-space: nowrap; }
+@media (max-width: 480px) {
+    .btn-back { padding: 0 0.5rem; }
+    .brand { display: none; }
+    .hud-actions { margin-left: auto; }
+}
+@media (max-width: 400px) {
+    .hud { gap: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; }
+    .hud-actions { gap: 0.25rem; }
+    .hud .btn, .hud-actions .btn { padding: 0 0.35rem; letter-spacing: 0.02em; }
+}

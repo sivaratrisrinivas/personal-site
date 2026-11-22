@@ -29,12 +29,18 @@
         if (!stored) paint(e.matches ? "dark" : "light");
     });
 
-    /* ---- loops: play only when motion is welcome ---- */
+    /* ---- loops: play while on screen, never under reduced motion ---- */
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduce) document.querySelectorAll("video[data-loop]").forEach(function (v) {
-        v.autoplay = true;
-        var p = v.play();
-        if (p && p.catch) p.catch(function () { /* autoplay refused: the poster stays */ });
+    var loops = document.querySelectorAll("video[data-loop]");
+    function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () { /* autoplay refused: the poster stays */ }); }
+    loops.forEach(function (v) {
+        if (reduce) { v.controls = true; return; } /* the poster stays; the visitor can press play */
+        if (!("IntersectionObserver" in window)) { v.preload = "auto"; play(v); return; }
+        new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { v.preload = "auto"; play(v); } else v.pause();
+            });
+        }, { threshold: 0.25 }).observe(v);
     });
 
     /* ---- Library ---- */
@@ -52,14 +58,8 @@
         var ul = h("ul", "lib-list");
         F.BOOKS.forEach(function (b) {
             var li = h("li", "lib-item");
-            var cover = h("span", "lib-cover");
+            var cover = h("span", "lib-cover"); /* a drawn spine for every book, so the shelf reads as one set */
             cover.style.setProperty("--spine", b.spine);
-            if (b.cover) {
-                var img = h("img"); img.src = b.cover.url; img.alt = ""; img.width = 40; img.height = 60;
-                img.loading = "lazy"; img.referrerPolicy = "no-referrer";
-                img.addEventListener("error", function () { img.remove(); });
-                cover.append(img);
-            }
             cover.setAttribute("aria-hidden", "true");
             var body = h("div", "lib-body");
             body.append(h("p", "lib-title", b.title), h("p", "lib-meta", b.author + " · " + F.progressText(b)));

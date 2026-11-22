@@ -344,14 +344,14 @@
         el.act.disabled = false;
     }
 
-    function say(speaker, text) {
+    function say(speaker, text, ms) {
         el.bubble.innerHTML = "";
         var b = document.createElement("b");
         b.textContent = speaker;
         el.bubble.append(b, document.createTextNode(text));
         el.bubble.hidden = false;
         clearTimeout(bubbleTimer);
-        bubbleTimer = setTimeout(function () { el.bubble.hidden = true; }, 5200);
+        bubbleTimer = setTimeout(function () { el.bubble.hidden = true; }, ms || 5200);
     }
 
     function activate(t) {
@@ -768,7 +768,6 @@
 
         $("btn-index").addEventListener("click", openIndex);
         $("btn-start").addEventListener("click", function () { el.intro.close(); });
-        $("btn-intro-index").addEventListener("click", function () { el.intro.close(); openIndex(); });
         $("spot-close").addEventListener("click", function () { el.spot.close(); });
         // in-page links inside a dialog (e.g. Experience -> Open source) open that place instead
         $("spot-body").addEventListener("click", function (e) {
@@ -836,8 +835,16 @@
         cam.x = clampCam(player.x - view.w / 2, world.W * T, view.w);
         cam.y = clampCam(player.y - view.h / 2, world.H * T, view.h);
         start();
-        el.intro.showModal();
-        $("btn-intro-index").focus();
+        /* Arriving from the home page: skip the bio card, just show the one-line hint. */
+        var fromHome = false;
+        try { fromHome = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) { /* bad referrer */ }
+        if (fromHome) {
+            say("", L.INTRO.steps[0], 4000);
+            canvas.focus({ preventScroll: true });
+        } else {
+            el.intro.showModal();
+            $("btn-intro-back").focus();
+        }
 
         if (DEBUG) {
             window.__island = {
