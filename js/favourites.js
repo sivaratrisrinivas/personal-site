@@ -21,7 +21,7 @@
             progress: 0.5, approximate: false, label: "Halfway", spine: "#c8553d",
             cover: { kind: "openlibrary", url: "https://covers.openlibrary.org/b/id/15183762-M.jpg", page: "https://openlibrary.org/works/OL45018229W" },
             image: {
-                src: "assets/favourites/crime-and-punishment-1867.jpg",
+                src: "/assets/favourites/crime-and-punishment-1867.jpg",
                 alt: "Title page of the 1867 first separate edition of Crime and Punishment",
                 credit: "First separate edition, St Petersburg, 1867 (publishers A. Bazunov, E. Prats, Ya. Veidenshtraukh)",
                 license: "Public domain",
