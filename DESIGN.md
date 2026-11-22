@@ -31,7 +31,7 @@ Two moods from one set of accents. Colour does the wayfinding: each building has
 ## UI frame
 
 - Panels are hard-edged and outlined (3px ink border, offset ink shadow) like game UI, never rounded or blurred. Buttons press down into their shadow.
-- The top bar is always dark indigo with a pink underline, so the world is the brightest thing on screen. It holds the brand, the Index, Résumé, Say hi, and Night controls. No progress counters.
+- The top bar is always dark indigo with a pink underline, so the world is the brightest thing on screen. It holds the brand, the Index, Résumé, Email me, and Night controls. No progress counters.
 - A prompt chip appears at the bottom whenever something can be used: key cap, then the verb ("Enter the lab", "Dig here"). On touch it also becomes the `A` button beside the d-pad.
 - Dialogs use native `<dialog>`. A building's dialog has a header in its roof colour and the real content below.
 - Real content (roles, pull requests, project cards) is cloned from the codex and restyled with the same pixel panels, chips and buttons.

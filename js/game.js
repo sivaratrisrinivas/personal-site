@@ -749,7 +749,7 @@
         applyTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light", false);
         night = nightTarget;
         var summary = $("intro-summary"), lead = document.querySelector("#codex .codex-intro");
-        if (summary && lead) [".role-line", ".codex-statement", ".project-chips"].forEach(function (sel) {
+        if (summary && lead) [".role-line", ".codex-statement", ".proof-line", ".project-chips"].forEach(function (sel) {
             var n = lead.querySelector(sel);
             if (!n) return;
             var copy = n.cloneNode(true);
@@ -837,7 +837,7 @@
         cam.y = clampCam(player.y - view.h / 2, world.H * T, view.h);
         start();
         el.intro.showModal();
-        $("btn-start").focus();
+        $("btn-intro-index").focus();
 
         if (DEBUG) {
             window.__island = {
