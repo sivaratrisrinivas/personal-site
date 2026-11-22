@@ -40,3 +40,9 @@ test("contact line and copy rules", () => {
     assert.ok(!/href="[^"]*\/game\b/.test(html), "no /game route");
     assert.ok(!/peft/i.test(html), "no peft");
 });
+
+test("Film Finder makes no claim the bot is running", () => {
+    assert.ok(!/live Telegram bot/i.test(html));
+    assert.ok(!html.includes("Try the bot"));
+    assert.match(html, /Cerebras x Kimi hackathon · Telegram bot</);
+});
